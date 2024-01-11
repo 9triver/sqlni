@@ -9,6 +9,10 @@ package com.kekwy.sqlni.expression;
  */
 public abstract class Expression {
 
+    public Expression eq(Expression subKey) {
+        return null;
+    }
+
     enum Type {
         CONSTANT,
         COLUMN,

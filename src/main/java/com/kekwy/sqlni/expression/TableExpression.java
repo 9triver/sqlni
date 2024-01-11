@@ -9,7 +9,7 @@ package com.kekwy.sqlni.expression;
  */
 public class TableExpression extends Expression {
 
-    private String tableName;
+    private final String tableName;
 
     public TableExpression(String tableName) {
         super(Type.TABLE);

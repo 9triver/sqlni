@@ -1,5 +1,9 @@
 package com.kekwy.sqlni.query;
 
+import com.kekwy.sqlni.expression.Expression;
+import com.kekwy.sqlni.expression.TableExpression;
+import org.dom4j.Element;
+
 /**
  * description
  *
@@ -9,19 +13,27 @@ package com.kekwy.sqlni.query;
  */
 public class SqlniQuery {
 
+    public SqlniQuery(Element document) {
+
+    }
+
     public SqlniQuery selectAll() {
         return this;
     }
 
-    public SqlniQuery from() {
+    public SqlniQuery from(TableExpression tableExpression) {
         return this;
     }
 
-    public SqlniQuery where() {
+    public SqlniQuery where(Expression expression) {
         return this;
     }
 
-    public SqlniQuery limit() {
+    public SqlniQuery limit(Integer i) {
+        return this;
+    }
+
+    public SqlniQuery from(String tableName) {
         return this;
     }
 

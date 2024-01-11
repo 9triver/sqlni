@@ -5,10 +5,10 @@ package com.kekwy.sqlni;
  *
  * @author Kekwy
  * @version 1.0
- * @since 2024/1/7 10:40
+ * @since 2024/1/11 9:58
  */
-public class SqlniFactory {
+public enum Element {
 
-
+    FOREACH
 
 }

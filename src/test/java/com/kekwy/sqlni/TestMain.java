@@ -1,5 +1,8 @@
 package com.kekwy.sqlni;
 
+import com.kekwy.sqlni.util.TestInterface;
+import com.kekwy.sqlni.util.TestInterfaceChild;
+import com.kekwy.sqlni.util.TestUtilChild;
 import com.querydsl.core.types.Ops;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.sql.MySQLTemplates;
@@ -30,6 +33,16 @@ public class TestMain {
                 .from(Expressions.constant("dual")); // 使用 dual 作为示例表
 
         System.out.println(query.getSQL().getSQL());
+
+        MySQLTemplates mySQLTemplates = new MySQLTemplates();
+
+        System.out.println(mySQLTemplates.getSelect());
+
+        TestUtilChild.test();
+
+        TestInterfaceChild.test2();
+
+        MySQLTemplates mySQLTemplates1 = new MySQLTemplates();
 
     }
 

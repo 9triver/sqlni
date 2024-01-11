@@ -11,12 +11,10 @@ public class ColumnExpression extends Expression {
 
     private final String columnName;
 
-
     public ColumnExpression(String columnName) {
         super(Type.COLUMN);
         this.columnName = columnName;
     }
-
 
     @Override
     public String toString() {
