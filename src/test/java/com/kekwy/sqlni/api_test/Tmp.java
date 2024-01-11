@@ -1,4 +1,4 @@
-package com.kekwy.sqlni.annotationTest;
+package com.kekwy.sqlni.api_test;
 
 /**
  * description

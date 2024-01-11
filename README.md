@@ -6,6 +6,44 @@
 
 
 
+1. 实现思路：
+
+   基于 mybatis dynamic sql
+
+2. 目前进展：
+
+3. 阶段计划：
+
+   
+
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 自定义条件，
@@ -47,12 +85,19 @@
 
 ```xml
 <select id="getEmployee" resultType="com.kekwy.mybatis.Employee">
-select * from t_employee where type=#{type}
-<if test="nameDepartmentSet != null">
-and
-<foreach collection="nameDepartmentSet" index="index" item="nd" open=" " separator="or" close=" "> name||'_'||department=#{nd} </foreach>
-</if>
+  select * from t_employee where type=#{type}
+  <if test="nameDepartmentSet != null">
+    and
+    <foreach collection="nameDepartmentSet" index="index" item="nd" open=" " separator="or" close=" ">         name||'_'||department=#{nd} 
+    </foreach>
+  </if>
 </select>
+```
+
+
+
+```text
+select * from t_employee where type = #{employeeType} and #|#&{"name":"foreach","attributes":{"close":" ","item":"departmentNameSetItem","separator":"or","open":" ","index":"index","collection":"departmentNameSet"}}#&concat(department, '_', name)=#{departmentNameSetItem}#|
 ```
 
 
@@ -120,6 +165,10 @@ and
 
 
 以目前对源码的理解程度，不能保证向外传出结构化对象的方法是可行的，故首先保证可以以传出字符串的方式实现功能。
+
+
+
+不改变开发模式
 
 
 

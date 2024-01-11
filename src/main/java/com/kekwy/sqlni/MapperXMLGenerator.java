@@ -1,6 +1,7 @@
 package com.kekwy.sqlni;
 
 import com.kekwy.sqlni.annotation.MapperMethod;
+import com.kekwy.sqlni.annotation.MapperProvider;
 import com.kekwy.sqlni.annotation.Param;
 import com.kekwy.sqlni.mapper.BaseMapperProvider;
 import com.kekwy.sqlni.query.SqlniQuery;
@@ -14,11 +15,15 @@ import org.dom4j.io.XMLWriter;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.nio.file.Files;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+
+import static com.kekwy.sqlni.util.ClassUtil.getClassName;
+import static com.kekwy.sqlni.util.ClassUtil.getPackageName;
 
 /**
  * description
@@ -30,16 +35,16 @@ import java.util.Set;
 public class MapperXMLGenerator {
 
 
-    private BaseMapperProvider getMapperInstance(Class<? extends BaseMapperProvider> mapperClass) {
+    private Object getProviderInstance(Class<?> mapperClass) {
         try {
-            return mapperClass.newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
+            return mapperClass.getDeclaredConstructor().newInstance();
+        } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException(mapperClass.getName() + ": 没有默认构造方法");
+            throw new RuntimeException(e);
         }
     }
 
-    private java.lang.reflect.Method[] getMapperMethods(Class<? extends BaseMapperProvider> mapperClass) {
+    private java.lang.reflect.Method[] getMapperMethods(Class<?> mapperClass) {
         List<java.lang.reflect.Method> res = new LinkedList<>();
         java.lang.reflect.Method[] methods = mapperClass.getDeclaredMethods();
         for (java.lang.reflect.Method method : methods) {
@@ -66,9 +71,9 @@ public class MapperXMLGenerator {
         return objects.toArray(new Object[0]);
     }
 
-    private void invokeMapperMethod(java.lang.reflect.Method method, BaseMapperProvider mapper, Object[] params) {
+    private String invokeMapperMethod(Method method, Object mapper, Object[] params) {
         try {
-            method.invoke(mapper, params);
+            return (String) method.invoke(mapper, params);
         } catch (IllegalAccessException | InvocationTargetException e) {
             throw new RuntimeException(e);
         }
@@ -107,31 +112,51 @@ public class MapperXMLGenerator {
 
     }
 
-    public void buildMapper(Class<? extends BaseMapperProvider> mapperClass, String targetPath) {
+
+    private void creatDirs(String dirPath) {
+        File dir = new File(dirPath);
+        boolean mkdirs = dir.mkdirs();
+    }
+
+    public void buildMapper(Class<?> mapperClass, String targetPath) {
+        if (!mapperClass.isAnnotationPresent(MapperProvider.class)) return;
+        String namespace = mapperClass.getAnnotation(MapperProvider.class).namespace();
+
+        /* 设置文件路径及文件名 */
+        String dirPath = targetPath + "/" + getPackageName(namespace).replace('.', '/') + '/';
+        String filePath = dirPath + getClassName(namespace).replace('.', '/') + ".xml";
+        creatDirs(dirPath);
 
         // 创建目标 XML 文件
         Document document = createXMLDocument();
         // 创建根元素
         Element root = document.addElement("mapper");
-
-//        root.addAttribute()
+        root.addAttribute("namespace", namespace);
 
         // 生成用户自定义的 Mapper 类的实例对象
-        BaseMapperProvider mapper = getMapperInstance(mapperClass);
+        Object mapper = getProviderInstance(mapperClass);
         // 获取用户定义的 Mapper 中的查询方法
         java.lang.reflect.Method[] methods = getMapperMethods(mapperClass);
 
         for (java.lang.reflect.Method method : methods) {
-            // 创建新的 SqlniQuery 对象
-            mapper.setSqlniQuery(new SqlniQuery(root));
-            // 生成对应方法的参数
-            Object[] params = generateParams(method);
-            // 调用方法，根据用户在该方法中声明的查询方式完成对 SqlniQuery 对象的设置
-            invokeMapperMethod(method, mapper, params);
+//            // 生成对应方法的参数
+//            Object[] params = generateParams(method);
+            String statement = invokeMapperMethod(method, mapper, null);
+            /* 创建新的结点 */
+            Element select = root.addElement("select");
+            select.addAttribute("id", method.getName());
+            select.addAttribute("resultType", "com.kekwy.mybatis.Employee");
+            /* 将生成的中间查询语句转化为目标 XML 格式 */
+            parseStatement(statement, select);
         }
 
         // 生成文件，写入内容
-        writeXMLFile(document, targetPath);
+        writeXMLFile(document, filePath);
+
+    }
+
+    // TODO
+    private void parseStatement(String statement, Element select) {
 
     }
 
@@ -140,15 +165,8 @@ public class MapperXMLGenerator {
         // 获取包名下所有类
         Set<Class<?>> classes = ClassUtil.getClassesByPackage(packageName);
         for (Class<?> c : classes) {
-            if (BaseMapperProvider.class.isAssignableFrom(c)) {
-                File dir = new File(targetPath + "/" + c.getPackage().getName().replace('.', '/'));
-                if (!dir.mkdirs()) {
-                    throw new RuntimeException("");
-                }
-                buildMapper(c.asSubclass(BaseMapperProvider.class),
-                        targetPath + "/" + c.getName().replace('.', '/') + ".xml");
-            }
-            System.out.println(c.getName());
+            if (c.isAnnotationPresent(MapperProvider.class))
+                buildMapper(c, targetPath);
         }
     }
 

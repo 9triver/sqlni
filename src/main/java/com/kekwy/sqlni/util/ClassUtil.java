@@ -16,6 +16,16 @@ import java.util.Set;
  */
 public class ClassUtil {
 
+    public static String getPackageName(String className) {
+        int index = className.lastIndexOf('.');
+        return className.substring(0, index);
+    }
+
+    public static String getClassName(String className) {
+        int index = className.lastIndexOf('.');
+        return className.substring(index + 1);
+    }
+
     public static Set<Class<?>> getClassesByPackage(String packageName) {
         Set<Class<?>> classSet = new HashSet<>();
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();

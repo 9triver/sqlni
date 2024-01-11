@@ -1,11 +1,10 @@
-package com.kekwy.sqlni.annotationTest;
+package com.kekwy.sqlni.api_test;
 
 import com.kekwy.sqlni.annotation.MapperMethod;
 import com.kekwy.sqlni.annotation.MapperProvider;
 import com.kekwy.sqlni.annotation.Param;
 import com.kekwy.sqlni.entity.Employee;
 import org.mybatis.dynamic.sql.render.RenderingStrategies;
-import org.mybatis.dynamic.sql.select.SelectModel;
 
 import java.util.List;
 import java.util.Set;
@@ -20,7 +19,7 @@ import static com.kekwy.sqlni.SqlBuilder.*;
  * @version 1.0
  * @since 2024/1/7 9:31
  */
-@MapperProvider(Employee.class)
+@MapperProvider(namespace = "com.kekwy.sqlni.api_test.EmployeeMapper", entity = Employee.class)
 public class EmployeeMapperProvider {
 
     /**

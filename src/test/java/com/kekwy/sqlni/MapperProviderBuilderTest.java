@@ -27,7 +27,7 @@ public class MapperProviderBuilderTest {
     @Test
     public void build() {
 
-        new MapperXMLGenerator().buildMappers("com.kekwy.sqlni.testMapper", "./mappers");
+        new MapperXMLGenerator().buildMappers("com.kekwy.sqlni.api_test", "./mappers");
 
     }
 
