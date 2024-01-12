@@ -16,6 +16,8 @@ import java.util.regex.Pattern;
  */
 public class MapperBuilder {
 
+//    private final
+
     private final String className;
 
     private final Document document;
@@ -50,19 +52,35 @@ public class MapperBuilder {
                 className.substring(index + 1), document);
     }
 
+    private static final Pattern SQLNI_PATTERN = Pattern.compile(
+            "(SELECT) +(.+) +(FROM) +(.+) +(WHERE) (.+) +(AND|OR) +(.+)");
+    // concat(department, '_', name) in #{departmentNameSet}
+
     /* 暂时采用正则表达式处理，且仅支持 concat 函数，默认方言上下文为 MySQL dialects */
     public MapperBuilder addMethodWithType(String name, String returnType, String statement) {
+
+        // 获取 Sqlni 语句中的行为
+        String action = getAction(statement);
+
+        Element methodeNode = root.addElement(action);
+
+        // 设置基本属性
+        methodeNode.addAttribute("id", name);
+        methodeNode.addAttribute("resultType", parseResultType(returnType));
+
+
+
         return this;
     }
 
 
     private String getAction(String statement) {
-        return statement.substring(0, statement.indexOf(' '));
+        return statement.substring(0, statement.indexOf(' ')).toLowerCase();
     }
 
     /* CONSTANT: pattern
      * --------------------------------------------------------------------------------------------------------- */
-    private static final Pattern RESULT_TYPE_PATTERN = Pattern.compile("<.?>");
+    private static final Pattern RESULT_TYPE_PATTERN = Pattern.compile(".+<(.+)>");
 
     /**
      * 当用户编写的方法返回值类型为集合时，解析出集合中元素的类型，作为 resultType
