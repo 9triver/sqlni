@@ -1,22 +1,26 @@
 # Sqlni
 
-> 基于 mybatis dynamic sql 实现的 DSL 工具（Java API）
 
 
 
 
 
-1. 实现思路：
 
-   基于 mybatis dynamic sql
 
-2. 目前进展：
+## 参考资料
 
-3. 阶段计划：
+https://mybatis.org/mybatis-dynamic-sql/docs/select.html
+
+https://www.cnblogs.com/intotw/p/13815793.html
+
+https://www.baeldung.com/java-annotation-processing-builder
+
+《SQL 必知必会》—— 本·福达 著
+
+《Java 编程思想（Thinking in Java）》
 
    
 
-   
 
 
 
@@ -46,25 +50,13 @@
 
 
 
-自定义条件，
-
-
-
-自定义数据类型
-
-
-
-自定义函数
-
-
-
-综上实现 SQL 模板（参考 QueryDSL）
 
 
 
 
 
 
+以下为草稿
 
 // ============================ draft ============================
 
@@ -172,8 +164,9 @@ select * from t_employee where type = #{employeeType} and #|#&{"name":"foreach",
 
 
 
-## 参考资料
+![image-20240111171515936](README.assets/image-20240111171515936.png)
 
-https://mybatis.org/mybatis-dynamic-sql/docs/select.html
 
-《SQL 必知必会》—— 本·福达 著
+
+
+
