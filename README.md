@@ -16,6 +16,8 @@ https://www.cnblogs.com/intotw/p/13815793.html
 
 https://www.baeldung.com/java-annotation-processing-builder
 
+正则表达式语法 https://www.runoob.com/regexp/regexp-syntax.html
+
 《SQL 必知必会》—— 本·福达 著
 
 《Java 编程思想（Thinking in Java）》
@@ -167,6 +169,10 @@ select * from t_employee where type = #{employeeType} and #|#&{"name":"foreach",
 
 ![image-20240111171515936](README.assets/image-20240111171515936.png)
 
+
+暂时不考虑与 XML 的解耦合问题，
+
+生成过程与具体的 XML 格式解耦可以更好地满足 OCP
 
 
 
