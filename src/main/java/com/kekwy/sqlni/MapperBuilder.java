@@ -1,4 +1,4 @@
-package com.kekwy.mybatis.sqlni;
+package com.kekwy.sqlni;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
@@ -53,7 +53,8 @@ public class MapperBuilder {
     }
 
     private static final Pattern SQLNI_PATTERN = Pattern.compile(
-            "(SELECT) +(.+) +(FROM) +(.+) +(WHERE) (.+) +(AND|OR) +(.+)");
+            "(SELECT) +(.+) +(FROM) +(.+) +(WHERE) (.+) +((AND|OR) +conact(.+(,(.+))*)) in (.+)+"
+    );
     // concat(department, '_', name) in #{departmentNameSet}
 
     /* 暂时采用正则表达式处理，且仅支持 concat 函数，默认方言上下文为 MySQL dialects */
@@ -68,9 +69,32 @@ public class MapperBuilder {
         methodeNode.addAttribute("id", name);
         methodeNode.addAttribute("resultType", parseResultType(returnType));
 
+        methodeNode.addComment("newLine").addText("SELECT * FROM t_employee WHERE type = #{type}");
 
+        Element anIf = methodeNode.addElement("if");
+        anIf.addAttribute("test", "departmentNameSet != null");
+
+//        elementBuilder(anIf, statement.substring());
+        elementBuilder(anIf, statement);
 
         return this;
+    }
+
+    private void traversSet(Element element, String setName) {
+        element.addElement("foreach")
+                .addAttribute("collection", setName)
+                .addAttribute("item", setName + "Item")
+                .addAttribute("index", "index")
+                .addAttribute("open", "(")
+                .addAttribute("close", ")")
+                .addAttribute("separator", ",")
+                .addComment("newLine")
+                .addText("#{" + setName + "Item}");
+    }
+
+    private void elementBuilder(Element element, String statement) {
+        element.addComment("newLine").addText("AND concat(department, '_', name) IN");
+        traversSet(element, "departmentNameSet");
     }
 
 

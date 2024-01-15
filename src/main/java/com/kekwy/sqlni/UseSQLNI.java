@@ -1,4 +1,4 @@
-package com.kekwy.mybatis.sqlni;
+package com.kekwy.sqlni;
 
 /**
  * description
@@ -7,7 +7,7 @@ package com.kekwy.mybatis.sqlni;
  * @version 1.0
  * @since 2024/1/11 16:36
  */
-public @interface UseSqlni {
+public @interface UseSQLNI {
 
     String value();
 

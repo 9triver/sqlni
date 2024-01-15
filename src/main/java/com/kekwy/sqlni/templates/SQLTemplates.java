@@ -1,4 +1,4 @@
-package com.kekwy.mybatis.sqlni.templates;
+package com.kekwy.sqlni.templates;
 
 /**
  * description

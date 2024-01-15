@@ -1,4 +1,4 @@
-package com.kekwy.mybatis.sqlni;
+package com.kekwy.sqlni;
 
 import org.dom4j.Document;
 

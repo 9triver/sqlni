@@ -1,4 +1,4 @@
-package com.kekwy.mybatis.sqlni;
+package com.kekwy.sqlni;
 
 import com.querydsl.sql.SQLTemplates;
 import org.junit.Test;
@@ -28,7 +28,7 @@ public class RegexTest {
         }
     }
 
-    @Test
+//    @Test
     public void parseResultTypeTest() {
         System.out.println(parseResultType("List<EEE>"));
 

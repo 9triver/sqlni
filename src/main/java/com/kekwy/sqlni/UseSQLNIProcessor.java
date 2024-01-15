@@ -1,4 +1,4 @@
-package com.kekwy.mybatis.sqlni;
+package com.kekwy.sqlni;
 
 import com.google.auto.service.AutoService;
 import org.dom4j.io.OutputFormat;
@@ -10,7 +10,6 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
@@ -31,7 +30,7 @@ import java.util.Set;
 @AutoService(Processor.class) // 自动注册自定义的注解处理器
 @SupportedAnnotationTypes({"com.kekwy.mybatis.sqlni.UseSqlni"})
 @SupportedSourceVersion(SourceVersion.RELEASE_17)
-public class UseSqlniProcessor extends AbstractProcessor {
+public class UseSQLNIProcessor extends AbstractProcessor {
 
 
     private final Map<String, MapperBuilder> builderMap = new HashMap<>();
@@ -40,6 +39,8 @@ public class UseSqlniProcessor extends AbstractProcessor {
         // TODO: 用 XML 工具类封装操作
         // 设置生成 XML 的格式
         OutputFormat format = OutputFormat.createPrettyPrint();
+        format.setNewlines(true);
+        format.setTrimText(false);
         // 设置编码格式
         format.setEncoding("UTF-8");
         try {
@@ -75,12 +76,12 @@ public class UseSqlniProcessor extends AbstractProcessor {
             return false;
         }
         // 处理注解
-        for (Element element : roundEnv.getElementsAnnotatedWith(UseSqlni.class)) {
+        for (Element element : roundEnv.getElementsAnnotatedWith(UseSQLNI.class)) {
 
             if (element.getKind() == ElementKind.METHOD && element instanceof ExecutableElement methodElement) {
-                UseSqlni useSqlniAnnotation = methodElement.getAnnotation(UseSqlni.class);
+                UseSQLNI useSQLNIAnnotation = methodElement.getAnnotation(UseSQLNI.class);
                 // 获取 Sqlni 语句
-                String statement = useSqlniAnnotation.value();
+                String statement = useSQLNIAnnotation.value();
 
                 // 获取Mapper接口的类名和方法名
                 String className = ((TypeElement) methodElement.getEnclosingElement()).getQualifiedName().toString();
