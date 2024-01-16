@@ -13,18 +13,20 @@ selectStatement
     ;
 
 columns
-    : '*'                         # allColumn
-    | (ID|PARAM) (',' ID|PARAM)*  # column
+    : '*'
+    | (ID|PARAM) (',' ID|PARAM)*
     ;
 
 table
-    : (ID|PARAM)      # table
+    : (ID|PARAM)
     ;
 
 condition
     : ;
 
-insertStatement:;
+insertStatement
+    :
+    ;
 
 
 /* Lexer */
@@ -32,7 +34,15 @@ SELECT : 'select' | 'SELECT' ;
 FROM   : 'from'   | 'FROM'   ;
 WHERE  : 'where'  | 'WHERE'  ;
 
-ID     :   [a-zA-Z_]+  ;
 PARAM  :   '#{'ID'}'   ;
 
-WS : [ \t\r\n]+ -> skip ; // skip spaces, tabs, newlines
+STRING : '\'' (ESC|.)*? '\'';     // 匹配字符常量，? 提供了对非贪婪匹配的支持
+
+ID     :   [a-zA-Z_]+  ;
+
+WS : [ \t\r\n]+ -> skip ;   // skip spaces, tabs, newlines
+//COMMENT : '#' .*? -> skip;
+
+fragment
+ESC : '\\"' | '\\\\';       // 双字符序列 \" 和 \\
+
