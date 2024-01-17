@@ -4,7 +4,7 @@
 >
 > 示例仓库：[Kekwy/sqlni-examples](https://github.com/Kekwy/sqlni-examples)
 >
-> 进度记录：
+> 进度报告：
 >
 > 第 3 周（2024.1.15 - 2024.1.21）：[定义 SQLNI 语法](reports/w3.md)
 
