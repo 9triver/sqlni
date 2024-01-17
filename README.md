@@ -3,6 +3,10 @@
 > 基于 Mybatis 实现对不同方言数据库编写统一查询的 DSL 语言工具。
 >
 > 示例仓库：[Kekwy/sqlni-examples](https://github.com/Kekwy/sqlni-examples)
+>
+> 进度记录：
+>
+> 第 3 周（2024.1.15 - 2024.1.21）：[定义 SQLNI 语法](reports/w3.md)
 
 ## 1 项目简介
 

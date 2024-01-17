@@ -4,41 +4,55 @@ grammar SQLNI;            // grammer name
 
 /* Parser */
 root
-    : selectStatement   # select
-    | insertStatement   # insert
+    : select
+//    | insert
     ;
 
-selectStatement
-    : SELECT columns FROM table (WHERE condition)?
+select
+    : SELECT columns FROM table ';'?
     ;
 
 columns
     : '*'
-    | (ID|PARAM) (',' ID|PARAM)*
+    | (column) (',' column)*
     ;
 
+column
+    : ID
+    | param
+    ;
+
+param: '#{' ID '}';
+
 table
-    : (ID|PARAM)
+    : ID
+    | param
     ;
 
 condition
-    : ;
-
-insertStatement
-    :
+    : AND condition
     ;
 
 
-/* Lexer */
-SELECT : 'select' | 'SELECT' ;
-FROM   : 'from'   | 'FROM'   ;
-WHERE  : 'where'  | 'WHERE'  ;
 
-PARAM  :   '#{'ID'}'   ;
+//insert
+//    :
+//    ;
+
+
+/* Lexer */
+SELECT: [Ss][Ee][Ll][Ee][Cc][Tt]; // select
+FROM  : [Ff][Rr][Oo][Mm];         // from
+WHERE : [Ww][Hh][Ee][Rr][Ee];     // where
+
+AND : [Aa][Nn][Dd]; // and
+OR  : [Oo][Rr];     // or
+
+//PARAM  :   '#{'ID'}'   ;
 
 STRING : '\'' (ESC|.)*? '\'';     // 匹配字符常量，? 提供了对非贪婪匹配的支持
 
-ID     :   [a-zA-Z_]+  ;
+ID     :   [a-zA-Z][a-zA-Z_0-9]*;
 
 WS : [ \t\r\n]+ -> skip ;   // skip spaces, tabs, newlines
 //COMMENT : '#' .*? -> skip;
