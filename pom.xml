@@ -9,8 +9,10 @@
   <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <modules>
-    <module>core</module>
-    <module>example</module>
+    <module>sqlni-core</module>
+    <module>sqlni-starter</module>
+    <module>sqlni-example</module>
+    <module>sqlni-starter-example</module>
   </modules>
 
   <properties>
