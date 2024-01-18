@@ -1,6 +1,7 @@
 package com.kekwy.sqlni;
 
 import com.google.auto.service.AutoService;
+import com.kekwy.sqlni.util.XMLUtil;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XMLWriter;
 
@@ -15,12 +16,13 @@ import javax.tools.FileObject;
 import javax.tools.StandardLocation;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 /**
- * UseSqlni 注解对应的处理器，在项目编译时执行，
+ * UseSQLNI 注解对应的处理器，在项目编译时执行，
  * 为用户在编译输出目录下对应的软件包中生成可被 Mybatis 直接使用的 XML 文件
  *
  * @author Kekwy
@@ -37,43 +39,35 @@ public class UseSQLNIProcessor extends AbstractProcessor {
      */
     private final Map<String, MapperBuilder> builderMap = new HashMap<>();
 
-    private void createXMLFile(Mapper mapper) {
-        // TODO: 用 XML 工具类封装操作
-        // 设置生成 XML 的格式
-        OutputFormat format = OutputFormat.createPrettyPrint();
-        format.setNewlines(true);
-        format.setTrimText(false);
-        // 设置编码格式
-        format.setEncoding("UTF-8");
-        try {
-            Filer filer = processingEnv.getFiler();
-            FileObject fileObject = filer.createResource(
-                    StandardLocation.CLASS_OUTPUT,
-                    mapper.packageName(),
-                    mapper.mapperName() + ".xml");
-            Writer writer = fileObject.openWriter();
-            XMLWriter xmlWriter = new XMLWriter(writer, format);
-            xmlWriter.write(mapper.document());
-            // TODO: 记录关于 close() 的相关问题
-            xmlWriter.close();
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-            processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR,
-                    "Error generating MyBatis XML file: " + e.getMessage());
-        }
+    private void handleException(Exception e) {
+        processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR,
+                "Error generating MyBatis XML file: " + e.getMessage() + "\n" +
+                        "stackTrace: \n" +
+                        Arrays.toString(e.getStackTrace())
+        );
+    }
+
+    private String getFilePath(String packageName, String mapperName) throws IOException {
+        Filer filer = processingEnv.getFiler();
+        FileObject fileObject = filer.createResource(
+                StandardLocation.CLASS_OUTPUT, packageName, mapperName + ".xml"
+        );
+        return fileObject.getName();
     }
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-//      processing logic here
-
         // 注解处理结束
         if (roundEnv.processingOver()) {
-            Filer filer = processingEnv.getFiler();     // 获取项目的Resources目录路径
-            // 遍历上下文中所有的 mapperBuilder，生成用户定义的 mapper 所对应的 XML 文件
-            for (MapperBuilder builder : builderMap.values()) {
-                createXMLFile(builder.build());
+            try {
+                // 遍历上下文中所有的 mapperBuilder，生成用户定义的 mapper 所对应的 XML 文件
+                for (MapperBuilder builder : builderMap.values()) {
+                    Mapper mapper = builder.build();
+                    String filePath = getFilePath(mapper.packageName(), mapper.mapperName());
+                    XMLUtil.writeXMLFile(mapper.root(), filePath);
+                }
+            } catch (IOException e) {
+                handleException(e);
             }
             return false;
         }
@@ -99,6 +93,7 @@ public class UseSQLNIProcessor extends AbstractProcessor {
                 }
                 String resultType = methodElement.getReturnType().toString();
                 // 添加方法并设置 resultType 和 statement
+                // TODO: 处理 resultMap 的情况
                 builder.addMethod(methodName).resultType(resultType).statement(statement);
             }
         }

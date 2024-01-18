@@ -1,9 +1,5 @@
 package com.kekwy.sqlni;
 
-import org.dom4j.Document;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
-
 import java.util.LinkedList;
 import java.util.List;
 
@@ -12,42 +8,15 @@ import java.util.List;
  *
  * @author Kekwy
  * @version 1.0
+ * @see MethodBuilder
  * @since 2024/1/12 11:15
  */
 public class MapperBuilder {
 
     private final String className;
 
-    private final Document document;
-
-    private final Element root;
-
-    /* CONSTANT: element names
-     * --------------------------------------------------------------------------------------------------------- */
-    private static final String NAME_ROOT = "mapper";
-
-    /* CONSTANT: attribute names
-     * --------------------------------------------------------------------------------------------------------- */
-    private static final String NAME_NAMESPACE = "namespace";
-
-    /* CONSTANT: doctype
-     * --------------------------------------------------------------------------------------------------------- */
-    private static final String DOCTYPE_NAME = "mapper";
-    private static final String DOCTYPE_PUBLIC_ID = "-//mybatis.org//DTD Mapper 3.0//EN";
-    private static final String DOCTYPE_SYSTEM_ID = "http://mybatis.org/dtd/mybatis-3-mapper.dtd";
-
     public MapperBuilder(String className) {
-        document = DocumentHelper.createDocument();
-        document.addDocType(DOCTYPE_NAME, DOCTYPE_PUBLIC_ID, DOCTYPE_SYSTEM_ID);
-        root = document.addElement(NAME_ROOT);
-        root.addAttribute(NAME_NAMESPACE, className);
         this.className = className;
-    }
-
-    public Mapper build() {
-        int index = className.lastIndexOf('.');
-        return new Mapper(className.substring(0, index),
-                className.substring(index + 1), document);
     }
 
     private final List<MethodBuilder> methodBuilders = new LinkedList<>();
@@ -63,5 +32,26 @@ public class MapperBuilder {
         methodBuilders.add(methodBuilder);
         return methodBuilder;
     }
+
+    /**
+     * 根据输入进行语法分析，生成目标 Mapper XML 文件对应的数据结构
+     */
+    public Mapper build() {
+        XMLElement root = XMLElement.createNode(NAME_ROOT);
+        root.addAttribute(NAME_NAMESPACE, className);
+        // 遍历 methodBuilder，并调用 build() 方法
+        for (MethodBuilder methodBuilder : methodBuilders) {
+            root.addElement(methodBuilder.build());
+        }
+        // 解析 Mapper 的包名和类名，创建 Mapper 对象
+        int index = className.lastIndexOf('.');
+        return new Mapper(className.substring(0, index),
+                className.substring(index + 1), root);
+    }
+
+    /* CONSTANT: 关键字
+     * --------------------------------------------------------------------------------------------------------- */
+    private static final String NAME_ROOT = "mapper";
+    private static final String NAME_NAMESPACE = "namespace";
 
 }
