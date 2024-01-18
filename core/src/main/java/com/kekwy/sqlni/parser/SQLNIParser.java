@@ -1,4 +1,4 @@
-// Generated from E:/projects/sqlni/src/main/resources/SQLNI.g4 by ANTLR 4.13.1
+package com.kekwy.sqlni.parser;// Generated from E:/projects/sqlni/src/main/resources/SQLNI.g4 by ANTLR 4.13.1
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -110,7 +110,7 @@ public class SQLNIParser extends Parser {
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof SQLNIVisitor ) return ((SQLNIVisitor<? extends T>)visitor).visitRoot(this);
+			if ( visitor instanceof SQLNIVisitor) return ((SQLNIVisitor<? extends T>)visitor).visitRoot(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -160,7 +160,7 @@ public class SQLNIParser extends Parser {
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof SQLNIVisitor ) return ((SQLNIVisitor<? extends T>)visitor).visitSelect(this);
+			if ( visitor instanceof SQLNIVisitor) return ((SQLNIVisitor<? extends T>)visitor).visitSelect(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -225,7 +225,7 @@ public class SQLNIParser extends Parser {
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof SQLNIVisitor ) return ((SQLNIVisitor<? extends T>)visitor).visitColumns(this);
+			if ( visitor instanceof SQLNIVisitor) return ((SQLNIVisitor<? extends T>)visitor).visitColumns(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -306,7 +306,7 @@ public class SQLNIParser extends Parser {
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof SQLNIVisitor ) return ((SQLNIVisitor<? extends T>)visitor).visitColumn(this);
+			if ( visitor instanceof SQLNIVisitor) return ((SQLNIVisitor<? extends T>)visitor).visitColumn(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -364,7 +364,7 @@ public class SQLNIParser extends Parser {
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof SQLNIVisitor ) return ((SQLNIVisitor<? extends T>)visitor).visitParam(this);
+			if ( visitor instanceof SQLNIVisitor) return ((SQLNIVisitor<? extends T>)visitor).visitParam(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -414,7 +414,7 @@ public class SQLNIParser extends Parser {
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof SQLNIVisitor ) return ((SQLNIVisitor<? extends T>)visitor).visitTable(this);
+			if ( visitor instanceof SQLNIVisitor) return ((SQLNIVisitor<? extends T>)visitor).visitTable(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -475,7 +475,7 @@ public class SQLNIParser extends Parser {
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof SQLNIVisitor ) return ((SQLNIVisitor<? extends T>)visitor).visitCondition(this);
+			if ( visitor instanceof SQLNIVisitor) return ((SQLNIVisitor<? extends T>)visitor).visitCondition(this);
 			else return visitor.visitChildren(this);
 		}
 	}

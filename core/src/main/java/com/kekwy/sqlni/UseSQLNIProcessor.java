@@ -20,19 +20,21 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * description
+ * UseSqlni 注解对应的处理器，在项目编译时执行，
+ * 为用户在编译输出目录下对应的软件包中生成可被 Mybatis 直接使用的 XML 文件
  *
  * @author Kekwy
  * @version 1.0
  * @since 2024/1/11 17:03
  */
-
 @AutoService(Processor.class) // 自动注册自定义的注解处理器
 @SupportedAnnotationTypes({"com.kekwy.mybatis.sqlni.UseSqlni"})
 @SupportedSourceVersion(SourceVersion.RELEASE_17)
 public class UseSQLNIProcessor extends AbstractProcessor {
 
-
+    /**
+     * 建立每个 Mapper 到对应的 MapperBuilder 对象之间的映射
+     */
     private final Map<String, MapperBuilder> builderMap = new HashMap<>();
 
     private void createXMLFile(Mapper mapper) {
