@@ -14,6 +14,7 @@ public class XMLElement {
     private XMLElement() {
     }
 
+
     private enum Type {
         TEXT,
         NODE
@@ -67,6 +68,21 @@ public class XMLElement {
         else throw new RuntimeException("XMLElement 类型错误，不是 NODE");
     }
 
+    public void addElement(XMLElement element) {
+        List<XMLElement> elements = getElements();
+        elements.add(element);
+    }
+
+    public void addAttribute(String name, String value) {
+        getAttributes().put(name, value);
+    }
+
+    public void addAttributes(Map<String, String> attributes) {
+        getAttributes().putAll(attributes);
+    }
+
+    /* STATIC: methods
+     * --------------------------------------------------------------------------------------------------------- */
     public static XMLElement createText(String text) {
         XMLElement element = new XMLElement();
         element.type = Type.TEXT;
@@ -74,22 +90,24 @@ public class XMLElement {
         return element;
     }
 
-    public static XMLElement createNode(String name, Map<String, String> attributes) {
+    public static XMLElement createNode(String name) {
         Object[] value = new Object[3];
         value[0] = name;
-        value[1] = new HashMap<>(attributes);
+        value[1] = new HashMap<>();
         value[2] = new LinkedList<XMLElement>();
 
-        XMLElement element = new XMLElement();
-        element.type = Type.NODE;
-        element.value = value;
+        XMLElement node = new XMLElement();
+        node.type = Type.NODE;
+        node.value = value;
 
-        return element;
+        return node;
     }
 
-    public void addElement(XMLElement element) {
-        List<XMLElement> elements = getElements();
-        elements.add(element);
+    public static XMLElement createNode(String name, Map<String, String> attributes) {
+        XMLElement node = createNode(name);
+        node.addAttributes(attributes);
+        return node;
     }
+
 
 }

@@ -98,7 +98,8 @@ public class UseSQLNIProcessor extends AbstractProcessor {
                     builder = builderMap.get(className);
                 }
                 String resultType = methodElement.getReturnType().toString();
-                builder.addMethodWithType(methodName, resultType, statement);
+                // 添加方法并设置 resultType 和 statement
+                builder.addMethod(methodName).resultType(resultType).statement(statement);
             }
         }
         return true;
