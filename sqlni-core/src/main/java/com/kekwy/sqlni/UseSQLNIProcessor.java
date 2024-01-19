@@ -47,12 +47,12 @@ public class UseSQLNIProcessor extends AbstractProcessor {
         );
     }
 
-    private String getFilePath(String packageName, String mapperName) throws IOException {
+    private Writer getFilePath(String packageName, String mapperName) throws IOException {
         Filer filer = processingEnv.getFiler();
         FileObject fileObject = filer.createResource(
                 StandardLocation.CLASS_OUTPUT, packageName, mapperName + ".xml"
         );
-        return fileObject.getName();
+        return fileObject.openWriter();
     }
 
     @Override
@@ -64,8 +64,9 @@ public class UseSQLNIProcessor extends AbstractProcessor {
                 // 遍历上下文中所有的 mapperBuilder，生成用户定义的 mapper 所对应的 XML 文件
                 for (MapperBuilder builder : builderMap.values()) {
                     Mapper mapper = builder.build();
-                    String filePath = getFilePath(mapper.packageName(), mapper.mapperName());
-                    XMLUtil.writeXMLFile(mapper.root(), filePath);
+                    Writer writer = getFilePath(mapper.packageName(), mapper.mapperName());
+                    XMLUtil.writeXMLFile(mapper.root(), writer);
+                    writer.close();
                 }
             } catch (IOException e) {
                 handleException(e);

@@ -11,6 +11,7 @@ import org.dom4j.io.XMLWriter;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.Writer;
 import java.util.Map;
 
 /**
@@ -63,7 +64,7 @@ public class XMLUtil {
         return document;
     }
 
-    public static void writeXMLFile(ElementNode root, String filePath) throws IOException {
+    public static void writeXMLFile(ElementNode root, Writer writer) throws IOException {
         Document document = parseXMLElement(root);
 
         // TODO: 解决 text 内容换行问题
@@ -74,12 +75,10 @@ public class XMLUtil {
         // 设置编码格式
         format.setEncoding("UTF-8");
 
-        FileOutputStream fOS = new FileOutputStream(filePath);
-        XMLWriter xmlWriter = new XMLWriter(fOS, format);
+        XMLWriter xmlWriter = new XMLWriter(writer, format);
         xmlWriter.write(document);
         // TODO: 记录关于 close() 的相关问题
         xmlWriter.close();
-        fOS.close();
     }
 
 }

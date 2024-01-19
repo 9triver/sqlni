@@ -62,25 +62,26 @@ public class SQLNIVisitor extends SQLNIBaseVisitor<Void> {
         visit(ctx.columns());        // select columns
         selectNode.addText(from);    // select columns from
         visit(ctx.table());          // select columns from table
-        return null;    // bugfix:
+        return null;    // bugfix: 调用 visit 方法即可
     }
 
     @Override
     public Void visitAllColumns(SQLNIParser.AllColumnsContext ctx) {
-        return super.visitAllColumns(ctx);
+        nodeStack.peek().addText(ctx.getText());
+        return null;
     }
 
-//    @Override
-//    public Void visitS(SQLNIParser.ColumnsContext ctx) {
-//        ElementNode top = nodeStack.peek();
-//        List<SQLNIParser.ColumnContext> columnContexts = ctx.column();  // column1
-//        visitColumn(columnContexts.get(0));
-//        for (int i = 1; i < columnContexts.size(); i++) {
-//            top.addText(", ");                                          // column1,
-//            visit(columnContexts.get(i));                               // column1, column2
-//        }                                                               // column1, column2, ..., columnN
-//        return null;
-//    }
+    @Override
+    public Void visitCertainColumns(SQLNIParser.CertainColumnsContext ctx) {
+        ElementNode top = nodeStack.peek();
+        List<SQLNIParser.ColumnContext> columnContexts = ctx.column();  // column1
+        visit(columnContexts.get(0));
+        for (int i = 1; i < columnContexts.size(); i++) {
+            top.addText(", ");                                          // column1,
+            visit(columnContexts.get(i));                               // column1, column2
+        }                                                               // column1, column2, ..., columnN
+        return null;
+    }
 
     @Override
     public Void visitColumn(SQLNIParser.ColumnContext ctx) {
