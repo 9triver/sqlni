@@ -57,7 +57,6 @@ public class UseSQLNIProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "sdfsdf");
         // 注解处理结束
         if (roundEnv.processingOver()) {
             try {

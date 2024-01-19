@@ -58,22 +58,23 @@ public class SQLNIVisitor extends SQLNIBaseVisitor<Void> {
         nodeStack.push(selectNode);         // 将方法根节点入栈
         String select = templates.select();
         String from = templates.from();
-        selectNode.addText(select);  // select
-        visit(ctx.columns());        // select columns
-        selectNode.addText(from);    // select columns from
-        visit(ctx.table());          // select columns from table
+        selectNode.addText(select);     // select
+        visit(ctx.columns());           // select columns
+        selectNode.addText(" " + from); // select columns from
+        visit(ctx.table());             // select columns from table
         return null;    // bugfix: 调用 visit 方法即可
     }
 
     @Override
     public Void visitAllColumns(SQLNIParser.AllColumnsContext ctx) {
-        nodeStack.peek().addText(ctx.getText());
+        top().addText(" " + ctx.getText()); // *
         return null;
     }
 
     @Override
     public Void visitCertainColumns(SQLNIParser.CertainColumnsContext ctx) {
         ElementNode top = nodeStack.peek();
+        top.addText(" ");
         List<SQLNIParser.ColumnContext> columnContexts = ctx.column();  // column1
         visit(columnContexts.get(0));
         for (int i = 1; i < columnContexts.size(); i++) {
@@ -85,9 +86,19 @@ public class SQLNIVisitor extends SQLNIBaseVisitor<Void> {
 
     @Override
     public Void visitColumn(SQLNIParser.ColumnContext ctx) {
-        ElementNode top = nodeStack.peek();
-        top.addText(ctx.getText());
+        top().addText(ctx.getText());
         return null;
+    }
+
+    @Override
+    public Void visitTable(SQLNIParser.TableContext ctx) {
+        top().addText(" ");
+        top().addText(ctx.getText());
+        return null;
+    }
+
+    private ElementNode top() {
+        return nodeStack.peek();
     }
 
     /**

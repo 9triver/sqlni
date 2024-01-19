@@ -48,8 +48,8 @@ public class XMLUtil {
             Element subElement = element.addElement(elementNode.name());
 
             addAttributes(subElement, elementNode.attributes());
-            elementNode.subNodes().forEach(n -> parseHelper(n, element));
-
+//            elementNode.subNodes().forEach(n -> parseHelper(n, element));
+            elementNode.subNodes().forEach(n -> parseHelper(n, subElement)); // bugfix - 1.20
         }
     }
 
