@@ -20,7 +20,7 @@ public class TestPhase1 {
     public void test01() {
         SqlSession sqlSession = SqlSessionUtils.getSqlSession();
         EmployeeMapper mapper = sqlSession.getMapper(EmployeeMapper.class);
-        mapper.getEmployees();
+        System.out.println(mapper.getEmployees());
         sqlSession.close();
     }
 

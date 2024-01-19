@@ -65,6 +65,6 @@
       1. mapper 接口所在的包要和映射文件所在的包一致
       2. mapper 接口要和映射文件的名字一致。
     -->
-    <package name="com.kekwy.mybatis.sqlni.examples.mapper"/>
+    <package name="com.kekwy.sqlni.example.mapper"/>
   </mappers>
 </configuration>
