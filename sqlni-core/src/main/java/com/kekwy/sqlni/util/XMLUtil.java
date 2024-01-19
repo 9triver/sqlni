@@ -1,6 +1,8 @@
 package com.kekwy.sqlni.util;
 
-import com.kekwy.sqlni.XMLElement;
+import com.kekwy.sqlni.node.ElementNode;
+import com.kekwy.sqlni.node.Node;
+import com.kekwy.sqlni.node.TextNode;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
@@ -37,31 +39,31 @@ public class XMLUtil {
         }
     }
 
-    private static void parseHelper(XMLElement node, Element element) {
-        if (node.isText()) {
-            String text = node.getText();
+    private static void parseHelper(Node node, Element element) {
+        if (node instanceof TextNode textNode) {
+            String text = textNode.text();
             element.addText(text);
-        } else if (node.isNode()) {
-            Element subElement = element.addElement(node.getName());
+        } else if (node instanceof ElementNode elementNode) {
+            Element subElement = element.addElement(elementNode.name());
 
-            addAttributes(subElement, node.getAttributes());
-            node.getElements().forEach(n -> parseHelper(n, element));
+            addAttributes(subElement, elementNode.attributes());
+            elementNode.subNodes().forEach(n -> parseHelper(n, element));
 
         }
     }
 
-    private static Document parseXMLElement(XMLElement root) {
+    private static Document parseXMLElement(ElementNode root) {
         Document document = createDocument();
 
-        Element element = document.addElement(root.getName());
+        Element element = document.addElement(root.name());
 
-        addAttributes(element, root.getAttributes());
-        root.getElements().forEach(n -> parseHelper(n, element));
+        addAttributes(element, root.attributes());
+        root.subNodes().forEach(n -> parseHelper(n, element));
 
         return document;
     }
 
-    public static void writeXMLFile(XMLElement root, String filePath) throws IOException {
+    public static void writeXMLFile(ElementNode root, String filePath) throws IOException {
         Document document = parseXMLElement(root);
 
         // TODO: 解决 text 内容换行问题

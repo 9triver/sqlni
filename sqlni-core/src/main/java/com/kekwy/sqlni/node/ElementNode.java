@@ -67,6 +67,18 @@ public class ElementNode implements Node {
     }
 
     /**
+     * 添加新的标签节点
+     *
+     * @param node 标签节点对象
+     * @return 新创建的标签结点对象
+     */
+    public ElementNode addElement(ElementNode node) {
+        textNode = null;
+        subNodes.add(node);
+        return node;
+    }
+
+    /**
      * 添加文本内容
      *
      * @param text 文本内容

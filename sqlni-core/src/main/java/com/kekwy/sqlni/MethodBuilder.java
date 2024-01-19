@@ -1,5 +1,6 @@
 package com.kekwy.sqlni;
 
+import com.kekwy.sqlni.node.ElementNode;
 import com.kekwy.sqlni.util.ParserUtil;
 import org.antlr.v4.runtime.tree.ParseTree;
 
@@ -44,15 +45,12 @@ public class MethodBuilder {
         return this;
     }
 
-    public XMLElement build() {
+    public ElementNode build() {
         ParseTree root = ParserUtil.parseFromString(statement);
-        SQLNIVisitor visitor = new SQLNIVisitor();
-        XMLElement res = visitor.visit(root);
-        res.addAttributes(Map.of(
+        return new SQLNIVisitor().visit(root, Map.of(
                 NAME_ID, id,
                 NAME_RESULT_TYPE, resultType
         ));
-        return res;
     }
 
     /* CONSTANT: pattern

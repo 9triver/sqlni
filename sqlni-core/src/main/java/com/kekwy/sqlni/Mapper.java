@@ -1,4 +1,6 @@
 package com.kekwy.sqlni;
 
-public record Mapper(String packageName, String mapperName, XMLElement root) {
+import com.kekwy.sqlni.node.ElementNode;
+
+public record Mapper(String packageName, String mapperName, ElementNode root) {
 }

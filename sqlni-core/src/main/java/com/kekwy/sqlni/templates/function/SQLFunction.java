@@ -1,8 +1,11 @@
 package com.kekwy.sqlni.templates.function;
 
-import com.kekwy.sqlni.XMLElement;
+
+import com.kekwy.sqlni.node.Node;
+
+import java.util.List;
 
 @FunctionalInterface
 public interface SQLFunction {
-    XMLElement apply(XMLElement... args);
+    List<Node> apply(Node... args);
 }

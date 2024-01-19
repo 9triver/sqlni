@@ -1,9 +1,10 @@
 package com.kekwy.sqlni.templates;
 
-import com.kekwy.sqlni.XMLElement;
+import com.kekwy.sqlni.node.Node;
 import com.kekwy.sqlni.templates.function.SQLFunction;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -54,7 +55,7 @@ public abstract class SQLTemplates {
     }
 
 
-    public XMLElement concat(XMLElement... args) {
+    public List<Node> concat(Node... args) {
         return functionMap.get(FunctionName.CONCAT).apply(args);
     }
 }

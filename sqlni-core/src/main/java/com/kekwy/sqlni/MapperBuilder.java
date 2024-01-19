@@ -1,5 +1,7 @@
 package com.kekwy.sqlni;
 
+import com.kekwy.sqlni.node.ElementNode;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -37,7 +39,7 @@ public class MapperBuilder {
      * 根据输入进行语法分析，生成目标 Mapper XML 文件对应的数据结构
      */
     public Mapper build() {
-        XMLElement root = XMLElement.createNode(NAME_ROOT);
+        ElementNode root = new ElementNode(NAME_ROOT);
         root.addAttribute(NAME_NAMESPACE, className);
         // 遍历 methodBuilder，并调用 build() 方法
         for (MethodBuilder methodBuilder : methodBuilders) {

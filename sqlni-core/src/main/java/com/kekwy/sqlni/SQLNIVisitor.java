@@ -1,15 +1,17 @@
 package com.kekwy.sqlni;
 
+import com.kekwy.sqlni.node.ElementNode;
 import com.kekwy.sqlni.parser.SQLNIBaseVisitor;
 import com.kekwy.sqlni.parser.SQLNIParser;
 import com.kekwy.sqlni.templates.MySQLTemplates;
 import com.kekwy.sqlni.templates.SQLTemplates;
+import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
-import static com.kekwy.sqlni.XMLElement.*;
 
 /**
  * SQLNI 语法树的访问器。
@@ -19,7 +21,16 @@ import static com.kekwy.sqlni.XMLElement.*;
  * @version 1.0
  * @since 2024/1/17 21:31
  */
-public class SQLNIVisitor extends SQLNIBaseVisitor<XMLElement> {
+public class SQLNIVisitor extends SQLNIBaseVisitor<Void> {
+
+    private Stack<ElementNode> nodeStack = new Stack<>();
+
+    public ElementNode visit(ParseTree tree, Map<String, String> attributes) {
+        super.visit(tree);
+        ElementNode node = nodeStack.pop();
+        node.addAttributes(attributes);
+        return node;
+    }
 
     /**
      * 从配置文件中读取的全局 SQL 模板
@@ -45,26 +56,27 @@ public class SQLNIVisitor extends SQLNIBaseVisitor<XMLElement> {
     private static final String TAG_SELECT = "select";
 
     @Override
-    public XMLElement visitSelect(SQLNIParser.SelectContext ctx) {
-        XMLElement selectNode = XMLElement.createNode(TAG_SELECT);
-        String select = templates.select();
-        String from = templates.from();
-        selectNode.addElement(createText(select));              // select
-        selectNode.addElement(visitColumns(ctx.columns()));     // select columns
-        selectNode.addElement(createText(from));                // select columns from
-        selectNode.addElement(visitTable(ctx.table()));         // select columns from table
-        return XMLElement.createText("");
+    public Void visitSelect(SQLNIParser.SelectContext ctx) {
+//        XMLElement selectNode = XMLElement.createNode(TAG_SELECT);
+//        String select = templates.select();
+//        String from = templates.from();
+//        selectNode.addElement(createText(select));              // select
+//        selectNode.addElement(visitColumns(ctx.columns()));     // select columns
+//        selectNode.addElement(createText(from));                // select columns from
+//        selectNode.addElement(visitTable(ctx.table()));         // select columns from table
+//        return XMLElement.createText("");
+        return null;
     }
 
     @Override
-    public XMLElement visitColumns(SQLNIParser.ColumnsContext ctx) {
+    public Void visitColumns(SQLNIParser.ColumnsContext ctx) {
         StringBuilder strBuilder = new StringBuilder();
         for (SQLNIParser.ColumnContext columnCtx : ctx.column()) {
-            strBuilder.append(visitColumn(columnCtx).getText());
+//            strBuilder.append(visitColumn(columnCtx).getText());
             strBuilder.append(", ");
         }
         strBuilder.delete(strBuilder.lastIndexOf(", "), strBuilder.length());
-        return null ;
+        return null;
     }
 
     /**
