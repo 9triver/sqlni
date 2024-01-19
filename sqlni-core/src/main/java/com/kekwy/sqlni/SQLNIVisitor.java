@@ -7,10 +7,7 @@ import com.kekwy.sqlni.templates.MySQLTemplates;
 import com.kekwy.sqlni.templates.SQLTemplates;
 import org.antlr.v4.runtime.tree.ParseTree;
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.Stack;
+import java.util.*;
 
 
 /**
@@ -23,7 +20,7 @@ import java.util.Stack;
  */
 public class SQLNIVisitor extends SQLNIBaseVisitor<Void> {
 
-    private Stack<ElementNode> nodeStack = new Stack<>();
+    private final Stack<ElementNode> nodeStack = new Stack<>();
 
     public ElementNode visit(ParseTree tree, Map<String, String> attributes) {
         super.visit(tree);
@@ -57,25 +54,33 @@ public class SQLNIVisitor extends SQLNIBaseVisitor<Void> {
 
     @Override
     public Void visitSelect(SQLNIParser.SelectContext ctx) {
-//        XMLElement selectNode = XMLElement.createNode(TAG_SELECT);
-//        String select = templates.select();
-//        String from = templates.from();
-//        selectNode.addElement(createText(select));              // select
-//        selectNode.addElement(visitColumns(ctx.columns()));     // select columns
-//        selectNode.addElement(createText(from));                // select columns from
-//        selectNode.addElement(visitTable(ctx.table()));         // select columns from table
-//        return XMLElement.createText("");
+        ElementNode selectNode = new ElementNode(TAG_SELECT);
+        nodeStack.push(selectNode);         // 将方法根节点入栈
+        String select = templates.select();
+        String from = templates.from();
+        selectNode.addText(select);         // select
+        visitColumns(ctx.columns());        // select columns
+        selectNode.addText(from);           // select columns from
+        visitTable(ctx.table());            // select columns from table
         return null;
     }
 
     @Override
     public Void visitColumns(SQLNIParser.ColumnsContext ctx) {
-        StringBuilder strBuilder = new StringBuilder();
-        for (SQLNIParser.ColumnContext columnCtx : ctx.column()) {
-//            strBuilder.append(visitColumn(columnCtx).getText());
-            strBuilder.append(", ");
-        }
-        strBuilder.delete(strBuilder.lastIndexOf(", "), strBuilder.length());
+        ElementNode top = nodeStack.peek();
+        List<SQLNIParser.ColumnContext> columnContexts = ctx.column();  // column1
+        visitColumn(columnContexts.get(0));
+        for (int i = 1; i < columnContexts.size(); i++) {
+            top.addText(", ");                                          // column1,
+            visit(columnContexts.get(i));                               // column1, column2
+        }                                                               // column1, column2, ..., columnN
+        return null;
+    }
+
+    @Override
+    public Void visitColumn(SQLNIParser.ColumnContext ctx) {
+        ElementNode top = nodeStack.peek();
+        top.addText(ctx.getText());
         return null;
     }
 
