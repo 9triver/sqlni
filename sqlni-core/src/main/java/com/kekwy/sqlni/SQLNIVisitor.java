@@ -13,6 +13,7 @@ import com.kekwy.sqlni.parser.SQLNIParser;
  */
 public class SQLNIVisitor extends SQLNIBaseVisitor<XMLElement> {
 
+    // TODO: 完成语法树的遍历，构建 XML 数据结构
     @Override
     public XMLElement visitSelect(SQLNIParser.SelectContext ctx) {
         return XMLElement.createText("");

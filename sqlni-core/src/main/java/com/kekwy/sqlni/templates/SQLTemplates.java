@@ -9,6 +9,8 @@ package com.kekwy.sqlni.templates;
  */
 public class SQLTemplates {
 
-//    private;
+    private final String select = "select";
+
+
 
 }
