@@ -9,6 +9,7 @@ import java.util.*;
  * @version 1.0
  * @since 2024/1/17 21:45
  */
+@Deprecated
 public class XMLElement {
 
     private XMLElement() {
