@@ -1,4 +1,4 @@
-package com.kekwy.sqlni.parser;// Generated from E:/projects/sqlni/src/main/resources/SQLNI.g4 by ANTLR 4.13.1
+package com.kekwy.sqlni.parser;// Generated from E:/projects/sqlni/sqlni-core/src/main/resources/SQLNI.g4 by ANTLR 4.13.1
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;

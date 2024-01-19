@@ -1,4 +1,4 @@
-package com.kekwy.sqlni.parser;// Generated from E:/projects/sqlni/src/main/resources/SQLNI.g4 by ANTLR 4.13.1
+package com.kekwy.sqlni.parser;// Generated from E:/projects/sqlni/sqlni-core/src/main/resources/SQLNI.g4 by ANTLR 4.13.1
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
@@ -40,13 +40,25 @@ public class SQLNIBaseListener implements SQLNIListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterColumns(SQLNIParser.ColumnsContext ctx) { }
+	@Override public void enterAllColumns(SQLNIParser.AllColumnsContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitColumns(SQLNIParser.ColumnsContext ctx) { }
+	@Override public void exitAllColumns(SQLNIParser.AllColumnsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCertainColumns(SQLNIParser.CertainColumnsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCertainColumns(SQLNIParser.CertainColumnsContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

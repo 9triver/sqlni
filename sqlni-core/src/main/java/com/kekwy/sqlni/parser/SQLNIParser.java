@@ -1,4 +1,4 @@
-package com.kekwy.sqlni.parser;// Generated from E:/projects/sqlni/src/main/resources/SQLNI.g4 by ANTLR 4.13.1
+package com.kekwy.sqlni.parser;// Generated from E:/projects/sqlni/sqlni-core/src/main/resources/SQLNI.g4 by ANTLR 4.13.1
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -205,27 +205,53 @@ public class SQLNIParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class ColumnsContext extends ParserRuleContext {
+		public ColumnsContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_columns; }
+	 
+		public ColumnsContext() { }
+		public void copyFrom(ColumnsContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class CertainColumnsContext extends ColumnsContext {
 		public List<ColumnContext> column() {
 			return getRuleContexts(ColumnContext.class);
 		}
 		public ColumnContext column(int i) {
 			return getRuleContext(ColumnContext.class,i);
 		}
-		public ColumnsContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_columns; }
+		public CertainColumnsContext(ColumnsContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof SQLNIListener ) ((SQLNIListener)listener).enterColumns(this);
+			if ( listener instanceof SQLNIListener ) ((SQLNIListener)listener).enterCertainColumns(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof SQLNIListener ) ((SQLNIListener)listener).exitColumns(this);
+			if ( listener instanceof SQLNIListener ) ((SQLNIListener)listener).exitCertainColumns(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof SQLNIVisitor) return ((SQLNIVisitor<? extends T>)visitor).visitColumns(this);
+			if ( visitor instanceof SQLNIVisitor) return ((SQLNIVisitor<? extends T>)visitor).visitCertainColumns(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class AllColumnsContext extends ColumnsContext {
+		public AllColumnsContext(ColumnsContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof SQLNIListener ) ((SQLNIListener)listener).enterAllColumns(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof SQLNIListener ) ((SQLNIListener)listener).exitAllColumns(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SQLNIVisitor) return ((SQLNIVisitor<? extends T>)visitor).visitAllColumns(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -239,6 +265,7 @@ public class SQLNIParser extends Parser {
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case T__1:
+				_localctx = new AllColumnsContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(23);
@@ -247,6 +274,7 @@ public class SQLNIParser extends Parser {
 				break;
 			case T__3:
 			case ID:
+				_localctx = new CertainColumnsContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
 				{

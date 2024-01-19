@@ -1,4 +1,4 @@
-package com.kekwy.sqlni.parser;// Generated from E:/projects/sqlni/src/main/resources/SQLNI.g4 by ANTLR 4.13.1
+package com.kekwy.sqlni.parser;// Generated from E:/projects/sqlni/sqlni-core/src/main/resources/SQLNI.g4 by ANTLR 4.13.1
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
@@ -22,11 +22,19 @@ public interface SQLNIVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitSelect(SQLNIParser.SelectContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link SQLNIParser#columns}.
+	 * Visit a parse tree produced by the {@code allColumns}
+	 * labeled alternative in {@link SQLNIParser#columns}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitColumns(SQLNIParser.ColumnsContext ctx);
+	T visitAllColumns(SQLNIParser.AllColumnsContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code certainColumns}
+	 * labeled alternative in {@link SQLNIParser#columns}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCertainColumns(SQLNIParser.CertainColumnsContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link SQLNIParser#column}.
 	 * @param ctx the parse tree

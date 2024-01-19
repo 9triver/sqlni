@@ -13,8 +13,8 @@ select
     ;
 
 columns
-    : '*'
-    | (column) (',' column)*
+    : '*'                       # allColumns  // bugfix: 对于这条分支，columnsCtx 中 column() 的返回值为空 List
+    | (column) (',' column)*    # certainColumns
     ;
 
 column

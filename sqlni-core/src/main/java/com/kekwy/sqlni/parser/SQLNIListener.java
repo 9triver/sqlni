@@ -1,4 +1,4 @@
-package com.kekwy.sqlni.parser;// Generated from E:/projects/sqlni/src/main/resources/SQLNI.g4 by ANTLR 4.13.1
+package com.kekwy.sqlni.parser;// Generated from E:/projects/sqlni/sqlni-core/src/main/resources/SQLNI.g4 by ANTLR 4.13.1
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -27,15 +27,29 @@ public interface SQLNIListener extends ParseTreeListener {
 	 */
 	void exitSelect(SQLNIParser.SelectContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link SQLNIParser#columns}.
+	 * Enter a parse tree produced by the {@code allColumns}
+	 * labeled alternative in {@link SQLNIParser#columns}.
 	 * @param ctx the parse tree
 	 */
-	void enterColumns(SQLNIParser.ColumnsContext ctx);
+	void enterAllColumns(SQLNIParser.AllColumnsContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link SQLNIParser#columns}.
+	 * Exit a parse tree produced by the {@code allColumns}
+	 * labeled alternative in {@link SQLNIParser#columns}.
 	 * @param ctx the parse tree
 	 */
-	void exitColumns(SQLNIParser.ColumnsContext ctx);
+	void exitAllColumns(SQLNIParser.AllColumnsContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code certainColumns}
+	 * labeled alternative in {@link SQLNIParser#columns}.
+	 * @param ctx the parse tree
+	 */
+	void enterCertainColumns(SQLNIParser.CertainColumnsContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code certainColumns}
+	 * labeled alternative in {@link SQLNIParser#columns}.
+	 * @param ctx the parse tree
+	 */
+	void exitCertainColumns(SQLNIParser.CertainColumnsContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link SQLNIParser#column}.
 	 * @param ctx the parse tree
