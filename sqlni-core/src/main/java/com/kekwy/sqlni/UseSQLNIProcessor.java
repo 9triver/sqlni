@@ -30,7 +30,7 @@ import java.util.Set;
  * @since 2024/1/11 17:03
  */
 @AutoService(Processor.class) // 自动注册自定义的注解处理器
-@SupportedAnnotationTypes({"com.kekwy.mybatis.sqlni.UseSQLNI"}) // BUGFIX: 更改注解名未同步此处名称
+@SupportedAnnotationTypes({"com.kekwy.sqlni.UseSQLNI"}) // BUGFIX: 更改注解名未同步此处名称
 @SupportedSourceVersion(SourceVersion.RELEASE_17)
 public class UseSQLNIProcessor extends AbstractProcessor {
 
