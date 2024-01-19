@@ -9,7 +9,6 @@ import org.dom4j.Element;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XMLWriter;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Map;
