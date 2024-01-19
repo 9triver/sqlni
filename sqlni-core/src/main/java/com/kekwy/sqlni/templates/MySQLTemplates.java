@@ -1,7 +1,9 @@
 package com.kekwy.sqlni.templates;
 
+import com.kekwy.sqlni.templates.function.ConcatFunction1;
+
 /**
- * description
+ * 支持 MySQL 方言的 SQL 模板
  *
  * @author Kekwy
  * @version 1.0
@@ -9,4 +11,7 @@ package com.kekwy.sqlni.templates;
  */
 public class MySQLTemplates extends SQLTemplates {
 
+    public MySQLTemplates() {
+        addFunction(FunctionName.CONCAT, new ConcatFunction1());
+    }
 }
