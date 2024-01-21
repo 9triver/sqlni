@@ -20,13 +20,14 @@ import java.util.*;
  */
 public class SQLNIVisitor extends SQLNIBaseVisitor<Void> {
 
-    private final Stack<ElementNode> nodeStack = new Stack<>();
+//    private final Stack<ElementNode> nodeStack = new Stack<>();
+
+    private ElementNode topNode;
 
     public ElementNode visit(ParseTree tree, Map<String, String> attributes) {
         super.visit(tree);
-        ElementNode node = nodeStack.pop();
-        node.addAttributes(attributes);
-        return node;
+        topNode.addAttributes(attributes);
+        return topNode;
     }
 
     /**
@@ -55,7 +56,7 @@ public class SQLNIVisitor extends SQLNIBaseVisitor<Void> {
     @Override
     public Void visitSelect(SQLNIParser.SelectContext ctx) {
         ElementNode selectNode = new ElementNode(TAG_SELECT);
-        nodeStack.push(selectNode);         // 将方法根节点入栈
+        topNode = selectNode;
         String select = templates.select();
         String from = templates.from();
         selectNode.addText(select);     // select
@@ -67,18 +68,17 @@ public class SQLNIVisitor extends SQLNIBaseVisitor<Void> {
 
     @Override
     public Void visitAllColumns(SQLNIParser.AllColumnsContext ctx) {
-        top().addText(" " + ctx.getText()); // *
+        topNode.addText(" " + ctx.getText()); // *
         return null;
     }
 
     @Override
     public Void visitCertainColumns(SQLNIParser.CertainColumnsContext ctx) {
-        ElementNode top = nodeStack.peek();
-        top.addText(" ");
+        topNode.addText(" ");
         List<SQLNIParser.ColumnContext> columnContexts = ctx.column();  // column1
         visit(columnContexts.get(0));
         for (int i = 1; i < columnContexts.size(); i++) {
-            top.addText(", ");                                          // column1,
+            topNode.addText(", ");                                      // column1,
             visit(columnContexts.get(i));                               // column1, column2
         }                                                               // column1, column2, ..., columnN
         return null;
@@ -86,20 +86,17 @@ public class SQLNIVisitor extends SQLNIBaseVisitor<Void> {
 
     @Override
     public Void visitColumn(SQLNIParser.ColumnContext ctx) {
-        top().addText(ctx.getText());
+        topNode.addText(ctx.getText());
         return null;
     }
 
     @Override
     public Void visitTable(SQLNIParser.TableContext ctx) {
-        top().addText(" ");
-        top().addText(ctx.getText());
+        topNode.addText(" ");
+        topNode.addText(ctx.getText());
         return null;
     }
 
-    private ElementNode top() {
-        return nodeStack.peek();
-    }
 
     /**
      * 符号集合，用于在生成循环内部局部变量时避免重复
