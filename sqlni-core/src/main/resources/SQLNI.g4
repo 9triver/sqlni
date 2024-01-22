@@ -9,7 +9,7 @@ root
     ;
 
 select
-    : SELECT columns FROM table ';'?
+    : SELECT DISTANCE? ('*'|columns) FROM table (WHERE conditions)? ';'?
     ;
 
 columns
@@ -18,19 +18,26 @@ columns
     ;
 
 column
-    : ID
-    | param
+    : ID                                # constColumn
+    | param                             # paramColumn
+    | ID '(' column (',' column)* ')'   # funcColumn
     ;
 
 param: '#{' ID '}';
 
 table
-    : ID
-    | param
+    : ID        # constTable
+    | param     # paramTable
+    ;
+
+conditions
+    : condition ((AND|OR) condition)*
     ;
 
 condition
-    : AND condition
+    : column ('='|'<'|'>') column   # cmpCondition
+    | column IN param               # inParamCondition
+    | column IN SET                 # inSetCondition
     ;
 
 
@@ -47,6 +54,12 @@ WHERE : [Ww][Hh][Ee][Rr][Ee];     // where
 
 AND : [Aa][Nn][Dd]; // and
 OR  : [Oo][Rr];     // or
+
+IN: [Ii][Nn];
+
+SET: [Ss][Ee][Tt];
+
+DISTANCE: [Dd][Ii][Ss][Tt][Aa][Nn][Cc][Ee]; // distance
 
 //PARAM  :   '#{'ID'}'   ;
 
