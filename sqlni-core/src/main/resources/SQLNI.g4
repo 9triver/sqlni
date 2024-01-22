@@ -31,7 +31,9 @@ table
     ;
 
 conditions
-    : condition ((AND|OR) condition)*
+    : condition
+    | condition (AND|OR) conditions
+    | condition (AND|OR) '(' conditions ')'
     ;
 
 condition
