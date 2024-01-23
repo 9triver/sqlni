@@ -9,7 +9,11 @@ root
     ;
 
 select
-    : SELECT DISTANCE? ('*'|columns) FROM table (WHERE conditions)? ';'?
+    : SELECT DISTINCT? ('*'|columns) FROM table (WHERE conditions)? limit? ';'?
+    ;
+
+limit
+    : LIMIT INT (OFFSET INT)?
     ;
 
 columns
@@ -20,6 +24,8 @@ columns
 column
     : ID                                # constColumn
     | param                             # paramColumn
+    | STRING                            # stringConst
+    | NUMBER                            # numberConst
     | ID '(' column (',' column)* ')'   # funcColumn
     ;
 
@@ -31,9 +37,9 @@ table
     ;
 
 conditions
-    : condition
-    | condition (AND|OR) conditions
-    | condition (AND|OR) '(' conditions ')'
+    : condition                             # singleCondition
+    | condition (AND|OR) conditions         # multiCondtions
+    | condition (AND|OR) '(' conditions ')' # subConditions
     ;
 
 condition
@@ -54,6 +60,9 @@ SELECT: [Ss][Ee][Ll][Ee][Cc][Tt]; // select
 FROM  : [Ff][Rr][Oo][Mm];         // from
 WHERE : [Ww][Hh][Ee][Rr][Ee];     // where
 
+LIMIT: [Ll][Ii][Mm][Ii][Tt];        // limit
+OFFSET: [Oo][Ff][Ff][Ss][Ee][Tt];   // offset
+
 AND : [Aa][Nn][Dd]; // and
 OR  : [Oo][Rr];     // or
 
@@ -61,9 +70,19 @@ IN: [Ii][Nn];
 
 SET: [Ss][Ee][Tt];
 
-DISTANCE: [Dd][Ii][Ss][Tt][Aa][Nn][Cc][Ee]; // distance
+DISTINCT: [Dd][Ii][Ss][Tt][Ii][Nn][Cc][Tt]; // distinct
 
-//PARAM  :   '#{'ID'}'   ;
+
+NUMBER
+    : '-'? INT '.' INT EXP?         // 1.35, 1.35E-9, 0.3, -4.5
+    | '-'? INT  EXP                 // 1e10 -3e4
+    | '-'? INT                      // -3, 45
+    ;
+
+INT: '0' | [1-9] [0-9]*;   // 除 0 外的数字不允许以 0 开始
+
+fragment EXP: [Ee] [+\-]? INT;
+
 
 STRING : '\'' (ESC|.)*? '\'';     // 匹配字符常量，? 提供了对非贪婪匹配的支持
 

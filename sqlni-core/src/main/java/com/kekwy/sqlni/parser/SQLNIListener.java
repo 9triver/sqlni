@@ -27,6 +27,16 @@ public interface SQLNIListener extends ParseTreeListener {
 	 */
 	void exitSelect(SQLNIParser.SelectContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link SQLNIParser#limit}.
+	 * @param ctx the parse tree
+	 */
+	void enterLimit(SQLNIParser.LimitContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SQLNIParser#limit}.
+	 * @param ctx the parse tree
+	 */
+	void exitLimit(SQLNIParser.LimitContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code allColumns}
 	 * labeled alternative in {@link SQLNIParser#columns}.
 	 * @param ctx the parse tree
@@ -51,15 +61,65 @@ public interface SQLNIListener extends ParseTreeListener {
 	 */
 	void exitCertainColumns(SQLNIParser.CertainColumnsContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link SQLNIParser#column}.
+	 * Enter a parse tree produced by the {@code constColumn}
+	 * labeled alternative in {@link SQLNIParser#column}.
 	 * @param ctx the parse tree
 	 */
-	void enterColumn(SQLNIParser.ColumnContext ctx);
+	void enterConstColumn(SQLNIParser.ConstColumnContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link SQLNIParser#column}.
+	 * Exit a parse tree produced by the {@code constColumn}
+	 * labeled alternative in {@link SQLNIParser#column}.
 	 * @param ctx the parse tree
 	 */
-	void exitColumn(SQLNIParser.ColumnContext ctx);
+	void exitConstColumn(SQLNIParser.ConstColumnContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code paramColumn}
+	 * labeled alternative in {@link SQLNIParser#column}.
+	 * @param ctx the parse tree
+	 */
+	void enterParamColumn(SQLNIParser.ParamColumnContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code paramColumn}
+	 * labeled alternative in {@link SQLNIParser#column}.
+	 * @param ctx the parse tree
+	 */
+	void exitParamColumn(SQLNIParser.ParamColumnContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code stringConst}
+	 * labeled alternative in {@link SQLNIParser#column}.
+	 * @param ctx the parse tree
+	 */
+	void enterStringConst(SQLNIParser.StringConstContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code stringConst}
+	 * labeled alternative in {@link SQLNIParser#column}.
+	 * @param ctx the parse tree
+	 */
+	void exitStringConst(SQLNIParser.StringConstContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code numberConst}
+	 * labeled alternative in {@link SQLNIParser#column}.
+	 * @param ctx the parse tree
+	 */
+	void enterNumberConst(SQLNIParser.NumberConstContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code numberConst}
+	 * labeled alternative in {@link SQLNIParser#column}.
+	 * @param ctx the parse tree
+	 */
+	void exitNumberConst(SQLNIParser.NumberConstContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code funcColumn}
+	 * labeled alternative in {@link SQLNIParser#column}.
+	 * @param ctx the parse tree
+	 */
+	void enterFuncColumn(SQLNIParser.FuncColumnContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code funcColumn}
+	 * labeled alternative in {@link SQLNIParser#column}.
+	 * @param ctx the parse tree
+	 */
+	void exitFuncColumn(SQLNIParser.FuncColumnContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link SQLNIParser#param}.
 	 * @param ctx the parse tree
@@ -71,23 +131,99 @@ public interface SQLNIListener extends ParseTreeListener {
 	 */
 	void exitParam(SQLNIParser.ParamContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link SQLNIParser#table}.
+	 * Enter a parse tree produced by the {@code constTable}
+	 * labeled alternative in {@link SQLNIParser#table}.
 	 * @param ctx the parse tree
 	 */
-	void enterTable(SQLNIParser.TableContext ctx);
+	void enterConstTable(SQLNIParser.ConstTableContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link SQLNIParser#table}.
+	 * Exit a parse tree produced by the {@code constTable}
+	 * labeled alternative in {@link SQLNIParser#table}.
 	 * @param ctx the parse tree
 	 */
-	void exitTable(SQLNIParser.TableContext ctx);
+	void exitConstTable(SQLNIParser.ConstTableContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link SQLNIParser#condition}.
+	 * Enter a parse tree produced by the {@code paramTable}
+	 * labeled alternative in {@link SQLNIParser#table}.
 	 * @param ctx the parse tree
 	 */
-	void enterCondition(SQLNIParser.ConditionContext ctx);
+	void enterParamTable(SQLNIParser.ParamTableContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link SQLNIParser#condition}.
+	 * Exit a parse tree produced by the {@code paramTable}
+	 * labeled alternative in {@link SQLNIParser#table}.
 	 * @param ctx the parse tree
 	 */
-	void exitCondition(SQLNIParser.ConditionContext ctx);
+	void exitParamTable(SQLNIParser.ParamTableContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code singleCondition}
+	 * labeled alternative in {@link SQLNIParser#conditions}.
+	 * @param ctx the parse tree
+	 */
+	void enterSingleCondition(SQLNIParser.SingleConditionContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code singleCondition}
+	 * labeled alternative in {@link SQLNIParser#conditions}.
+	 * @param ctx the parse tree
+	 */
+	void exitSingleCondition(SQLNIParser.SingleConditionContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code multiCondtions}
+	 * labeled alternative in {@link SQLNIParser#conditions}.
+	 * @param ctx the parse tree
+	 */
+	void enterMultiCondtions(SQLNIParser.MultiCondtionsContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code multiCondtions}
+	 * labeled alternative in {@link SQLNIParser#conditions}.
+	 * @param ctx the parse tree
+	 */
+	void exitMultiCondtions(SQLNIParser.MultiCondtionsContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code subConditions}
+	 * labeled alternative in {@link SQLNIParser#conditions}.
+	 * @param ctx the parse tree
+	 */
+	void enterSubConditions(SQLNIParser.SubConditionsContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code subConditions}
+	 * labeled alternative in {@link SQLNIParser#conditions}.
+	 * @param ctx the parse tree
+	 */
+	void exitSubConditions(SQLNIParser.SubConditionsContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code cmpCondition}
+	 * labeled alternative in {@link SQLNIParser#condition}.
+	 * @param ctx the parse tree
+	 */
+	void enterCmpCondition(SQLNIParser.CmpConditionContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code cmpCondition}
+	 * labeled alternative in {@link SQLNIParser#condition}.
+	 * @param ctx the parse tree
+	 */
+	void exitCmpCondition(SQLNIParser.CmpConditionContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code inParamCondition}
+	 * labeled alternative in {@link SQLNIParser#condition}.
+	 * @param ctx the parse tree
+	 */
+	void enterInParamCondition(SQLNIParser.InParamConditionContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code inParamCondition}
+	 * labeled alternative in {@link SQLNIParser#condition}.
+	 * @param ctx the parse tree
+	 */
+	void exitInParamCondition(SQLNIParser.InParamConditionContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code inSetCondition}
+	 * labeled alternative in {@link SQLNIParser#condition}.
+	 * @param ctx the parse tree
+	 */
+	void enterInSetCondition(SQLNIParser.InSetConditionContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code inSetCondition}
+	 * labeled alternative in {@link SQLNIParser#condition}.
+	 * @param ctx the parse tree
+	 */
+	void exitInSetCondition(SQLNIParser.InSetConditionContext ctx);
 }

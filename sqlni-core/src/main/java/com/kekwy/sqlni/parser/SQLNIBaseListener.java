@@ -40,6 +40,18 @@ public class SQLNIBaseListener implements SQLNIListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterLimit(SQLNIParser.LimitContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitLimit(SQLNIParser.LimitContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterAllColumns(SQLNIParser.AllColumnsContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -64,13 +76,61 @@ public class SQLNIBaseListener implements SQLNIListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterColumn(SQLNIParser.ColumnContext ctx) { }
+	@Override public void enterConstColumn(SQLNIParser.ConstColumnContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitColumn(SQLNIParser.ColumnContext ctx) { }
+	@Override public void exitConstColumn(SQLNIParser.ConstColumnContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterParamColumn(SQLNIParser.ParamColumnContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitParamColumn(SQLNIParser.ParamColumnContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterStringConst(SQLNIParser.StringConstContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitStringConst(SQLNIParser.StringConstContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterNumberConst(SQLNIParser.NumberConstContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitNumberConst(SQLNIParser.NumberConstContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFuncColumn(SQLNIParser.FuncColumnContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFuncColumn(SQLNIParser.FuncColumnContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -88,25 +148,97 @@ public class SQLNIBaseListener implements SQLNIListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterTable(SQLNIParser.TableContext ctx) { }
+	@Override public void enterConstTable(SQLNIParser.ConstTableContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitTable(SQLNIParser.TableContext ctx) { }
+	@Override public void exitConstTable(SQLNIParser.ConstTableContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterCondition(SQLNIParser.ConditionContext ctx) { }
+	@Override public void enterParamTable(SQLNIParser.ParamTableContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitCondition(SQLNIParser.ConditionContext ctx) { }
+	@Override public void exitParamTable(SQLNIParser.ParamTableContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterSingleCondition(SQLNIParser.SingleConditionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSingleCondition(SQLNIParser.SingleConditionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterMultiCondtions(SQLNIParser.MultiCondtionsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMultiCondtions(SQLNIParser.MultiCondtionsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterSubConditions(SQLNIParser.SubConditionsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSubConditions(SQLNIParser.SubConditionsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCmpCondition(SQLNIParser.CmpConditionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCmpCondition(SQLNIParser.CmpConditionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterInParamCondition(SQLNIParser.InParamConditionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitInParamCondition(SQLNIParser.InParamConditionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterInSetCondition(SQLNIParser.InSetConditionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitInSetCondition(SQLNIParser.InSetConditionContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
