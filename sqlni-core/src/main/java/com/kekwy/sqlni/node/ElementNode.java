@@ -80,4 +80,13 @@ public class ElementNode implements Node {
         }
     }
 
+    public void addText(String text) {
+        TextNode textNode = new TextNode(" ");
+        textNode.append(text);
+        addTextNode(textNode);
+    }
+
+    public void addTextWithoutSpace(String text) {
+        addTextNode(new TextNode(text));
+    }
 }

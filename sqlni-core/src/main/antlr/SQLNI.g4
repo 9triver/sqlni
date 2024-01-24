@@ -13,20 +13,19 @@ select
     ;
 
 limit
-    : LIMIT INT (OFFSET INT)?
+    : LIMIT NUMBER (OFFSET NUMBER)?
     ;
 
 columns
-    : '*'                       # allColumns  // bugfix: 对于这条分支，columnsCtx 中 column() 的返回值为空 List
-    | (column) (',' column)*    # certainColumns
+    : (column) (',' column)*
     ;
 
 column
-    : ID                                # constColumn
-    | param                             # paramColumn
-    | STRING                            # stringConst
-    | NUMBER                            # numberConst
-    | ID '(' column (',' column)* ')'   # funcColumn
+    : ID                    # normalColumn
+    | param                 # paramColumn
+    | STRING                # stringConst
+    | NUMBER                # numberConst
+    | ID '(' columns ')'    # funcColumn
     ;
 
 param: '#{' ID '}';
@@ -43,9 +42,9 @@ conditions
     ;
 
 condition
-    : column ('='|'<'|'>') column   # cmpCondition
-    | column IN param               # inParamCondition
-    | column IN SET                 # inSetCondition
+    : column OP column  # cmpCondition
+    | column IN param   # inParamCondition
+    | column IN SET     # inSetCondition
     ;
 
 
@@ -68,6 +67,8 @@ OR  : [Oo][Rr];     // or
 
 IN: [Ii][Nn];
 
+OP: '='|'!='|'<'|'<='|'>'|'>=';
+
 SET: [Ss][Ee][Tt];
 
 DISTINCT: [Dd][Ii][Ss][Tt][Ii][Nn][Cc][Tt]; // distinct
@@ -79,8 +80,8 @@ NUMBER
     | '-'? INT                      // -3, 45
     ;
 
-INT: '0' | [1-9] [0-9]*;   // 除 0 外的数字不允许以 0 开始
 
+fragment INT: '0' | [1-9] [0-9]*;   // 除 0 外的数字不允许以 0 开始
 fragment EXP: [Ee] [+\-]? INT;
 
 

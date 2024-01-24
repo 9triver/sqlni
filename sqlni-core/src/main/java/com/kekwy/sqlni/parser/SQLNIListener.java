@@ -1,4 +1,4 @@
-package com.kekwy.sqlni.parser;// Generated from E:/projects/sqlni/sqlni-core/src/main/resources/SQLNI.g4 by ANTLR 4.13.1
+package com.kekwy.sqlni.parser;// Generated from E:/projects/sqlni/sqlni-core/src/main/antlr/SQLNI.g4 by ANTLR 4.13.1
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -37,41 +37,27 @@ public interface SQLNIListener extends ParseTreeListener {
 	 */
 	void exitLimit(SQLNIParser.LimitContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code allColumns}
-	 * labeled alternative in {@link SQLNIParser#columns}.
+	 * Enter a parse tree produced by {@link SQLNIParser#columns}.
 	 * @param ctx the parse tree
 	 */
-	void enterAllColumns(SQLNIParser.AllColumnsContext ctx);
+	void enterColumns(SQLNIParser.ColumnsContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code allColumns}
-	 * labeled alternative in {@link SQLNIParser#columns}.
+	 * Exit a parse tree produced by {@link SQLNIParser#columns}.
 	 * @param ctx the parse tree
 	 */
-	void exitAllColumns(SQLNIParser.AllColumnsContext ctx);
+	void exitColumns(SQLNIParser.ColumnsContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code certainColumns}
-	 * labeled alternative in {@link SQLNIParser#columns}.
-	 * @param ctx the parse tree
-	 */
-	void enterCertainColumns(SQLNIParser.CertainColumnsContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code certainColumns}
-	 * labeled alternative in {@link SQLNIParser#columns}.
-	 * @param ctx the parse tree
-	 */
-	void exitCertainColumns(SQLNIParser.CertainColumnsContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code constColumn}
+	 * Enter a parse tree produced by the {@code normalColumn}
 	 * labeled alternative in {@link SQLNIParser#column}.
 	 * @param ctx the parse tree
 	 */
-	void enterConstColumn(SQLNIParser.ConstColumnContext ctx);
+	void enterNormalColumn(SQLNIParser.NormalColumnContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code constColumn}
+	 * Exit a parse tree produced by the {@code normalColumn}
 	 * labeled alternative in {@link SQLNIParser#column}.
 	 * @param ctx the parse tree
 	 */
-	void exitConstColumn(SQLNIParser.ConstColumnContext ctx);
+	void exitNormalColumn(SQLNIParser.NormalColumnContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code paramColumn}
 	 * labeled alternative in {@link SQLNIParser#column}.

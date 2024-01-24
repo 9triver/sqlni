@@ -7,8 +7,11 @@ import com.kekwy.sqlni.parser.SQLNIBaseVisitor;
 import com.kekwy.sqlni.parser.SQLNIParser;
 import com.kekwy.sqlni.templates.MySQLTemplates;
 import com.kekwy.sqlni.templates.SQLTemplates;
+import com.kekwy.sqlni.util.SQLTemplatesUtil;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.mybatis.dynamic.sql.SqlBuilder;
 
+import java.io.IOException;
 import java.util.*;
 
 
@@ -33,7 +36,23 @@ public class SQLNIVisitor extends SQLNIBaseVisitor<List<Node>> {
     /**
      * 从配置文件中读取的全局 SQL 模板
      */
-    private static SQLTemplates defaultTemplates = new MySQLTemplates();
+    private static final SQLTemplates defaultTemplates;
+
+    static {
+        SQLTemplates tmp;
+        try {
+            Properties properties = new Properties();
+            properties.load(
+                    Objects.requireNonNull(
+                            SQLNIVisitor.class.getClassLoader().getResource("sqlni.properties")
+                    ).openStream()
+            );
+            tmp = SQLTemplatesUtil.getTemplates(properties.getProperty("sql-templates"));
+        } catch (IOException e) {
+            tmp = new MySQLTemplates();
+        }
+        defaultTemplates = tmp;
+    }
 
     private final SQLTemplates templates;
 
@@ -58,17 +77,21 @@ public class SQLNIVisitor extends SQLNIBaseVisitor<List<Node>> {
         ElementNode selectNode = new ElementNode(TAG_SELECT);
         String select = templates.select();
         String from = templates.from();
-        selectNode.addNode(new TextNode(select));     // select
+        selectNode.addTextWithoutSpace(select);     // select
         /* distinct */
         if (ctx.DISTINCT() != null) {
-            selectNode.addNode(new TextNode(" " + templates.distinct()));
+            selectNode.addText(templates.distinct());
         }
-        selectNode.addNodes(visit(ctx.columns()));    // select columns
-        selectNode.addNode(new TextNode(" " + from)); // select columns from
+        if (ctx.columns() != null) {
+            selectNode.addNodes(visit(ctx.columns()));    // select columns
+        } else {
+            selectNode.addText("*");
+        }
+        selectNode.addText(from); // select columns from
         selectNode.addNodes(visit(ctx.table()));      // select columns from table
         /*  where   */
         if (ctx.WHERE() != null) {
-            selectNode.addNode(new TextNode(" " + templates.where()));
+            selectNode.addText(templates.where());
             selectNode.addNodes(visit(ctx.conditions()));
         }
         /*  limit   */
@@ -89,9 +112,9 @@ public class SQLNIVisitor extends SQLNIBaseVisitor<List<Node>> {
     @Override
     public List<Node> visitLimit(SQLNIParser.LimitContext ctx) {
         if (ctx.OFFSET() != null) {
-            return templates.limit(ctx.INT(0).getText(), ctx.INT(1).getText());
+            return templates.limit(ctx.NUMBER(0).getText(), ctx.NUMBER(1).getText());
         } else {
-            return templates.limit(ctx.INT(0).getText());
+            return templates.limit(ctx.NUMBER(0).getText());
         }
     }
 
@@ -100,12 +123,7 @@ public class SQLNIVisitor extends SQLNIBaseVisitor<List<Node>> {
      * --------------------------------------------------------------------------------------------------------- */
 
     @Override
-    public List<Node> visitAllColumns(SQLNIParser.AllColumnsContext ctx) {
-        return textOf(" " + ctx.getText()); // *
-    }
-
-    @Override
-    public List<Node> visitCertainColumns(SQLNIParser.CertainColumnsContext ctx) {
+    public List<Node> visitColumns(SQLNIParser.ColumnsContext ctx) {
         List<Node> nodes = new ArrayList<>(textOf(" "));
         List<SQLNIParser.ColumnContext> columnContexts = ctx.column();  // column1
         nodes.addAll(visit(columnContexts.get(0)));
@@ -117,7 +135,7 @@ public class SQLNIVisitor extends SQLNIBaseVisitor<List<Node>> {
     }
 
     @Override
-    public List<Node> visitConstColumn(SQLNIParser.ConstColumnContext ctx) {
+    public List<Node> visitNormalColumn(SQLNIParser.NormalColumnContext ctx) {
         return textOf(ctx.getText());
     }
 
@@ -127,6 +145,12 @@ public class SQLNIVisitor extends SQLNIBaseVisitor<List<Node>> {
         return textOf(ctx.getText());
     }
 
+    @Override
+    public List<Node> visitFuncColumn(SQLNIParser.FuncColumnContext ctx) {
+        String func = ctx.ID().getText();
+        List<Node> columns = visit(ctx.columns());
+        return templates.func(func, columns);
+    }
 
     /* visit table
      * --------------------------------------------------------------------------------------------------------- */
@@ -149,9 +173,61 @@ public class SQLNIVisitor extends SQLNIBaseVisitor<List<Node>> {
         return null;
     }
 
+
+    /* visit conditions
+     * --------------------------------------------------------------------------------------------------------- */
+
+    @Override
+    public List<Node> visitSingleCondition(SQLNIParser.SingleConditionContext ctx) {
+        return visit(ctx.condition());
+    }
+
+    @Override
+    public List<Node> visitMultiCondtions(SQLNIParser.MultiCondtionsContext ctx) {
+        List<Node> res = new LinkedList<>(visit(ctx.condition()));
+        if (ctx.AND() != null) {
+            res.add(new TextNode(" " + templates.and()));
+        } else if (ctx.OR() != null) {
+            res.add(new TextNode(" " + templates.or()));
+        }
+        return res;
+    }
+
+    /* visit condition
+     * --------------------------------------------------------------------------------------------------------- */
+
+    @Override
+    public List<Node> visitCmpCondition(SQLNIParser.CmpConditionContext ctx) {
+        List<Node> res = null;
+        List<Node> left = visit(ctx.column(0));
+        List<Node> right = visit(ctx.column(1));
+//        '='|'!='|'<'|'<='|'>'|'>='
+        switch (ctx.OP().getText()) {
+            case "=" -> res = templates.isEqualTo(left, right);
+            case "!=" -> res = templates.isNotEqualTo(left, right);
+            case "<" -> res = templates.isLessThan(left, right);
+            case "<=" -> res = templates.isLessThanOrEqualTo(left, right);
+            case ">" -> res = templates.isGreaterThan(left, right);
+            case ">=" -> res = templates.isGreaterThanOrEqualTo(left, right);
+        }
+        return res;
+    }
+
+    @Override
+    public List<Node> visitInParamCondition(SQLNIParser.InParamConditionContext ctx) {
+        return super.visitInParamCondition(ctx);
+    }
+
+    @Override
+    public List<Node> visitInSetCondition(SQLNIParser.InSetConditionContext ctx) {
+        return super.visitInSetCondition(ctx);
+    }
+
+
     /**
      * 符号集合，用于在生成循环内部局部变量时避免重复
      */
     Set<String> symbolsSet = new HashSet<>(); // 暂未实现有关功能
+
 
 }

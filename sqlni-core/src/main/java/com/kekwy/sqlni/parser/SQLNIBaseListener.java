@@ -1,4 +1,4 @@
-package com.kekwy.sqlni.parser;// Generated from E:/projects/sqlni/sqlni-core/src/main/resources/SQLNI.g4 by ANTLR 4.13.1
+package com.kekwy.sqlni.parser;// Generated from E:/projects/sqlni/sqlni-core/src/main/antlr/SQLNI.g4 by ANTLR 4.13.1
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
@@ -52,37 +52,25 @@ public class SQLNIBaseListener implements SQLNIListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterAllColumns(SQLNIParser.AllColumnsContext ctx) { }
+	@Override public void enterColumns(SQLNIParser.ColumnsContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitAllColumns(SQLNIParser.AllColumnsContext ctx) { }
+	@Override public void exitColumns(SQLNIParser.ColumnsContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterCertainColumns(SQLNIParser.CertainColumnsContext ctx) { }
+	@Override public void enterNormalColumn(SQLNIParser.NormalColumnContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitCertainColumns(SQLNIParser.CertainColumnsContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterConstColumn(SQLNIParser.ConstColumnContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitConstColumn(SQLNIParser.ConstColumnContext ctx) { }
+	@Override public void exitNormalColumn(SQLNIParser.NormalColumnContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

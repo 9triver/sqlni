@@ -22,4 +22,15 @@ public interface EmployeeMapper {
             """)
     List<Employee> getEmployees();
 
+
+    @UseSQLNI("""
+            SELECT type
+            FROM t_employee
+            WHERE concat(department, '_', name) = '测试部_张三';
+            """)
+    String getTypeByNameAndDepartment();
+
+    @UseSQLNI("SELECT * FROM t_employee LIMIT 2 OFFSET 4;")
+    List<Employee> getEmployeesWithLimit();
+
 }

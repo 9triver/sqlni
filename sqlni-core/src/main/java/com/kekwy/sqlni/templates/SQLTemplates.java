@@ -4,9 +4,9 @@ import com.kekwy.sqlni.node.Node;
 import com.kekwy.sqlni.node.TextNode;
 import com.kekwy.sqlni.templates.function.SQLFunction;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+import static com.kekwy.sqlni.templates.SQLTemplates.KeyWord.*;
 
 /**
  * 通用 SQL 语句的模板
@@ -16,6 +16,7 @@ import java.util.Map;
  * @since 2024/1/12 14:28
  */
 public abstract class SQLTemplates {
+
 
     public String distinct() {
         return keyWordMap.get(KeyWord.DISTINCT);
@@ -33,10 +34,69 @@ public abstract class SQLTemplates {
         return List.of(new TextNode("limit " + limitN));
     }
 
+    public List<Node> func(String func, List<Node> columns) {
+        if (Objects.equals(func, "concat")) return concat(columns);
+        return null;
+    }
+
+    abstract public List<Node> concat(List<Node> columns);
+
+    public String and() {
+        return keyWordMap.get(AND);
+    }
+
+    public String or() {
+        return keyWordMap.get(OR);
+    }
+
+    public List<Node> isEqualTo(List<Node> left, List<Node> right) {
+        List<Node> nodes = new LinkedList<>(left);
+        nodes.add(new TextNode("="));
+        nodes.addAll(right);
+        return nodes;
+    }
+
+    public List<Node> isNotEqualTo(List<Node> left, List<Node> right) {
+        List<Node> nodes = new LinkedList<>(left);
+        nodes.add(new TextNode("!="));
+        nodes.addAll(right);
+        return nodes;
+    }
+
+    public List<Node> isLessThan(List<Node> left, List<Node> right) {
+        List<Node> nodes = new LinkedList<>(left);
+        nodes.add(new TextNode("<"));
+        nodes.addAll(right);
+        return nodes;
+    }
+
+    public List<Node> isLessThanOrEqualTo(List<Node> left, List<Node> right) {
+        List<Node> nodes = new LinkedList<>(left);
+        nodes.add(new TextNode("<="));
+        nodes.addAll(right);
+        return nodes;
+    }
+
+    public List<Node> isGreaterThan(List<Node> left, List<Node> right) {
+        List<Node> nodes = new LinkedList<>(left);
+        nodes.add(new TextNode(">"));
+        nodes.addAll(right);
+        return nodes;
+    }
+
+    public List<Node> isGreaterThanOrEqualTo(List<Node> left, List<Node> right) {
+        List<Node> nodes = new LinkedList<>(left);
+        nodes.add(new TextNode(">="));
+        nodes.addAll(right);
+        return nodes;
+    }
+
     protected enum KeyWord {
         SELECT,
         FROM,
         WHERE,
+        AND,
+        OR,
         DISTINCT
     }
 
@@ -57,15 +117,18 @@ public abstract class SQLTemplates {
     }
 
     protected SQLTemplates() {
-        addKeyWord(KeyWord.SELECT, "select");
-        addKeyWord(KeyWord.FROM, "from");
-        addKeyWord(KeyWord.DISTINCT, "distinct");
+        addKeyWord(SELECT, "SELECT");
+        addKeyWord(FROM, "FROM");
+        addKeyWord(WHERE, "WHERE");
+        addKeyWord(AND, "AND");
+        addKeyWord(OR, "OR");
+        addKeyWord(DISTINCT, "DISTINCT");
 //
 //        addFunction(FunctionName.CONCAT, new ConcatFunction1());
     }
 
     public String select() {
-        return keyWordMap.get(KeyWord.SELECT);
+        return keyWordMap.get(SELECT);
     }
 
 
@@ -73,8 +136,4 @@ public abstract class SQLTemplates {
         return keyWordMap.get(KeyWord.FROM);
     }
 
-
-    public List<Node> concat(Node... args) {
-        return functionMap.get(FunctionName.CONCAT).apply(args);
-    }
 }
