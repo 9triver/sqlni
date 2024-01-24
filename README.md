@@ -3,33 +3,59 @@
 <p>
     <a href="https://github.com/Kekwy"><img src="https://img.shields.io/badge/Kekwy-gray?logo=github" alt="Kekwy"></a>
     <a><img src="https://img.shields.io/badge/Java-17+-orange?logo=java" alt="JDK"></a>
-    <a href="https://github.com/mybatis/mybatis-3"><img src="https://img.shields.io/badge/mybatis-3.5-green" alt="mybatis"></a>
+    <a href="https://github.com/mybatis/mybatis-3"><img src="https://img.shields.io/badge/Mybatis-3.5-green" alt="Mybatis"></a>
     <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a>
-    <a><img src="https://img.shields.io/github/commit-activity/w/9triver/sqlni?color=brightgreen" alt="commits"></a>
+    <a><img src="https://img.shields.io/github/commit-activity/w/9triver/sqlni?color=yellow" alt="commits"></a>
+</p>
 
 > 基于 Mybatis 实现对不同方言数据库编写统一查询的 DSL 语言工具。
 >
 > 示例仓库：[Kekwy/sqlni-examples](https://github.com/Kekwy/sqlni-examples)
 >
-> 进度报告：
->
-> 第 3 周（2024.1.15 - 2024.1.21）：[定义 SQLNI 语法](reports/w3.md)
 
 ## 1 项目简介
 
+
+
 ## 2 快速开始
 
+### 2.1 
+
+### 2.2 通过 Spring Boot 集成
 
 
-## 3 语法分析
 
-```sql
-select id, type from t_employee where conact(department, '_', name) = '测试部_张三' limit 2 offset 3 ;
-```
+## 3 自定义拓展
 
-![image-20240124103602077](README.assets/image-20240124103602077.png)
+## 4 更新记录
 
-### 4 更新
+**2024-1-25 更新说明**：
+
+1. 待续
+
+**2024-1-24 更新说明**：
+
+1. 将 SQLNI 语法访问器的返回值改为 `List<Node>` 类型，调整访问器部分实现方式；
+
+2. 在 SQLNI 语法中添加对 WHERE 与 LIMIT 语句的定义；
+
+   ```sql
+   select id, type from t_employee where conact(department, '_', name) = '测试部_张三' limit 2 offset 3 ;
+   ```
+
+   ![image-20240124103602077](README.assets/image-20240124103602077.png)
+
+3. 实现从配置文件中读取用户指定的数据库，并据此使用对应的 SQL 模板；
+
+4. 在 SQLNI 语法中添加对函数的调用，并定义 MySQL 和 Oracle 模板中的字符拼接操作。
+
+5. 定义函数模板语法，便于拓展
+
+6. 解耦合；
+
+7. 内部类
+
+8. 实现 sqlni-starter 模块，支持集成 spring-boot 框架，可以从 application.yml 中读取配置。
 
 ## 参考资料
 
