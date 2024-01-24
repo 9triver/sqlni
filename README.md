@@ -1,5 +1,12 @@
 # SQLNI
 
+<p>
+    <a href="https://github.com/Kekwy"><img src="https://img.shields.io/badge/Kekwy-gray?logo=github" alt="Kekwy"></a>
+    <a><img src="https://img.shields.io/badge/Java-17+-orange?logo=java" alt="JDK"></a>
+    <a href="https://github.com/mybatis/mybatis-3"><img src="https://img.shields.io/badge/mybatis-3.5-green" alt="mybatis"></a>
+    <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a>
+    <a><img src="https://img.shields.io/github/commit-activity/w/9triver/sqlni?color=brightgreen" alt="commits"></a>
+
 > 基于 Mybatis 实现对不同方言数据库编写统一查询的 DSL 语言工具。
 >
 > 示例仓库：[Kekwy/sqlni-examples](https://github.com/Kekwy/sqlni-examples)
@@ -13,6 +20,16 @@
 ## 2 快速开始
 
 
+
+## 3 语法分析
+
+```sql
+select id, type from t_employee where conact(department, '_', name) = '测试部_张三' limit 2 offset 3 ;
+```
+
+![image-20240124103602077](README.assets/image-20240124103602077.png)
+
+### 4 更新
 
 ## 参考资料
 
