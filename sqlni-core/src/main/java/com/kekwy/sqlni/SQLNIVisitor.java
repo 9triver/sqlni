@@ -96,6 +96,7 @@ public class SQLNIVisitor extends SQLNIBaseVisitor<List<Node>> {
         }
         /*  limit   */
         if (ctx.limit() != null) {
+            selectNode.addNode(new TextNode(" "));
             selectNode.addNodes(visit(ctx.limit()));
         }
         return List.of(selectNode);
@@ -148,8 +149,28 @@ public class SQLNIVisitor extends SQLNIBaseVisitor<List<Node>> {
     @Override
     public List<Node> visitFuncColumn(SQLNIParser.FuncColumnContext ctx) {
         String func = ctx.ID().getText();
-        List<Node> columns = visit(ctx.columns());
-        return templates.func(func, columns);
+        List<Node> columns = new LinkedList<>();
+        List<SQLNIParser.ColumnContext> columnCtxList = ctx.column();
+        for (SQLNIParser.ColumnContext columnCtx : columnCtxList) {
+            columns.addAll(visit(columnCtx));
+        }
+        List<Node> res = new LinkedList<>();
+        res.add(new TextNode(" "));
+        res.addAll(templates.func(func, columns));
+        return res;
+    }
+
+    /* visit const
+     * --------------------------------------------------------------------------------------------------------- */
+
+    @Override
+    public List<Node> visitStringConst(SQLNIParser.StringConstContext ctx) {
+        return textOf(ctx.getText());
+    }
+
+    @Override
+    public List<Node> visitNumberConst(SQLNIParser.NumberConstContext ctx) {
+        return textOf(ctx.getText());
     }
 
     /* visit table

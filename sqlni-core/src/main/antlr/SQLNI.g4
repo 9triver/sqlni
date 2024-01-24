@@ -17,15 +17,15 @@ limit
     ;
 
 columns
-    : (column) (',' column)*
+    : column (',' column)*
     ;
 
 column
-    : ID                    # normalColumn
-    | param                 # paramColumn
-    | STRING                # stringConst
-    | NUMBER                # numberConst
-    | ID '(' columns ')'    # funcColumn
+    : ID                                # normalColumn
+    | param                             # paramColumn
+    | STRING                            # stringConst
+    | NUMBER                            # numberConst
+    | ID '(' column (',' column)* ')'   # funcColumn
     ;
 
 param: '#{' ID '}';

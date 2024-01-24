@@ -23,7 +23,7 @@ public abstract class SQLTemplates {
     }
 
     public String where() {
-        return null;
+        return keyWordMap.get(WHERE);
     }
 
     public List<Node> limit(String limitN, String offsetN) {
