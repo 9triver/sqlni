@@ -16,8 +16,8 @@ public class ElementNode implements Node {
 
     private final String name;
     private final Map<String, String> attributes;
-    private final List<Node> subNodes;
-    private TextNode textNode = null; // 若当前子节点中最后一个加入的节点为 TextNode 则保存对其的引用，否则为空。
+    private final List<Node> nodes;
+    private TextNode lastTextNode = null; // 若当前子节点中最后一个加入的节点为 TextNode 则保存对其的引用，否则为空。
 
     public ElementNode(String name) {
         this(name, new HashMap<>(), new LinkedList<>());
@@ -27,10 +27,10 @@ public class ElementNode implements Node {
         this(name, attributes, new LinkedList<>());
     }
 
-    public ElementNode(String name, Map<String, String> attributes, List<Node> subNodes) {
+    public ElementNode(String name, Map<String, String> attributes, List<Node> nodes) {
         this.name = name;
         this.attributes = attributes;
-        this.subNodes = subNodes;
+        this.nodes = nodes;
     }
 
     public String name() {
@@ -42,7 +42,7 @@ public class ElementNode implements Node {
     }
 
     public List<Node> subNodes() {
-        return this.subNodes;
+        return this.nodes;
     }
 
     public void addAttribute(String key, String value) {
@@ -53,41 +53,30 @@ public class ElementNode implements Node {
         this.attributes.putAll(attributes);
     }
 
-    /**
-     * 添加新的标签节点
-     *
-     * @param name 标签节点的标签名
-     * @return 新创建的标签结点对象
-     */
-    public ElementNode addElement(String name) {
-        textNode = null;
-        ElementNode node = new ElementNode(name);
-        subNodes.add(node);
-        return node;
+    public void addNode(Node node) {
+        if (node instanceof TextNode textNode) {
+            addTextNode(textNode);
+        } else if (node instanceof ElementNode elementNode) {
+            addElementNode(elementNode);
+        }
     }
 
-    /**
-     * 添加新的标签节点
-     *
-     * @param node 标签节点对象
-     */
-    public void addElement(ElementNode node) {
-        textNode = null;
-        subNodes.add(node);
+    public void addNodes(List<Node> nodes) {
+        nodes.forEach(this::addNode);
     }
 
-    /**
-     * 添加文本内容
-     *
-     * @param text 文本内容
-     */
-    public void addText(String text) {
-        if (textNode == null) {
-            textNode = new TextNode(text);
-            subNodes.add(textNode);
+    private void addElementNode(ElementNode node) {
+        lastTextNode = null;
+        nodes.add(node);
+    }
+
+    private void addTextNode(TextNode textNode) {
+        if (lastTextNode == null) {
+            lastTextNode = textNode;
+            nodes.add(lastTextNode);
         } else {
             // 若当前子节点最后一个加入的子节点为 TextNode，则将 text 与其内容合并
-            textNode.append(text);
+            lastTextNode.append(textNode.text());
         }
     }
 

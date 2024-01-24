@@ -1,6 +1,8 @@
 package com.kekwy.sqlni;
 
 import com.kekwy.sqlni.node.ElementNode;
+import com.kekwy.sqlni.node.Node;
+import com.kekwy.sqlni.node.TextNode;
 import com.kekwy.sqlni.parser.SQLNIBaseVisitor;
 import com.kekwy.sqlni.parser.SQLNIParser;
 import com.kekwy.sqlni.templates.MySQLTemplates;
@@ -18,16 +20,14 @@ import java.util.*;
  * @version 1.0
  * @since 2024/1/17 21:31
  */
-public class SQLNIVisitor extends SQLNIBaseVisitor<Void> {
+public class SQLNIVisitor extends SQLNIBaseVisitor<List<Node>> {
 
 //    private final Stack<ElementNode> nodeStack = new Stack<>();
 
-    private ElementNode topNode;
-
     public ElementNode visit(ParseTree tree, Map<String, String> attributes) {
-        super.visit(tree);
-        topNode.addAttributes(attributes);
-        return topNode;
+        ElementNode node = (ElementNode) super.visit(tree).get(0);
+        node.addAttributes(attributes);
+        return node;
     }
 
     /**
@@ -54,49 +54,100 @@ public class SQLNIVisitor extends SQLNIBaseVisitor<Void> {
     private static final String TAG_SELECT = "select";
 
     @Override
-    public Void visitSelect(SQLNIParser.SelectContext ctx) {
+    public List<Node> visitSelect(SQLNIParser.SelectContext ctx) {
         ElementNode selectNode = new ElementNode(TAG_SELECT);
-        topNode = selectNode;
         String select = templates.select();
         String from = templates.from();
-        selectNode.addText(select);     // select
-        visit(ctx.columns());           // select columns
-        selectNode.addText(" " + from); // select columns from
-        visit(ctx.table());             // select columns from table
-        return null;    // bugfix: 调用 visit 方法即可
+        selectNode.addNode(new TextNode(select));     // select
+        /* distinct */
+        if (ctx.DISTINCT() != null) {
+            selectNode.addNode(new TextNode(" " + templates.distinct()));
+        }
+        selectNode.addNodes(visit(ctx.columns()));    // select columns
+        selectNode.addNode(new TextNode(" " + from)); // select columns from
+        selectNode.addNodes(visit(ctx.table()));      // select columns from table
+        /*  where   */
+        if (ctx.WHERE() != null) {
+            selectNode.addNode(new TextNode(" " + templates.where()));
+            selectNode.addNodes(visit(ctx.conditions()));
+        }
+        /*  limit   */
+        if (ctx.limit() != null) {
+            selectNode.addNodes(visit(ctx.limit()));
+        }
+        return List.of(selectNode);
+    }
+
+    private List<Node> textOf(String text) {
+        return List.of(new TextNode(text));
+    }
+
+
+    /* visit limit
+     * --------------------------------------------------------------------------------------------------------- */
+
+    @Override
+    public List<Node> visitLimit(SQLNIParser.LimitContext ctx) {
+        if (ctx.OFFSET() != null) {
+            return templates.limit(ctx.INT(0).getText(), ctx.INT(1).getText());
+        } else {
+            return templates.limit(ctx.INT(0).getText());
+        }
+    }
+
+
+    /* visit column
+     * --------------------------------------------------------------------------------------------------------- */
+
+    @Override
+    public List<Node> visitAllColumns(SQLNIParser.AllColumnsContext ctx) {
+        return textOf(" " + ctx.getText()); // *
     }
 
     @Override
-    public Void visitAllColumns(SQLNIParser.AllColumnsContext ctx) {
-        topNode.addText(" " + ctx.getText()); // *
-        return null;
-    }
-
-    @Override
-    public Void visitCertainColumns(SQLNIParser.CertainColumnsContext ctx) {
-        topNode.addText(" ");
+    public List<Node> visitCertainColumns(SQLNIParser.CertainColumnsContext ctx) {
+        List<Node> nodes = new ArrayList<>(textOf(" "));
         List<SQLNIParser.ColumnContext> columnContexts = ctx.column();  // column1
-        visit(columnContexts.get(0));
+        nodes.addAll(visit(columnContexts.get(0)));
         for (int i = 1; i < columnContexts.size(); i++) {
-            topNode.addText(", ");                                      // column1,
-            visit(columnContexts.get(i));                               // column1, column2
+            nodes.addAll(textOf(", "));                                 // column1,
+            nodes.addAll(visit(columnContexts.get(i)));                 // column1, column2
         }                                                               // column1, column2, ..., columnN
-        return null;
+        return nodes;
     }
 
     @Override
-    public Void visitColumn(SQLNIParser.ColumnContext ctx) {
-        topNode.addText(ctx.getText());
-        return null;
+    public List<Node> visitConstColumn(SQLNIParser.ConstColumnContext ctx) {
+        return textOf(ctx.getText());
     }
 
     @Override
-    public Void visitTable(SQLNIParser.TableContext ctx) {
-        topNode.addText(" ");
-        topNode.addText(ctx.getText());
-        return null;
+    public List<Node> visitParamColumn(SQLNIParser.ParamColumnContext ctx) {
+        visit(ctx.param());
+        return textOf(ctx.getText());
     }
 
+
+    /* visit table
+     * --------------------------------------------------------------------------------------------------------- */
+
+    @Override
+    public List<Node> visitConstTable(SQLNIParser.ConstTableContext ctx) {
+        List<Node> nodes = new ArrayList<>(textOf(" "));
+        nodes.addAll(textOf(ctx.getText()));
+        return nodes;
+    }
+
+
+    /* visit param
+     * --------------------------------------------------------------------------------------------------------- */
+
+    @Override
+    public List<Node> visitParam(SQLNIParser.ParamContext ctx) {
+        // TODO: 若为集合需要展开，若不在参数表里需要报错
+        symbolsSet.add(ctx.ID().getText());
+        return null;
+    }
 
     /**
      * 符号集合，用于在生成循环内部局部变量时避免重复

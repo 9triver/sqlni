@@ -43,7 +43,7 @@ public class MapperBuilder {
         root.addAttribute(NAME_NAMESPACE, className);
         // 遍历 methodBuilder，并调用 build() 方法
         for (MethodBuilder methodBuilder : methodBuilders) {
-            root.addElement(methodBuilder.build());
+            root.addNode(methodBuilder.build());
         }
         // 解析 Mapper 的包名和类名，创建 Mapper 对象
         int index = className.lastIndexOf('.');

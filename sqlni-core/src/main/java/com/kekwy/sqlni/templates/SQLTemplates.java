@@ -1,6 +1,7 @@
 package com.kekwy.sqlni.templates;
 
 import com.kekwy.sqlni.node.Node;
+import com.kekwy.sqlni.node.TextNode;
 import com.kekwy.sqlni.templates.function.SQLFunction;
 
 import java.util.HashMap;
@@ -16,10 +17,27 @@ import java.util.Map;
  */
 public abstract class SQLTemplates {
 
+    public String distinct() {
+        return keyWordMap.get(KeyWord.DISTINCT);
+    }
+
+    public String where() {
+        return null;
+    }
+
+    public List<Node> limit(String limitN, String offsetN) {
+        return List.of(new TextNode("limit " + limitN + " offset " + offsetN));
+    }
+
+    public List<Node> limit(String limitN) {
+        return List.of(new TextNode("limit " + limitN));
+    }
+
     protected enum KeyWord {
         SELECT,
         FROM,
-        WHERE
+        WHERE,
+        DISTINCT
     }
 
     protected enum FunctionName {
@@ -41,6 +59,7 @@ public abstract class SQLTemplates {
     protected SQLTemplates() {
         addKeyWord(KeyWord.SELECT, "select");
         addKeyWord(KeyWord.FROM, "from");
+        addKeyWord(KeyWord.DISTINCT, "distinct");
 //
 //        addFunction(FunctionName.CONCAT, new ConcatFunction1());
     }
