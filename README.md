@@ -5,7 +5,7 @@
     <a><img src="https://img.shields.io/badge/Java-17+-orange?logo=java" alt="JDK"></a>
     <a href="https://github.com/mybatis/mybatis-3"><img src="https://img.shields.io/badge/Mybatis-3.5-green" alt="Mybatis"></a>
     <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a>
-    <a><img src="https://img.shields.io/github/commit-activity/w/9triver/sqlni?color=yellow" alt="commits"></a>
+    <a href=""><img src="https://img.shields.io/github/commit-activity/w/9triver/sqlni?color=yellow" alt="commits"></a>
 </p>
 
 > 基于 Mybatis 实现对不同方言数据库编写统一查询的 DSL 语言工具。
@@ -15,26 +15,31 @@
 
 ## 1 项目简介
 
-
-
 ## 2 快速开始
 
 ### 2.1 
 
 ### 2.2 通过 Spring Boot 集成
 
-
-
 ## 3 自定义拓展
 
-## 4 更新记录
+## 4 开发者
+
+### 4.1 调试
+
+```shell
+mvnDebug clean install
+```
+
+## 5 更新记录
 
 **2024-1-25 更新说明**：
 
-1. 定义函数模板语法，便于拓展
-2. 解耦合；
-3. 内部类
-4. 实现 sqlni-starter 模块，支持集成 spring-boot 框架，可以从 application.yml 中读取配置。
+1. 将 SQLNIVisitor 类重构为 MethodBuilder 类的内部类，并将原 SQLNIVisitor 类中的静态常量，移动至 MethodBuilder 类中。
+2. 定义函数模板语法，便于拓展
+3. 解耦合；
+4. 内部类
+5. 实现 sqlni-starter 模块，支持集成 spring-boot 框架，可以从 application.yml 中读取配置。
 
 **2024-1-24 更新说明**：
 
@@ -54,13 +59,7 @@
 
 5. 修复生成 XML 文件中 SQL 语句部分关键字之间未空格的问题。
 
-## 5 调试
-
-```shell
-mvnDebug clean install
-```
-
-## 参考资料
+## 6 参考资料
 
 [1] MyBatis Dynamic SQL[EB/OL]. https://mybatis.org/mybatis-dynamic-sql/docs/introduction.html
 
