@@ -13,7 +13,19 @@
 > 示例仓库：[Kekwy/sqlni-examples](https://github.com/Kekwy/sqlni-examples)
 >
 
+## 目录
+
+**[1 项目简介](#1-项目简介)**
+
+**[2 快速开始](#2-快速开始)**
+
 ## 1 项目简介
+
+
+
+
+
+
 
 ## 2 快速开始
 
@@ -21,9 +33,11 @@
 
 ### 2.2 通过 Spring Boot 集成
 
-## 3 自定义拓展
+## 3 扩展 SQLNI
 
 ## 4 开发者
+
+仓库结构
 
 ### 4.1 调试
 
@@ -33,13 +47,17 @@ mvnDebug clean install
 
 ## 5 更新记录
 
+**2024-1-26 更新说明**：
+
+1. 待续
+
 **2024-1-25 更新说明**：
 
 1. 将 SQLNIVisitor 类重构为 MethodBuilder 类的内部类，并将原 SQLNIVisitor 类中的静态常量，移动至 MethodBuilder 类中。
-2. 定义函数模板语法，便于拓展
-3. 解耦合；
-4. 内部类
-5. 实现 sqlni-starter 模块，支持集成 spring-boot 框架，可以从 application.yml 中读取配置。
+2. 将与 SQL 模板类的直接交互移动到 TemplatesUtil 中，实现单一职责。
+3. 定义函数模板语法，将生成函数对应的 XML 文件的过程与 SQL 模板类解耦合，转而由 TemplatesUtil 类实现。前者只需向后者提供函数模板字符串，后者再根据相关语法进行解析。便于对函数模板进行拓展。
+4. 实现 sqlni-starter 模块，支持集成 spring-boot 框架，可以从 application.yml 中读取配置。
+5. 完善 README 中的部分内容。
 
 **2024-1-24 更新说明**：
 
@@ -268,3 +286,7 @@ select * from t_employee where type = #{employeeType} and #|#&{"name":"foreach",
 **2024年1月16日**
 
 dot 语言的使用，以及示意图的绘制。
+
+
+
+alt + v

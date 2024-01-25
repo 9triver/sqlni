@@ -6,7 +6,7 @@ import com.kekwy.sqlni.templates.function.SQLFunction;
 
 import java.util.*;
 
-import static com.kekwy.sqlni.templates.SQLTemplates.KeyWord.*;
+import static com.kekwy.sqlni.templates.Keyword.*;
 
 /**
  * 通用 SQL 语句的模板
@@ -19,20 +19,14 @@ public abstract class SQLTemplates {
 
 
     public String distinct() {
-        return keyWordMap.get(KeyWord.DISTINCT);
+        return keywordMap.get(Keyword.DISTINCT);
     }
 
     public String where() {
-        return keyWordMap.get(WHERE);
+        return keywordMap.get(WHERE);
     }
 
-    public List<Node> limit(String limitN, String offsetN) {
-        return List.of(new TextNode("limit " + limitN + " offset " + offsetN));
-    }
 
-    public List<Node> limit(String limitN) {
-        return List.of(new TextNode("limit " + limitN));
-    }
 
     public List<Node> func(String func, List<Node> columns) {
         if (Objects.equals(func, "concat")) return concat(columns);
@@ -41,79 +35,36 @@ public abstract class SQLTemplates {
 
     abstract public List<Node> concat(List<Node> columns);
 
-    public String and() {
-        return keyWordMap.get(AND);
+
+
+
+    public String getKeyword(Keyword keyword) {
+        return keywordMap.get(keyword);
     }
 
-    public String or() {
-        return keyWordMap.get(OR);
+    public String getOpt(Operator equal) {
+        return null;
     }
 
-    public List<Node> isEqualTo(List<Node> left, List<Node> right) {
-        List<Node> nodes = new LinkedList<>(left);
-        nodes.add(new TextNode("="));
-        nodes.addAll(right);
-        return nodes;
-    }
-
-    public List<Node> isNotEqualTo(List<Node> left, List<Node> right) {
-        List<Node> nodes = new LinkedList<>(left);
-        nodes.add(new TextNode("!="));
-        nodes.addAll(right);
-        return nodes;
-    }
-
-    public List<Node> isLessThan(List<Node> left, List<Node> right) {
-        List<Node> nodes = new LinkedList<>(left);
-        nodes.add(new TextNode("<"));
-        nodes.addAll(right);
-        return nodes;
-    }
-
-    public List<Node> isLessThanOrEqualTo(List<Node> left, List<Node> right) {
-        List<Node> nodes = new LinkedList<>(left);
-        nodes.add(new TextNode("<="));
-        nodes.addAll(right);
-        return nodes;
-    }
-
-    public List<Node> isGreaterThan(List<Node> left, List<Node> right) {
-        List<Node> nodes = new LinkedList<>(left);
-        nodes.add(new TextNode(">"));
-        nodes.addAll(right);
-        return nodes;
-    }
-
-    public List<Node> isGreaterThanOrEqualTo(List<Node> left, List<Node> right) {
-        List<Node> nodes = new LinkedList<>(left);
-        nodes.add(new TextNode(">="));
-        nodes.addAll(right);
-        return nodes;
-    }
-
-    protected enum KeyWord {
-        SELECT,
-        FROM,
-        WHERE,
-        AND,
-        OR,
-        DISTINCT
-    }
 
     protected enum FunctionName {
         CONCAT
     }
 
-    private final Map<KeyWord, String> keyWordMap = new HashMap<>();
-
+    private final Map<Keyword, String> keywordMap = new HashMap<>();
+    private final Map<Operator, String> operatorMap = new HashMap<>();
     private final Map<FunctionName, SQLFunction> functionMap = new HashMap<>();
 
     protected void addFunction(FunctionName functionName, SQLFunction function) {
         functionMap.put(functionName, function);
     }
 
-    protected void addKeyWord(KeyWord keyWord, String s) {
-        keyWordMap.put(keyWord, s);
+    protected void addKeyWord(Keyword Keyword, String s) {
+        keywordMap.put(Keyword, s);
+    }
+
+    protected void addOperator(Operator opt, String s) {
+        operatorMap.put(opt, s);
     }
 
     protected SQLTemplates() {
@@ -125,15 +76,16 @@ public abstract class SQLTemplates {
         addKeyWord(DISTINCT, "DISTINCT");
 //
 //        addFunction(FunctionName.CONCAT, new ConcatFunction1());
+        addOperator(Operator.EQUAL, "=");
     }
 
     public String select() {
-        return keyWordMap.get(SELECT);
+        return keywordMap.get(SELECT);
     }
 
 
     public String from() {
-        return keyWordMap.get(KeyWord.FROM);
+        return keywordMap.get(Keyword.FROM);
     }
 
 }

@@ -8,13 +8,15 @@ import com.kekwy.sqlni.parser.SQLNIParser;
 import com.kekwy.sqlni.templates.MySQLTemplates;
 import com.kekwy.sqlni.templates.SQLTemplates;
 import com.kekwy.sqlni.util.ParserUtil;
-import com.kekwy.sqlni.util.SQLTemplatesUtil;
+import com.kekwy.sqlni.util.TemplatesUtil;
 import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.io.IOException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.kekwy.sqlni.util.TemplatesUtil.*;
 
 /**
  * MethodBuilder
@@ -88,6 +90,7 @@ public class MethodBuilder {
 
     private static final String TAG_SELECT = "select";
 
+
     private class SQLNIVisitor extends SQLNIBaseVisitor<List<Node>> {
 
 //    private final Stack<ElementNode> nodeStack = new Stack<>();
@@ -98,65 +101,25 @@ public class MethodBuilder {
             return node;
         }
 
-        /**
-         * 从配置文件中读取的全局 SQL 模板
-         */
-        private static final SQLTemplates defaultTemplates;
-
-        static {
-            SQLTemplates tmp;
-            try {
-                Properties properties = new Properties();
-                properties.load(
-                        Objects.requireNonNull(
-                                SQLNIVisitor.class.getClassLoader().getResource("sqlni.properties")
-                        ).openStream()
-                );
-                tmp = SQLTemplatesUtil.getTemplates(properties.getProperty("sql-templates"));
-            } catch (IOException e) {
-                tmp = new MySQLTemplates();
-            }
-            defaultTemplates = tmp;
-        }
-
-        private final SQLTemplates templates;
-
-        /**
-         * 使用配置文件中指定的全局 SQL 模板
-         */
-        public SQLNIVisitor() {
-            this.templates = defaultTemplates;
-        }
-
-        /**
-         * 用户可以为单独的方法指定 SQL 模板（不建议使用）
-         */
-        public SQLNIVisitor(SQLTemplates templates) {
-            this.templates = templates;
-        }
-
-
 
         @Override
         public List<Node> visitSelect(SQLNIParser.SelectContext ctx) {
             ElementNode selectNode = new ElementNode(TAG_SELECT);
-            String select = templates.select();
-            String from = templates.from();
-            selectNode.addTextWithoutSpace(select);     // select
+            selectNode.addTextWithoutSpace(select());     // select
             /* distinct */
             if (ctx.DISTINCT() != null) {
-                selectNode.addText(templates.distinct());
+                selectNode.addText(distinct());
             }
             if (ctx.columns() != null) {
                 selectNode.addNodes(visit(ctx.columns()));    // select columns
             } else {
                 selectNode.addText("*");
             }
-            selectNode.addText(from); // select columns from
+            selectNode.addText(from()); // select columns from
             selectNode.addNodes(visit(ctx.table()));      // select columns from table
             /*  where   */
             if (ctx.WHERE() != null) {
-                selectNode.addText(templates.where());
+                selectNode.addText(where());
                 selectNode.addNodes(visit(ctx.conditions()));
             }
             /*  limit   */
@@ -178,9 +141,9 @@ public class MethodBuilder {
         @Override
         public List<Node> visitLimit(SQLNIParser.LimitContext ctx) {
             if (ctx.OFFSET() != null) {
-                return templates.limit(ctx.NUMBER(0).getText(), ctx.NUMBER(1).getText());
+                return limit(ctx.NUMBER(0).getText(), ctx.NUMBER(1).getText());
             } else {
-                return templates.limit(ctx.NUMBER(0).getText());
+                return limit(ctx.NUMBER(0).getText());
             }
         }
 
@@ -221,7 +184,7 @@ public class MethodBuilder {
             }
             List<Node> res = new LinkedList<>();
             res.add(new TextNode(" "));
-            res.addAll(templates.func(func, columns));
+            res.addAll(func(func, columns));
             return res;
         }
 
@@ -272,9 +235,9 @@ public class MethodBuilder {
         public List<Node> visitMultiCondtions(SQLNIParser.MultiCondtionsContext ctx) {
             List<Node> res = new LinkedList<>(visit(ctx.condition()));
             if (ctx.AND() != null) {
-                res.add(new TextNode(" " + templates.and()));
+                res.add(new TextNode(" " + and()));
             } else if (ctx.OR() != null) {
-                res.add(new TextNode(" " + templates.or()));
+                res.add(new TextNode(" " + or()));
             }
             return res;
         }
@@ -289,12 +252,12 @@ public class MethodBuilder {
             List<Node> right = visit(ctx.column(1));
 //        '='|'!='|'<'|'<='|'>'|'>='
             switch (ctx.OP().getText()) {
-                case "=" -> res = templates.isEqualTo(left, right);
-                case "!=" -> res = templates.isNotEqualTo(left, right);
-                case "<" -> res = templates.isLessThan(left, right);
-                case "<=" -> res = templates.isLessThanOrEqualTo(left, right);
-                case ">" -> res = templates.isGreaterThan(left, right);
-                case ">=" -> res = templates.isGreaterThanOrEqualTo(left, right);
+                case "=" -> res = isEqualTo(left, right);
+                case "!=" -> res = isNotEqualTo(left, right);
+                case "<" -> res = isLessThan(left, right);
+                case "<=" -> res = isLessThanOrEqualTo(left, right);
+                case ">" -> res = isGreaterThan(left, right);
+                case ">=" -> res = isGreaterThanOrEqualTo(left, right);
             }
             return res;
         }
