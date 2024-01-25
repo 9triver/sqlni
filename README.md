@@ -13,7 +13,7 @@
 >
 > 示例仓库：[Kekwy/sqlni-examples](https://github.com/Kekwy/sqlni-examples)
 
-## 目录
+## <img src="https://img.shields.io/badge/TOC-8A2BE2"/>目录
 
 **[1 项目简介](#1-项目简介)**
 
@@ -77,7 +77,6 @@ mvnDebug clean install
 1. 将 SQLNIVisitor 类重构为 MethodBuilder 类的内部类，并将原 SQLNIVisitor 类中的静态常量，移动至 MethodBuilder 类中。
 2. 将与 SQL 模板类的直接交互移动到 TemplatesUtil 中，实现单一职责。
 3. 定义函数模板语法，将生成函数对应的 XML 文件的过程与 SQL 模板类解耦合，转而由 TemplatesUtil 类实现。前者只需向后者提供函数模板字符串，后者再根据相关语法进行解析。便于对函数模板进行拓展。
-4. 实现 sqlni-starter 模块，支持集成 spring-boot 框架，可以从 application.yml 中读取配置。
 5. 完善 README 中的部分内容。
 6. **问题记录（重要）**：当前实现思路较难满足实现 Oracle 方言下的 limit offset 功能时需要自动转化为子查询的需求。
 7. **问题记录**：注解处理器通过 Spring Boot 的 @value 注解从 application.yml 中获取配置信息，因为编译器期 Spring Boot 项目并没有启动。
