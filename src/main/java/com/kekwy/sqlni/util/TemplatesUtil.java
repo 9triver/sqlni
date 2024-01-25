@@ -44,9 +44,8 @@ public class TemplatesUtil {
     /* 成员变量
      * --------------------------------------------------------------------------------------------------------- */
 
-    private static final SQLTemplates defaultSQLTemplates; // 从配置文件中读取的全局 SQL 模板
+    private static SQLTemplates defaultSQLTemplates; // 从配置文件中读取的全局 SQL 模板
     private static SQLTemplates sqlTemplates;
-
     private static final Map<String, ParseTree> parseTreeCache = new HashMap<>();
 
     // 初始化 SQL 模板
@@ -67,8 +66,13 @@ public class TemplatesUtil {
         sqlTemplates = defaultSQLTemplates;
     }
 
-    public static void setSQLTemplates(SQLTemplates sqlTemplates) {
-        TemplatesUtil.sqlTemplates = sqlTemplates;
+    public static void setDefaultSQLTemplates(String name) {
+        defaultSQLTemplates = getTemplates(name);
+        sqlTemplates = defaultSQLTemplates;
+    }
+
+    public static void setSQLTemplates(String name) {
+        sqlTemplates = getTemplates(name);
     }
 
     public static void resetSQLTemplates() {

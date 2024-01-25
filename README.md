@@ -8,8 +8,6 @@
     <img src="https://img.shields.io/badge/README-draft-red" alt="README status">
     <img src="https://img.shields.io/github/commit-activity/w/9triver/sqlni?color=yellow" alt="commits">
 </p>
-
-
 > 基于 Mybatis 实现对不同方言数据库编写统一查询的 DSL 语言工具。
 >
 > 示例仓库：[Kekwy/sqlni-examples](https://github.com/Kekwy/sqlni-examples)
@@ -82,6 +80,7 @@ mvnDebug clean install
 4. 实现 sqlni-starter 模块，支持集成 spring-boot 框架，可以从 application.yml 中读取配置。
 5. 完善 README 中的部分内容。
 6. **问题记录（重要）**：当前实现思路较难满足实现 Oracle 方言下的 limit offset 功能时需要自动转化为子查询的需求。
+7. **问题记录**：注解处理器通过 Spring Boot 的 @value 注解从 application.yml 中获取配置信息，因为编译器期 Spring Boot 项目并没有启动。
 
 **2024-1-24 更新说明**：
 
