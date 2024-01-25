@@ -2,11 +2,13 @@
 
 <p>
     <a href="https://github.com/Kekwy"><img src="https://img.shields.io/badge/Kekwy-gray?logo=github" alt="Kekwy"></a>
-    <a><img src="https://img.shields.io/badge/Java-17+-orange?logo=java" alt="JDK"></a>
+    <img src="https://img.shields.io/badge/Java-17+-orange?logo=java" alt="JDK">
     <a href="https://github.com/mybatis/mybatis-3"><img src="https://img.shields.io/badge/Mybatis-3.5-green" alt="Mybatis"></a>
     <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a>
-    <a href=""><img src="https://img.shields.io/github/commit-activity/w/9triver/sqlni?color=yellow" alt="commits"></a>
+    <img src="https://img.shields.io/badge/README-draft-red" alt="README status">
+    <img src="https://img.shields.io/github/commit-activity/w/9triver/sqlni?color=yellow" alt="commits">
 </p>
+
 
 > 基于 Mybatis 实现对不同方言数据库编写统一查询的 DSL 语言工具。
 >
@@ -33,19 +35,40 @@
 
 ### 2.2 通过 Spring Boot 集成
 
-## 3 扩展 SQLNI
 
-## 4 开发者
+
+## 3 开发者
+
+### 3.1 扩展 SQLNI
+
+自定义函数模板
+
+自定义关键字
+
+自定义函数
+
+自定义运算符（仅支持双目运算符）
+
+```java
+public class MySQLTemplates extends SQLTemplates { // 自定义 SQL 模板并继承 SQLTemplates 类
+    public MySQLTemplates() {
+        super("MySQL"); // 设置模板对应的数据名称，不可重复（作为语法分析树 cache 中的键）
+        addFuncTemplate("concat", "concat({0}, ...)"); // 编写自定义的函数模板
+    }
+}
+```
+
+
 
 仓库结构
 
-### 4.1 调试
+### 3.2 调试
 
 ```shell
 mvnDebug clean install
 ```
 
-## 5 更新记录
+## 4 更新记录
 
 **2024-1-26 更新说明**：
 
@@ -58,6 +81,7 @@ mvnDebug clean install
 3. 定义函数模板语法，将生成函数对应的 XML 文件的过程与 SQL 模板类解耦合，转而由 TemplatesUtil 类实现。前者只需向后者提供函数模板字符串，后者再根据相关语法进行解析。便于对函数模板进行拓展。
 4. 实现 sqlni-starter 模块，支持集成 spring-boot 框架，可以从 application.yml 中读取配置。
 5. 完善 README 中的部分内容。
+6. **问题记录（重要）**：当前实现思路较难满足实现 Oracle 方言下的 limit offset 功能时需要自动转化为子查询的需求。
 
 **2024-1-24 更新说明**：
 
@@ -77,7 +101,7 @@ mvnDebug clean install
 
 5. 修复生成 XML 文件中 SQL 语句部分关键字之间未空格的问题。
 
-## 6 参考资料
+## 5 参考资料
 
 [1] MyBatis Dynamic SQL[EB/OL]. https://mybatis.org/mybatis-dynamic-sql/docs/introduction.html
 

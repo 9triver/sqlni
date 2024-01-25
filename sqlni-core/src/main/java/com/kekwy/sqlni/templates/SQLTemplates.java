@@ -1,10 +1,7 @@
 package com.kekwy.sqlni.templates;
 
-import com.kekwy.sqlni.node.Node;
-import com.kekwy.sqlni.node.TextNode;
-import com.kekwy.sqlni.templates.function.SQLFunction;
-
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.kekwy.sqlni.templates.Keyword.*;
 
@@ -17,75 +14,48 @@ import static com.kekwy.sqlni.templates.Keyword.*;
  */
 public abstract class SQLTemplates {
 
-
-    public String distinct() {
-        return keywordMap.get(Keyword.DISTINCT);
-    }
-
-    public String where() {
-        return keywordMap.get(WHERE);
-    }
-
-
-
-    public List<Node> func(String func, List<Node> columns) {
-        if (Objects.equals(func, "concat")) return concat(columns);
-        return null;
-    }
-
-    abstract public List<Node> concat(List<Node> columns);
-
-
-
-
-    public String getKeyword(Keyword keyword) {
-        return keywordMap.get(keyword);
-    }
-
-    public String getOpt(Operator equal) {
-        return null;
-    }
-
-
-    protected enum FunctionName {
-        CONCAT
-    }
+    private final String name;
 
     private final Map<Keyword, String> keywordMap = new HashMap<>();
-    private final Map<Operator, String> operatorMap = new HashMap<>();
-    private final Map<FunctionName, SQLFunction> functionMap = new HashMap<>();
 
-    protected void addFunction(FunctionName functionName, SQLFunction function) {
-        functionMap.put(functionName, function);
-    }
+    private final Map<String, String> funcTemplateMap = new HashMap<>();
 
-    protected void addKeyWord(Keyword Keyword, String s) {
-        keywordMap.put(Keyword, s);
-    }
+    protected SQLTemplates(String name) {
+        this.name = name;
 
-    protected void addOperator(Operator opt, String s) {
-        operatorMap.put(opt, s);
-    }
-
-    protected SQLTemplates() {
         addKeyWord(SELECT, "SELECT");
         addKeyWord(FROM, "FROM");
         addKeyWord(WHERE, "WHERE");
         addKeyWord(AND, "AND");
         addKeyWord(OR, "OR");
         addKeyWord(DISTINCT, "DISTINCT");
-//
-//        addFunction(FunctionName.CONCAT, new ConcatFunction1());
-        addOperator(Operator.EQUAL, "=");
+
+        addFuncTemplate("=", "{0} = {1}");
+        addFuncTemplate("!=", "{0} != {1}");
+        addFuncTemplate("<", "{0} < {1}");
+        addFuncTemplate("<=", "{0} <= {1}");
+        addFuncTemplate(">", "{0} > {1}");
+        addFuncTemplate(">=", "{0} >= {1}");
     }
 
-    public String select() {
-        return keywordMap.get(SELECT);
+    protected void addKeyWord(Keyword Keyword, String s) {
+        keywordMap.put(Keyword, s);
     }
 
+    protected void addFuncTemplate(String funcName, String template) {
+        funcTemplateMap.put(funcName, template);
+    }
 
-    public String from() {
-        return keywordMap.get(Keyword.FROM);
+    public String keyword(Keyword keyword) {
+        return keywordMap.get(keyword);
+    }
+
+    public String function(String funcName) {
+        return funcTemplateMap.get(funcName);
+    }
+
+    public String name() {
+        return this.name;
     }
 
 }

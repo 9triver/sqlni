@@ -24,6 +24,7 @@
       <groupId>com.kekwy.sqlni</groupId>
       <artifactId>sqlni</artifactId>
       <version>0.1</version>
+      <scope>compile</scope>
     </dependency>
 
     <dependency>

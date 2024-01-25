@@ -2,14 +2,20 @@ package com.kekwy.sqlni.util;
 
 import com.kekwy.sqlni.node.Node;
 import com.kekwy.sqlni.node.TextNode;
-import com.kekwy.sqlni.templates.*;
+import com.kekwy.sqlni.parser.FuncTemplateBaseVisitor;
+import com.kekwy.sqlni.parser.FuncTemplateParser;
+import com.kekwy.sqlni.templates.Keyword;
+import com.kekwy.sqlni.templates.MySQLTemplates;
+import com.kekwy.sqlni.templates.OracleTemplates;
+import com.kekwy.sqlni.templates.SQLTemplates;
+import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.io.IOException;
 import java.util.*;
 
 
 /**
- * description
+ * 用于解析模板的工具类
  *
  * @author Kekwy
  * @version 1.0
@@ -17,30 +23,31 @@ import java.util.*;
  */
 public class TemplatesUtil {
 
-    private static final Map<String, SQLTemplates> templatesMap = Map.of(
-            "MySQL", new MySQLTemplates(),
-            "Oracle", new OracleTemplates()
-    );
-
-    // 建立 SQLNI 语法对函数的表示方式到对应函数的枚举变量之间的映射
-    private static final Map<String, Function> functionMap = Map.of(
-            "concat", Function.CONCAT
-    );
-
-    public static SQLTemplates getTemplates(String name) {
-        return templatesMap.get(name);
-    }
-
-    /* 成员：静态常量
+    /* 静态常量
      * --------------------------------------------------------------------------------------------------------- */
 
     private static final String CONFIG_FILE_NAME = "sqlni.properties";
     private static final String SQL_TEMPLATES_PROPERTY = "sql-templates";
 
-    /* 成员：SQL 模板
+    private static final Map<String, SQLTemplates> templatesMap = Map.of(
+            "MySQL", new MySQLTemplates(),
+            "Oracle", new OracleTemplates()
+    );
+
+
+    public static SQLTemplates getTemplates(String name) {
+        return templatesMap.get(name);
+    }
+
+
+
+    /* 成员变量
      * --------------------------------------------------------------------------------------------------------- */
 
     private static final SQLTemplates defaultSQLTemplates; // 从配置文件中读取的全局 SQL 模板
+    private static SQLTemplates sqlTemplates;
+
+    private static final Map<String, ParseTree> parseTreeCache = new HashMap<>();
 
     // 初始化 SQL 模板
     static {
@@ -60,8 +67,6 @@ public class TemplatesUtil {
         sqlTemplates = defaultSQLTemplates;
     }
 
-    private static SQLTemplates sqlTemplates;
-
     public static void setSQLTemplates(SQLTemplates sqlTemplates) {
         TemplatesUtil.sqlTemplates = sqlTemplates;
     }
@@ -74,78 +79,95 @@ public class TemplatesUtil {
      * --------------------------------------------------------------------------------------------------------- */
 
     public static String select() {
-        return sqlTemplates.getKeyword(Keyword.SELECT);
+        return sqlTemplates.keyword(Keyword.SELECT);
     }
 
     public static String from() {
-        return sqlTemplates.getKeyword(Keyword.FROM);
+        return sqlTemplates.keyword(Keyword.FROM);
     }
 
     public static String where() {
-        return sqlTemplates.getKeyword(Keyword.WHERE);
+        return sqlTemplates.keyword(Keyword.WHERE);
     }
 
     public static String distinct() {
-        return sqlTemplates.getKeyword(Keyword.DISTINCT);
+        return sqlTemplates.keyword(Keyword.DISTINCT);
     }
 
     public static String and() {
-        return sqlTemplates.getKeyword(Keyword.AND);
+        return sqlTemplates.keyword(Keyword.AND);
     }
 
     public static String or() {
-        return sqlTemplates.getKeyword(Keyword.OR);
+        return sqlTemplates.keyword(Keyword.OR);
     }
 
     /* 方法：SQL 函数及其他关键字
      * --------------------------------------------------------------------------------------------------------- */
 
-    public static List<Node> func(String funcName, List<Node> params) {
-        // TODO: 若找不到相应函数则需处理异常
-        Function function = functionMap.get(funcName);
-        return null;
+    /**
+     * 调用 SQL 函数，根据当前设置的 SQL 模板生成对应 XML 结构
+     *
+     * @param name   函数名
+     * @param params 参数列表（需要随机访问）
+     */
+    public static List<Node> func(String name, List<List<Node>> params) {
+        String fullName = sqlTemplates.name() + "::" + name;
+        ParseTree parseTree;
+        if (parseTreeCache.containsKey(fullName)) {
+            parseTree = parseTreeCache.get(fullName);
+        } else {
+            // TODO: 若找不到相应函数则需处理异常
+            String template = sqlTemplates.function(name);
+            parseTree = ParserUtil.parseFuncTemplate(template);
+            parseTreeCache.put(fullName, parseTree);
+        }
+        return new FuncTemplateVisit(params).visit(parseTree);
     }
 
-    public static List<Node> limit(String limitN, String offsetN) {
-        return List.of(new TextNode("limit " + limitN + " offset " + offsetN));
-    }
+    private static class FuncTemplateVisit extends FuncTemplateBaseVisitor<List<Node>> {
 
-    public static List<Node> limit(String limitN) {
-        return List.of(new TextNode("limit " + limitN));
-    }
+        private final List<List<Node>> params;
 
-    /* 方法：比较条件
-     * --------------------------------------------------------------------------------------------------------- */
+        public FuncTemplateVisit(List<List<Node>> params) {
+            this.params = params;
+        }
 
-    private static List<Node> compare(Operator opt, List<Node> left, List<Node> right) {
-        List<Node> nodes = new LinkedList<>(left);
-        nodes.add(new TextNode(" " + sqlTemplates.getOpt(opt) + " ")); // a + b
-        nodes.addAll(right);
-        return nodes;
-    }
+        @Override
+        public List<Node> visitVarParams(FuncTemplateParser.VarParamsContext ctx) {
+            List<Node> res = new LinkedList<>();
+            if (ctx.left != null) {
+                res.add(new TextNode(ctx.left.getText()));
+            }
+            for (List<Node> param : params) {
+                res.addAll(param);
+                res.add(new TextNode(ctx.separator.getText()));
+            }
+            if (ctx.right != null) {
+                res.add(new TextNode(ctx.right.getText()));
+            }
+            return res;
+        }
 
-    public static List<Node> isEqualTo(List<Node> left, List<Node> right) {
-        return compare(Operator.EQUAL, left, right);
-    }
+        @Override
+        public List<Node> visitFixedParams(FuncTemplateParser.FixedParamsContext ctx) {
+            List<ParseTree> children = ctx.children;
+            List<Node> res = new LinkedList<>();
+            for (ParseTree tree : children) {
+                res.addAll(visit(tree));
+            }
+            return res;
+        }
 
-    public static List<Node> isNotEqualTo(List<Node> left, List<Node> right) {
-        return compare(Operator.NOT_EQUAL, left, right);
-    }
+        @Override
+        public List<Node> visitParam(FuncTemplateParser.ParamContext ctx) {
+            return params.get(Integer.parseInt(ctx.INT().getText()));
+        }
 
-    public static List<Node> isLessThan(List<Node> left, List<Node> right) {
-        return compare(Operator.LESS_THAN, left, right);
-    }
-
-    public static List<Node> isLessThanOrEqualTo(List<Node> left, List<Node> right) {
-        return compare(Operator.LESS_THAN_OR_EQUAL, left, right);
-    }
-
-    public static List<Node> isGreaterThan(List<Node> left, List<Node> right) {
-        return compare(Operator.GREATER_THAN, left, right);
-    }
-
-    public static List<Node> isGreaterThanOrEqualTo(List<Node> left, List<Node> right) {
-        return compare(Operator.GREATER_THAN_OR_EQUAL, left, right);
+        @Override
+        public List<Node> visitText(FuncTemplateParser.TextContext ctx) {
+            return List.of(new TextNode(ctx.getText()));
+        }
     }
 
 }

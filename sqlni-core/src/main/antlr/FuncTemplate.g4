@@ -1,8 +1,12 @@
 grammar FuncTemplate;
 
 function
-    : STRING? '...' STRING? # varParams
-    | (STRING|param)+       # fixedParams
+    : left=STRING? param separator=STRING '...' right=STRING? # varParams
+    | (text|param)+       # fixedParams
+    ;
+
+text
+    : STRING
     ;
 
 param

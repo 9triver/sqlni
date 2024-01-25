@@ -5,13 +5,9 @@ import com.kekwy.sqlni.node.Node;
 import com.kekwy.sqlni.node.TextNode;
 import com.kekwy.sqlni.parser.SQLNIBaseVisitor;
 import com.kekwy.sqlni.parser.SQLNIParser;
-import com.kekwy.sqlni.templates.MySQLTemplates;
-import com.kekwy.sqlni.templates.SQLTemplates;
 import com.kekwy.sqlni.util.ParserUtil;
-import com.kekwy.sqlni.util.TemplatesUtil;
 import org.antlr.v4.runtime.tree.ParseTree;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -56,7 +52,7 @@ public class MethodBuilder {
     }
 
     public ElementNode build() {
-        ParseTree root = ParserUtil.parseFromString(statement);
+        ParseTree root = ParserUtil.parseSQLNI(statement);
         return new SQLNIVisitor().visit(root, Map.of(
                 NAME_ID, id,
                 NAME_RESULT_TYPE, resultType
@@ -141,9 +137,14 @@ public class MethodBuilder {
         @Override
         public List<Node> visitLimit(SQLNIParser.LimitContext ctx) {
             if (ctx.OFFSET() != null) {
-                return limit(ctx.NUMBER(0).getText(), ctx.NUMBER(1).getText());
+                return func("limitWithOffset", List.of(
+                        List.of(new TextNode(ctx.NUMBER(0).getText())),
+                        List.of(new TextNode(ctx.NUMBER(1).getText()))
+                ));
             } else {
-                return limit(ctx.NUMBER(0).getText());
+                return func("limit", List.of(
+                        List.of(new TextNode(ctx.NUMBER(0).getText()))
+                ));
             }
         }
 
@@ -177,14 +178,14 @@ public class MethodBuilder {
         @Override
         public List<Node> visitFuncColumn(SQLNIParser.FuncColumnContext ctx) {
             String func = ctx.ID().getText();
-            List<Node> columns = new LinkedList<>();
+            List<List<Node>> params = new LinkedList<>();
             List<SQLNIParser.ColumnContext> columnCtxList = ctx.column();
             for (SQLNIParser.ColumnContext columnCtx : columnCtxList) {
-                columns.addAll(visit(columnCtx));
+                params.add(visit(columnCtx));
             }
             List<Node> res = new LinkedList<>();
             res.add(new TextNode(" "));
-            res.addAll(func(func, columns));
+            res.addAll(func(func, params));
             return res;
         }
 
@@ -247,19 +248,10 @@ public class MethodBuilder {
 
         @Override
         public List<Node> visitCmpCondition(SQLNIParser.CmpConditionContext ctx) {
-            List<Node> res = null;
             List<Node> left = visit(ctx.column(0));
             List<Node> right = visit(ctx.column(1));
-//        '='|'!='|'<'|'<='|'>'|'>='
-            switch (ctx.OP().getText()) {
-                case "=" -> res = isEqualTo(left, right);
-                case "!=" -> res = isNotEqualTo(left, right);
-                case "<" -> res = isLessThan(left, right);
-                case "<=" -> res = isLessThanOrEqualTo(left, right);
-                case ">" -> res = isGreaterThan(left, right);
-                case ">=" -> res = isGreaterThanOrEqualTo(left, right);
-            }
-            return res;
+//        '='|'!='|'<'|'<='|'>'|'>=
+            return func(ctx.OP().getText(), List.of(left, right));
         }
 
         @Override

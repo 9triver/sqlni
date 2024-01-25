@@ -1,5 +1,7 @@
 package com.kekwy.sqlni.test;
 
+import com.querydsl.sql.MySQLTemplates;
+import com.querydsl.sql.OracleTemplates;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
@@ -23,6 +25,9 @@ public class Dom4jTest {
         root.addElement("eadsfgasdf");
         root.addText("sadgfafdg");
         System.out.println(document.asXML());
+
+        Class<OracleTemplates> oracleTemplatesClass = OracleTemplates.class;
+        Class<MySQLTemplates> mySQLTemplatesClass = MySQLTemplates.class;
     }
 
 }
