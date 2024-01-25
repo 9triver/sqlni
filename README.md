@@ -8,10 +8,10 @@
     <img src="https://img.shields.io/badge/README-draft-red" alt="README status">
     <img src="https://img.shields.io/github/commit-activity/w/9triver/sqlni?color=yellow" alt="commits">
 </p>
+
 > 基于 Mybatis 实现对不同方言数据库编写统一查询的 DSL 语言工具。
 >
 > 示例仓库：[Kekwy/sqlni-examples](https://github.com/Kekwy/sqlni-examples)
->
 
 ## 目录
 

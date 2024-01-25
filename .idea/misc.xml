@@ -10,6 +10,9 @@
     <option name="ignoredFiles">
       <set>
         <option value="$PROJECT_DIR$/example/pom.xml" />
+        <option value="$PROJECT_DIR$/sqlni-example/pom.xml" />
+        <option value="$PROJECT_DIR$/sqlni-starter-example/pom.xml" />
+        <option value="$PROJECT_DIR$/sqlni-starter/pom.xml" />
         <option value="$PROJECT_DIR$/starter-example/pom.xml" />
       </set>
     </option>
