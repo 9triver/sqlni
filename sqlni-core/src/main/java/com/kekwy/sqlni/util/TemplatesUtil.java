@@ -139,9 +139,11 @@ public class TemplatesUtil {
             if (ctx.left != null) {
                 res.add(new TextNode(ctx.left.getText()));
             }
-            for (List<Node> param : params) {
-                res.addAll(param);
+            Iterator<List<Node>> it = params.iterator();
+            res.addAll(it.next());
+            while (it.hasNext()) {
                 res.add(new TextNode(ctx.separator.getText()));
+                res.addAll(it.next());
             }
             if (ctx.right != null) {
                 res.add(new TextNode(ctx.right.getText()));
