@@ -1,9 +1,16 @@
 package com.kekwy.sqlni;
 
 import com.kekwy.sqlni.node.ElementNode;
+import com.kekwy.sqlni.node.Node;
+import com.kekwy.sqlni.parser.SQLNIBaseVisitor;
+import com.kekwy.sqlni.templates.SQLTemplates;
+import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * MapperBuilder
@@ -15,10 +22,13 @@ import java.util.List;
  */
 public class MapperBuilder {
 
-    private final String className;
+    private final String namespace;
 
-    public MapperBuilder(String className) {
-        this.className = className;
+    private final SQLTemplates sqlTemplates;
+
+    public MapperBuilder(String namespace, SQLTemplates sqlTemplates) {
+        this.namespace = namespace;
+        this.sqlTemplates = sqlTemplates;
     }
 
     private final List<MethodBuilder> methodBuilders = new LinkedList<>();
@@ -40,20 +50,89 @@ public class MapperBuilder {
      */
     public Mapper build() {
         ElementNode root = new ElementNode(NAME_ROOT);
-        root.addAttribute(NAME_NAMESPACE, className);
+        root.addAttribute(NAME_NAMESPACE, namespace);
         // 遍历 methodBuilder，并调用 build() 方法
         for (MethodBuilder methodBuilder : methodBuilders) {
             root.addNode(methodBuilder.build());
         }
         // 解析 Mapper 的包名和类名，创建 Mapper 对象
-        int index = className.lastIndexOf('.');
-        return new Mapper(className.substring(0, index),
-                className.substring(index + 1), root);
+        int index = namespace.lastIndexOf('.');
+        return new Mapper(namespace.substring(0, index),
+                namespace.substring(index + 1), root);
     }
 
     /* CONSTANT: 关键字
      * --------------------------------------------------------------------------------------------------------- */
     private static final String NAME_ROOT = "mapper";
     private static final String NAME_NAMESPACE = "namespace";
+
+
+    @SuppressWarnings("UnusedReturnValue")
+    public class MethodBuilder {
+
+        private final String id;
+
+        private String resultType = "java.lang.Object";
+
+        private String resultMap;
+
+        private String statement;
+
+        private MethodBuilder(String id) {
+            this.id = id;
+        }
+
+        public MethodBuilder resultType(String resultType) {
+            this.resultType = parseResultType(resultType);
+            return this;
+        }
+
+        public MethodBuilder resultMap(String resultMap) {
+            this.resultMap = resultMap;
+            return this;
+        }
+
+        public MethodBuilder statement(String statement) {
+            this.statement = statement;
+            return this;
+        }
+
+        public ElementNode build() {
+            ElementNode node = new SQLNISerializer(sqlTemplates).serialize(statement);
+            node.addAttributes(Map.of(
+                    NAME_ID, id,
+                    NAME_RESULT_TYPE, resultType
+            ));
+            return node;
+        }
+
+        /* CONSTANT: pattern
+         * --------------------------------------------------------------------------------------------------------- */
+        private static final Pattern RESULT_TYPE_PATTERN = Pattern.compile(".+<(.+)>");
+
+        /**
+         * 当用户编写的方法返回值类型为集合时，解析出集合中元素的类型，作为 resultType
+         *
+         * @param resultType Mapper 接口中方法的返回值类型
+         * @return 可以被 Mybatis 识别的 resultType
+         */
+        private String parseResultType(String resultType) {
+            Matcher matcher = RESULT_TYPE_PATTERN.matcher(resultType);
+            if (matcher.find()) {
+                return matcher.group(1);
+            } else {
+                return resultType;
+            }
+        }
+
+        /* 静态常量
+         * --------------------------------------------------------------------------------------------------------- */
+        private static final String NAME_ID = "id";
+
+        private static final String NAME_RESULT_TYPE = "resultType";
+
+
+    }
+
 
 }

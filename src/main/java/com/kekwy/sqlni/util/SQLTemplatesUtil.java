@@ -13,21 +13,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import java.io.IOException;
 import java.util.*;
 
-
-/**
- * 用于解析模板的工具类
- *
- * @author Kekwy
- * @version 1.0
- * @since 2024/1/24 9:22
- */
-public class TemplatesUtil {
-
-    /* 静态常量
-     * --------------------------------------------------------------------------------------------------------- */
-
-    private static final String CONFIG_FILE_NAME = "sqlni.properties";
-    private static final String SQL_TEMPLATES_PROPERTY = "sql-templates";
+public class SQLTemplatesUtil {
 
     private static final Map<String, SQLTemplates> templatesMap = Map.of(
             "MySQL", new MySQLTemplates(),
@@ -48,23 +34,7 @@ public class TemplatesUtil {
     private static SQLTemplates sqlTemplates;
     private static final Map<String, ParseTree> parseTreeCache = new HashMap<>();
 
-    // 初始化 SQL 模板
-    static {
-        SQLTemplates tmp;
-        try {
-            Properties properties = new Properties();
-            properties.load(
-                    Objects.requireNonNull(
-                            TemplatesUtil.class.getClassLoader().getResource(CONFIG_FILE_NAME)
-                    ).openStream()
-            );
-            tmp = TemplatesUtil.getTemplates(properties.getProperty(SQL_TEMPLATES_PROPERTY));
-        } catch (IOException e) {
-            tmp = new MySQLTemplates();
-        }
-        defaultSQLTemplates = tmp;
-        sqlTemplates = defaultSQLTemplates;
-    }
+
 
     public static void setDefaultSQLTemplates(String name) {
         defaultSQLTemplates = getTemplates(name);

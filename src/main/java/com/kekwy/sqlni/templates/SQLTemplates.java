@@ -1,5 +1,8 @@
 package com.kekwy.sqlni.templates;
 
+import com.kekwy.sqlni.SQLNISerializer;
+import org.antlr.v4.runtime.tree.ParseTree;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -57,5 +60,11 @@ public abstract class SQLTemplates {
     public String name() {
         return this.name;
     }
+
+    // 参考 querydsl-sql 通过访问者模式解决 limit 的问题
+    public void serialize(ParseTree tree, SQLNISerializer sqlniSerializer) {
+
+    }
+
 
 }

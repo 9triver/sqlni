@@ -15,6 +15,8 @@ public class ObjectArrayTest {
     public void test() {
         Object[] objects = new Object[3];
         System.out.println(objects[2]);
+
+
     }
 
 }

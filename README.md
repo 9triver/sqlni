@@ -3,11 +3,12 @@
 <p>
     <a href="https://github.com/Kekwy"><img src="https://img.shields.io/badge/Kekwy-gray?logo=github" alt="Kekwy"></a>
     <img src="https://img.shields.io/badge/Java-17+-orange?logo=java" alt="JDK">
-    <a href="https://github.com/mybatis/mybatis-3"><img src="https://img.shields.io/badge/Mybatis-3.5-green" alt="Mybatis"></a>
+    <a href="https://github.com/mybatis/mybatis-3"><img src="https://img.shields.io/badge/MyBatis-3.5-green" alt="Mybatis"></a>
     <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a>
     <img src="https://img.shields.io/badge/README-draft-red" alt="README status">
     <img src="https://img.shields.io/github/commit-activity/w/9triver/sqlni?color=yellow" alt="commits">
 </p>
+
 
 > 基于 Mybatis 实现对不同方言数据库编写统一查询的 DSL 语言工具。
 >
@@ -65,7 +66,7 @@ SQLNI 语言是一种 SQL-like 的 DSL，在标准 SQL 的基础上进行部分�
       </annotationProcessor>
     </annotationProcessors>
     <compilerArgs>
-      <arg>-AsqlTemplates=MySQL</arg>
+      <arg>-ASQLTemplates=MySQL</arg>
     </compilerArgs>
   </configuration>
 </plugin>
@@ -118,10 +119,34 @@ mvnDebug clean install
 
 ## 6 更新记录
 
+**2024-1-31 更新说明**
+
+1. 编写项目文档。
+
+**RELEASE 1.0**
+
+initial release.
+
+**2024-1-30 更新说明**
+
+1. 可以对整个 Mapper 接口或其中某些方法指定不同的 SQL 模板；
+2. 在示例项目中编写测试，进行成果检验；
+3. 实现现阶段的所有功能，发布 1.0 版本。
+
+**2024-1-29 更新说明**
+
+1. 增加对更多 SQL 语句和函数的支持；
+2. 增加对 resultMap 的支持。
+
+**2024-1-28 更新说明**：
+
+1. 调整架构，通过访问者模式解决 Oracle 方言需要通过子查询实现 limit 功能的问题；
+2. 增加对方法中参数的解析校验功能，若在 SQLNI 语句中出现在方法参数表中未出现的参数需要向用户发出警告，若在 SQLNI 语句中出现的参数在方法参数表中对应的参数类型为集合，则需要根据其在 SQLNI 语句中的上下文环境通过添加 `<foreach>` 标签进行展开；
+3. 添加模块配置，使模块外仅可访问 `@UseSQLNI` 注解，对外隐藏模块中的其他类。
+
 **2024-1-27 更新说明**：
 
 1. 实现从 pom.xml 文件中读取注解处理器的配置信息，弃用原有配置文件；
-1.  
 
 **2024-1-25 更新说明**：
 
@@ -166,6 +191,7 @@ mvnDebug clean install
 
 [7] [美]Eckel, B. Java 编程思想(第 4 版)[M]. 陈昊鹏, 译. 北京: 机械工业出版社, 2007.6
 
+[8] Querying SQL[EB/OL]. http://querydsl.com/static/querydsl/latest/reference/html/ch02s03.html
 
 
 
@@ -177,6 +203,11 @@ mvnDebug clean install
 
 
 
+laskdjfklosadj lkasdj fglk;jsadl;zgfkkjAEWS:KIOD/fghjsdWOI'LJ GHKLJSDEF HBIKU;GVBFEWa:hLS GBUIKREWASY GLUEWWKSUHF DCF KIHEDSAJKFGHKDFJSHVKLSADHGKJHDS
+
+
+
+访问者模式
 
 
 
