@@ -13,31 +13,85 @@
 >
 > 示例仓库：[Kekwy/sqlni-examples](https://github.com/Kekwy/sqlni-examples)
 
-## <img src="https://img.shields.io/badge/TOC-8A2BE2"/>目录
+## <img src="https://img.shields.io/badge/TOC-8A2BE2"/> 目录
 
 **[1 项目简介](#1-项目简介)**
 
 **[2 快速开始](#2-快速开始)**
 
+​	[2.1 添加依赖](#21-添加依赖)
+
+​	[2.2 定义查询](#22-定义查询)
+
+​	[2.3 执行查询](#23-执行查询)
+
+**[3 WHERE 子句](#3-WHERE-子句)**
+
 ## 1 项目简介
 
+SQLNI 项目是一个针对 MyBatis 的辅助工具，可以帮助用户根据用户定义的查询自动生成对应的针对不同数据库方言的 XML 映射文件。用户只需在自定义的 Mapper 接口上添加注解 `@UseSQLNI` 并使用 SQLNI 语言编写查询语句，并在 pom 文件中添加配置、设置数据库方言，最后构建项目，即可完成 XML 文件的自动生成。
 
+SQLNI 语言是一种 SQL-like 的 DSL，在标准 SQL 的基础上进行部分拓展，将不同数据库方言中功能相同的函数统一命名，并且支持表达 MyBatis 中动态 SQL 的语义。
 
+生成 XML 文件时，默认根据 Mapper 接口中方法的返回值类型，自动设置对应查询的 resultType 属性。除此之外，还支持用户自定义 resultMap 用于处理指定方法的查询结构。 
 
+支持的 SQL 语句：SELECT；
 
+支持的数据库方言：MySQL、Oracle。
 
+项目的主要目标：
+
+1. 将持久化层与数据库方言解耦合，在开发 Mapper 接口时不必关注未来需要部署的具体数据库的方言；
+2. 提高项目的可维护性，对于在不同数据库环境中部署的项目，开发者只需维护一套查询语句；
+3. 提高项目的可移植性，对已经部署的项目需要更改使用的具体数据库时，只需更改 SQLNI 的配置信息，重新构建项目即可，而不必修改代码，不必重新编写 SQL 语句；
+4. 在实现上述目标的基础上，保留 Mybatis 原有的灵活性，通过对标准 SQL 进行拓展，使用户可以使用 SQLNI 语言表达动态 SQL 的语义。
 
 ## 2 快速开始
 
-### 2.1 
+### 2.1 添加配置
 
-### 2.2 通过 Spring Boot 集成
+```xml
+<plugin>
+  <groupId>org.apache.maven.plugins</groupId>
+  <artifactId>maven-compiler-plugin</artifactId>
+  <version>3.8.1</version>
+  <configuration>
+    <source>17</source>
+    <target>17</target>
+    <encoding>UTF-8</encoding>
+    <annotationProcessors>
+      <annotationProcessor>
+        com.kekwy.sqlni.UseSQLNIProcessor
+      </annotationProcessor>
+    </annotationProcessors>
+    <compilerArgs>
+      <arg>-AsqlTemplates=MySQL</arg>
+    </compilerArgs>
+  </configuration>
+</plugin>
+```
 
 
 
-## 3 开发者
+### 2.2 定义查询
 
-### 3.1 扩展 SQLNI
+
+
+### 2.3 执行查询
+
+### 
+
+## 3 WHERE 子句
+
+
+
+## 4 SELECT 语句
+
+
+
+## 5 开发者
+
+### 5.1 扩展 SQLNI
 
 自定义函数模板
 
@@ -56,21 +110,18 @@ public class MySQLTemplates extends SQLTemplates { // 自定义 SQL 模板并继
 }
 ```
 
-
-
-仓库结构
-
-### 3.2 调试
+### 5.2 调试
 
 ```shell
 mvnDebug clean install
 ```
 
-## 4 更新记录
+## 6 更新记录
 
-**2024-1-26 更新说明**：
+**2024-1-27 更新说明**：
 
-1. 待续
+1. 实现从 pom.xml 文件中读取注解处理器的配置信息，弃用原有配置文件；
+1.  
 
 **2024-1-25 更新说明**：
 
@@ -99,7 +150,7 @@ mvnDebug clean install
 
 5. 修复生成 XML 文件中 SQL 语句部分关键字之间未空格的问题。
 
-## 5 参考资料
+## 7 参考资料
 
 [1] MyBatis Dynamic SQL[EB/OL]. https://mybatis.org/mybatis-dynamic-sql/docs/introduction.html
 
@@ -311,4 +362,25 @@ dot 语言的使用，以及示意图的绘制。
 
 
 
-alt + v
+typora：alt + v
+
+
+
+vagrant
+
+
+
+```shell
+vagrant init centos/7
+vagrant up
+```
+
+SSH address: 127.0.0.1:2222
+    default: SSH username: vagrant
+    default: SSH auth method: private key
+
+
+
+vagrant 实现虚拟机的端口转发
+
+![image-20240126230258539](README.assets/image-20240126230258539.png)
