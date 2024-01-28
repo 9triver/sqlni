@@ -1,9 +1,8 @@
 package com.kekwy.sqlni;
 
-import com.google.auto.service.AutoService;
+import com.kekwy.sqlni.templates.SQLTemplates;
+import com.kekwy.sqlni.util.SQLTemplatesUtil;
 import com.kekwy.sqlni.util.XMLUtil;
-import org.dom4j.io.OutputFormat;
-import org.dom4j.io.XMLWriter;
 
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
@@ -29,10 +28,24 @@ import java.util.Set;
  * @version 1.0
  * @since 2024/1/11 17:03
  */
-@AutoService(Processor.class) // 自动注册自定义的注解处理器
 @SupportedAnnotationTypes({"com.kekwy.sqlni.UseSQLNI"}) // BUGFIX: 更改注解名未同步此处名称
 @SupportedSourceVersion(SourceVersion.RELEASE_17)
 public class UseSQLNIProcessor extends AbstractProcessor {
+
+    private SQLTemplates sqlTemplates;
+
+    /**
+     * 从
+     *
+     * @param processingEnv environment to access facilities the tool framework
+     * provides to the processor
+     */
+    @Override
+    public synchronized void init(ProcessingEnvironment processingEnv) {
+        super.init(processingEnv);
+        String sqlTemplatesName = processingEnv.getOptions().get("SQLTemplates");
+        sqlTemplates = SQLTemplatesUtil.getTemplates(sqlTemplatesName);
+    }
 
     /**
      * 建立每个 Mapper 到对应的 MapperBuilder 对象之间的映射
@@ -87,7 +100,7 @@ public class UseSQLNIProcessor extends AbstractProcessor {
                 // 获取上下文中已存在的对应 Mapper 的 builder 对象，若不存在则创建
                 MapperBuilder builder;
                 if (!builderMap.containsKey(className)) {
-                    builder = new MapperBuilder(className);
+                    builder = new MapperBuilder(className, sqlTemplates);
                     builderMap.put(className, builder);
                 } else {
                     builder = builderMap.get(className);
