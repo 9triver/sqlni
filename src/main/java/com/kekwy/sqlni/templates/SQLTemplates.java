@@ -45,8 +45,8 @@ public abstract class SQLTemplates {
         addFuncTemplate(">", "{0} > {1}");
         addFuncTemplate(">=", "{0} >= {1}");
 
-        addFuncTemplate("limit", "limit {0}");
-        addFuncTemplate("limitOffset", "offset {0}");
+        addFuncTemplate("limit", "LIMIT {0}");
+        addFuncTemplate("limitOffset", "OFFSET {0}");
     }
 
     protected void addKeyWord(Keyword Keyword, String s) {
@@ -86,27 +86,29 @@ public abstract class SQLTemplates {
     }
 
     public void serializeLimit(SQLNIParser.SelectContext context, SQLNISerializer serializer) {
+        serializer.append(" "); // 添加一个空格分割关键字
         if (context.limit() != null) {
-            function("limit", context.limit(), serializer);
+            function("limit", List.of(context.limit()), serializer);
             if (context.offset() != null) {
-                function("limitOffset", context.offset(), serializer);
+                serializer.append(" ");
+                function("limitOffset", List.of(context.offset()), serializer);
             }
         } else {
-            function("limitOffset", context.offset(), serializer);
+            function("limitOffset", List.of(context.offset()), serializer);
         }
     }
 
     private final Map<String, ParseTree> funcParseTreeCache = new HashMap<>();
 
-    public void function(String funcName, ParserRuleContext context, SQLNISerializer serializer) {
+    public void function(String funcName, List<? extends ParseTree> contexts, SQLNISerializer serializer) {
         ParseTree tree;
-        if (!funcParseTreeCache.containsKey(funcName)) {
+        if (funcParseTreeCache.containsKey(funcName)) {
             tree = funcParseTreeCache.get(funcName);
         } else {
             tree = parseFuncTemplate(funcTemplateMap.get(funcName));
             funcParseTreeCache.put(funcName, tree);
         }
-        new FuncTemplateVisit(context, serializer).visit(tree);
+        new FuncTemplateVisit(contexts, serializer).visit(tree);
     }
 
     public static ParseTree parseFuncTemplate(String template) {
@@ -118,11 +120,11 @@ public abstract class SQLTemplates {
 
     private static class FuncTemplateVisit extends FuncTemplateBaseVisitor<Void> {
 
-        private final ParserRuleContext context;
+        private final List<? extends ParseTree> contexts;
         private final SQLNISerializer serializer;
 
-        public FuncTemplateVisit(ParserRuleContext context, SQLNISerializer serializer) {
-            this.context = context;
+        public FuncTemplateVisit(List<? extends ParseTree> contexts, SQLNISerializer serializer) {
+            this.contexts = contexts;
             this.serializer = serializer;
         }
 
@@ -131,7 +133,7 @@ public abstract class SQLTemplates {
             if (ctx.left != null) {
                 serializer.append(ctx.left.getText());
             }
-            Iterator<ParseTree> it = context.children.iterator();
+            Iterator<? extends ParseTree> it = contexts.iterator();
             serializer.handle(it.next());
             while (it.hasNext()) {
                 serializer.append(ctx.separator.getText());
@@ -154,7 +156,7 @@ public abstract class SQLTemplates {
 
         @Override
         public Void visitParam(FuncTemplateParser.ParamContext ctx) {
-            serializer.handle(context.getChild(Integer.parseInt(ctx.INT().getText())));
+            serializer.handle(contexts.get(Integer.parseInt(ctx.INT().getText())));
             return null;
         }
 

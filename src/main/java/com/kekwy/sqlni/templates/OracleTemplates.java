@@ -1,7 +1,6 @@
 package com.kekwy.sqlni.templates;
 
 import com.kekwy.sqlni.SQLNISerializer;
-import com.kekwy.sqlni.node.TextNode;
 import com.kekwy.sqlni.parser.SQLNIParser;
 
 import java.util.List;
@@ -27,19 +26,23 @@ public class OracleTemplates extends SQLTemplates {
     // 参考 querydsl-sql 通过访问者模式解决 limit 的问题
     @Override
     public void serialize(SQLNIParser.SelectContext context, SQLNISerializer serializer) {
-        if (context.offset() == null) {
-            serializer.append(limitQueryStart);
-            serializer.visitSelect(context);
-            function("limitQueryEnd", context.limit(), serializer);
-        } else {
-            serializer.append(outerQueryStart);
-            serializer.visitSelect(context);
-            serializer.append(outerQueryEnd);
-            if (context.limit() == null) {
-                function("offsetTemplate", context.limit(), serializer);
+        if (context.limit() != null || context.limit() != null) {
+            if (context.offset() == null) {
+                serializer.append(limitQueryStart);
+                serializer.serialize(context);
+                function("limitQueryEnd", List.of(context.limit()), serializer);
             } else {
-                function("limitOffsetTemplate", context.offset(), serializer);
+                serializer.append(outerQueryStart);
+                serializer.serialize(context);
+                serializer.append(outerQueryEnd);
+                if (context.limit() == null) {
+                    function("offsetTemplate", List.of(context.limit()), serializer);
+                } else {
+                    function("limitOffsetTemplate", List.of(context.offset(), context.limit()), serializer);
+                }
             }
+        } else {
+            serializer.serialize(context);
         }
     }
 
@@ -48,7 +51,7 @@ public class OracleTemplates extends SQLTemplates {
         // do nothing.
     }
 
-    private static final String outerQueryStart = "SELECT * FROM ( SELECT tmp.*, ROWNUM RN FROM (";
+    private static final String outerQueryStart = "SELECT * FROM (SELECT tmp.*, ROWNUM RN FROM (";
 
     private static final String outerQueryEnd = ") tmp) WHERE ";
 
@@ -56,7 +59,7 @@ public class OracleTemplates extends SQLTemplates {
 
     private static final String limitQueryEnd = ") WHERE ROWNUM <= {0}";
 
-    private static final String limitOffsetTemplate = "RN > {0} AND ROWNUM <= {1}";
+    private static final String limitOffsetTemplate = "RN > {0} AND ROWNUM <= {0} + {1}";
 
     private static final String offsetTemplate = "RN > {0}";
 

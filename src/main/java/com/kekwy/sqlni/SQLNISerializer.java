@@ -58,7 +58,7 @@ public class SQLNISerializer extends SQLNIBaseVisitor<Void> {
         root.addNodes(next);
     }
 
-    public String space(String s) {
+    private String space(String s) {
         return " " + s;
     }
 
@@ -78,6 +78,7 @@ public class SQLNISerializer extends SQLNIBaseVisitor<Void> {
             append(space(sqlTemplates.getDistinct()));
         }
         if (ctx.columns() != null) {
+            append(space(""));
             visit(ctx.columns());               // select columns
         } else {
             append(space("*"));
@@ -126,7 +127,7 @@ public class SQLNISerializer extends SQLNIBaseVisitor<Void> {
     public Void visitFuncColumn(SQLNIParser.FuncColumnContext ctx) {
         String func = ctx.ID().getText();
         append(space(""));
-        sqlTemplates.function(func, ctx.columns(), this);
+        sqlTemplates.function(func, ctx.columns().column(), this);
         return null;
     }
 
@@ -152,6 +153,11 @@ public class SQLNISerializer extends SQLNIBaseVisitor<Void> {
     public Void visitConstTable(SQLNIParser.ConstTableContext ctx) {
         append(space(ctx.getText()));
         return null;
+    }
+
+    @Override
+    public Void visitParamTable(SQLNIParser.ParamTableContext ctx) {
+        return super.visitParamTable(ctx);
     }
 
     /* visit param
@@ -191,7 +197,7 @@ public class SQLNISerializer extends SQLNIBaseVisitor<Void> {
     @Override
     public Void visitCmpCondition(SQLNIParser.CmpConditionContext ctx) {
 //        '='|'!='|'<'|'<='|'>'|'>=
-        sqlTemplates.function(ctx.OP().getText(), ctx, this);
+        sqlTemplates.function(ctx.OP().getText(), ctx.column(), this);
         return null;
     }
 
@@ -204,6 +210,34 @@ public class SQLNISerializer extends SQLNIBaseVisitor<Void> {
     public Void visitInSetCondition(SQLNIParser.InSetConditionContext ctx) {
         return super.visitInSetCondition(ctx);
     }
+
+
+    @Override
+    public Void visitNumberLimit(SQLNIParser.NumberLimitContext ctx) {
+        append(ctx.getText());
+        return null;
+    }
+
+    @Override
+    public Void visitNumberOffset(SQLNIParser.NumberOffsetContext ctx) {
+        append(ctx.getText());
+        return null;
+    }
+
+    @Override
+    public Void visitParamLimit(SQLNIParser.ParamLimitContext ctx) {
+        visit(ctx.param());
+        append(ctx.getText());
+        return null;
+    }
+
+    @Override
+    public Void visitParamOffset(SQLNIParser.ParamOffsetContext ctx) {
+        visit(ctx.param());
+        append(ctx.getText());
+        return null;
+    }
+
 
 
     /**

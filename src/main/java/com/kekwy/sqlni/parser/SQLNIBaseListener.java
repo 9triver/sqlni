@@ -40,25 +40,49 @@ public class SQLNIBaseListener implements SQLNIListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterLimit(SQLNIParser.LimitContext ctx) { }
+	@Override public void enterParamLimit(SQLNIParser.ParamLimitContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitLimit(SQLNIParser.LimitContext ctx) { }
+	@Override public void exitParamLimit(SQLNIParser.ParamLimitContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterOffset(SQLNIParser.OffsetContext ctx) { }
+	@Override public void enterNumberLimit(SQLNIParser.NumberLimitContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitOffset(SQLNIParser.OffsetContext ctx) { }
+	@Override public void exitNumberLimit(SQLNIParser.NumberLimitContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterParamOffset(SQLNIParser.ParamOffsetContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitParamOffset(SQLNIParser.ParamOffsetContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterNumberOffset(SQLNIParser.NumberOffsetContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitNumberOffset(SQLNIParser.NumberOffsetContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

@@ -22,17 +22,33 @@ public interface SQLNIVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitSelect(SQLNIParser.SelectContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link SQLNIParser#limit}.
+	 * Visit a parse tree produced by the {@code paramLimit}
+	 * labeled alternative in {@link SQLNIParser#limit}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitLimit(SQLNIParser.LimitContext ctx);
+	T visitParamLimit(SQLNIParser.ParamLimitContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link SQLNIParser#offset}.
+	 * Visit a parse tree produced by the {@code numberLimit}
+	 * labeled alternative in {@link SQLNIParser#limit}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitOffset(SQLNIParser.OffsetContext ctx);
+	T visitNumberLimit(SQLNIParser.NumberLimitContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code paramOffset}
+	 * labeled alternative in {@link SQLNIParser#offset}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParamOffset(SQLNIParser.ParamOffsetContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code numberOffset}
+	 * labeled alternative in {@link SQLNIParser#offset}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNumberOffset(SQLNIParser.NumberOffsetContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link SQLNIParser#columns}.
 	 * @param ctx the parse tree

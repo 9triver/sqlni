@@ -27,25 +27,53 @@ public interface SQLNIListener extends ParseTreeListener {
 	 */
 	void exitSelect(SQLNIParser.SelectContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link SQLNIParser#limit}.
+	 * Enter a parse tree produced by the {@code paramLimit}
+	 * labeled alternative in {@link SQLNIParser#limit}.
 	 * @param ctx the parse tree
 	 */
-	void enterLimit(SQLNIParser.LimitContext ctx);
+	void enterParamLimit(SQLNIParser.ParamLimitContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link SQLNIParser#limit}.
+	 * Exit a parse tree produced by the {@code paramLimit}
+	 * labeled alternative in {@link SQLNIParser#limit}.
 	 * @param ctx the parse tree
 	 */
-	void exitLimit(SQLNIParser.LimitContext ctx);
+	void exitParamLimit(SQLNIParser.ParamLimitContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link SQLNIParser#offset}.
+	 * Enter a parse tree produced by the {@code numberLimit}
+	 * labeled alternative in {@link SQLNIParser#limit}.
 	 * @param ctx the parse tree
 	 */
-	void enterOffset(SQLNIParser.OffsetContext ctx);
+	void enterNumberLimit(SQLNIParser.NumberLimitContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link SQLNIParser#offset}.
+	 * Exit a parse tree produced by the {@code numberLimit}
+	 * labeled alternative in {@link SQLNIParser#limit}.
 	 * @param ctx the parse tree
 	 */
-	void exitOffset(SQLNIParser.OffsetContext ctx);
+	void exitNumberLimit(SQLNIParser.NumberLimitContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code paramOffset}
+	 * labeled alternative in {@link SQLNIParser#offset}.
+	 * @param ctx the parse tree
+	 */
+	void enterParamOffset(SQLNIParser.ParamOffsetContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code paramOffset}
+	 * labeled alternative in {@link SQLNIParser#offset}.
+	 * @param ctx the parse tree
+	 */
+	void exitParamOffset(SQLNIParser.ParamOffsetContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code numberOffset}
+	 * labeled alternative in {@link SQLNIParser#offset}.
+	 * @param ctx the parse tree
+	 */
+	void enterNumberOffset(SQLNIParser.NumberOffsetContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code numberOffset}
+	 * labeled alternative in {@link SQLNIParser#offset}.
+	 * @param ctx the parse tree
+	 */
+	void exitNumberOffset(SQLNIParser.NumberOffsetContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link SQLNIParser#columns}.
 	 * @param ctx the parse tree

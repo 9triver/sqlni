@@ -9,15 +9,21 @@ root
     ;
 
 select
-    : SELECT DISTINCT? ('*'|columns) FROM table (WHERE conditions)? limit? offset? ';'?
+    :   SELECT DISTINCT? ('*'|columns)
+        FROM table
+        (WHERE conditions)?
+        (LIMIT limit)? (OFFSET offset)? ';'?
+    |
     ;
 
 limit
-    : LIMIT NUMBER
+    : param     # paramLimit
+    | NUMBER    # numberLimit
     ;
 
 offset
-    : OFFSET NUMBER
+    : param     # paramOffset
+    | NUMBER    # numberOffset
     ;
 
 columns
