@@ -30,18 +30,15 @@ public class OracleTemplates extends SQLTemplates {
         if (context.offset() == null) {
             serializer.append(limitQueryStart);
             serializer.visitSelect(context);
-            String limitN = context.limit().NUMBER().getText();
-            function("limitQueryEnd", List.of(List.of(new TextNode(limitN))), serializer);
+            function("limitQueryEnd", context.limit(), serializer);
         } else {
             serializer.append(outerQueryStart);
             serializer.visitSelect(context);
             serializer.append(outerQueryEnd);
             if (context.limit() == null) {
-                String limitN = context.limit().NUMBER().getText();
-                function("offsetTemplate", List.of(List.of(new TextNode(limitN))), serializer);
+                function("offsetTemplate", context.limit(), serializer);
             } else {
-                String offsetN = context.offset().NUMBER().getText();
-                function("limitOffsetTemplate", List.of(List.of(new TextNode(offsetN))), serializer);
+                function("limitOffsetTemplate", context.offset(), serializer);
             }
         }
     }

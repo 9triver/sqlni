@@ -1,17 +1,19 @@
 package com.kekwy.sqlni.templates;
 
 import com.kekwy.sqlni.SQLNISerializer;
-import com.kekwy.sqlni.node.Node;
-import com.kekwy.sqlni.node.TextNode;
 import com.kekwy.sqlni.parser.FuncTemplateBaseVisitor;
 import com.kekwy.sqlni.parser.FuncTemplateLexer;
 import com.kekwy.sqlni.parser.FuncTemplateParser;
 import com.kekwy.sqlni.parser.SQLNIParser;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import static com.kekwy.sqlni.templates.Keyword.*;
 
@@ -85,21 +87,18 @@ public abstract class SQLTemplates {
 
     public void serializeLimit(SQLNIParser.SelectContext context, SQLNISerializer serializer) {
         if (context.limit() != null) {
-            String limitN = context.limit().NUMBER().getText();
-            function("limit", List.of(List.of(new TextNode(limitN))), serializer);
+            function("limit", context.limit(), serializer);
             if (context.offset() != null) {
-                String offsetN = context.offset().NUMBER().getText();
-                function("limitOffset", List.of(List.of(new TextNode(offsetN))), serializer);
+                function("limitOffset", context.offset(), serializer);
             }
         } else {
-            String offsetN = context.offset().NUMBER().getText();
-            function("limitOffset", List.of(List.of(new TextNode(offsetN))), serializer);
+            function("limitOffset", context.offset(), serializer);
         }
     }
 
     private final Map<String, ParseTree> funcParseTreeCache = new HashMap<>();
 
-    public void function(String funcName, List<List<Node>> args, SQLNISerializer serializer) {
+    public void function(String funcName, ParserRuleContext context, SQLNISerializer serializer) {
         ParseTree tree;
         if (!funcParseTreeCache.containsKey(funcName)) {
             tree = funcParseTreeCache.get(funcName);
@@ -107,11 +106,7 @@ public abstract class SQLTemplates {
             tree = parseFuncTemplate(funcTemplateMap.get(funcName));
             funcParseTreeCache.put(funcName, tree);
         }
-        new FuncTemplateVisit(args, serializer).visit(tree);
-    }
-
-    public void function(String funcName, ParseTree context, SQLNISerializer serializer) {
-
+        new FuncTemplateVisit(context, serializer).visit(tree);
     }
 
     public static ParseTree parseFuncTemplate(String template) {
@@ -123,11 +118,11 @@ public abstract class SQLTemplates {
 
     private static class FuncTemplateVisit extends FuncTemplateBaseVisitor<Void> {
 
-        private final List<List<Node>> args;
+        private final ParserRuleContext context;
         private final SQLNISerializer serializer;
 
-        public FuncTemplateVisit(List<List<Node>> args, SQLNISerializer serializer) {
-            this.args = args;
+        public FuncTemplateVisit(ParserRuleContext context, SQLNISerializer serializer) {
+            this.context = context;
             this.serializer = serializer;
         }
 
@@ -136,11 +131,11 @@ public abstract class SQLTemplates {
             if (ctx.left != null) {
                 serializer.append(ctx.left.getText());
             }
-            Iterator<List<Node>> it = args.iterator();
-            serializer.append(it.next());
+            Iterator<ParseTree> it = context.children.iterator();
+            serializer.handle(it.next());
             while (it.hasNext()) {
                 serializer.append(ctx.separator.getText());
-                serializer.append(it.next());
+                serializer.handle(it.next());
             }
             if (ctx.right != null) {
                 serializer.append(ctx.right.getText());
@@ -159,7 +154,7 @@ public abstract class SQLTemplates {
 
         @Override
         public Void visitParam(FuncTemplateParser.ParamContext ctx) {
-            serializer.append(args.get(Integer.parseInt(ctx.INT().getText())));
+            serializer.handle(context.getChild(Integer.parseInt(ctx.INT().getText())));
             return null;
         }
 

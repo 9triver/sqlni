@@ -9,6 +9,7 @@ import com.kekwy.sqlni.parser.SQLNIParser;
 import com.kekwy.sqlni.templates.SQLTemplates;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.util.*;
@@ -92,10 +93,6 @@ public class SQLNISerializer extends SQLNIBaseVisitor<Void> {
         if (ctx.limit() != null || ctx.offset() != null) {
             sqlTemplates.serializeLimit(ctx, this);
         }
-    }
-
-    private List<Node> textOf(String text) {
-        return List.of(new TextNode(text));
     }
 
     /* visit column
@@ -214,6 +211,13 @@ public class SQLNISerializer extends SQLNIBaseVisitor<Void> {
      */
     Set<String> symbolsSet = new HashSet<>(); // 暂未实现有关功能
 
+    public void handle(ParseTree tree) {
+        if (tree instanceof ParserRuleContext) {
+            visit(tree);
+        } else {
+            append(tree.getText());
+        }
+    }
 
 }
 
