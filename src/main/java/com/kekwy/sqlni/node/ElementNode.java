@@ -33,16 +33,16 @@ public class ElementNode implements Node {
         this.nodes = nodes;
     }
 
-    public String name() {
-        return this.name;
+    public String getName() {
+        return name;
     }
 
-    public Map<String, String> attributes() {
-        return this.attributes;
+    public Map<String, String> getAttributes() {
+        return attributes;
     }
 
-    public List<Node> subNodes() {
-        return this.nodes;
+    public List<Node> getNodes() {
+        return nodes;
     }
 
     public void addAttribute(String key, String value) {
@@ -76,17 +76,15 @@ public class ElementNode implements Node {
             nodes.add(lastTextNode);
         } else {
             // 若当前子节点最后一个加入的子节点为 TextNode，则将 text 与其内容合并
-            lastTextNode.append(textNode.text());
+            lastTextNode.append(textNode.getText());
         }
     }
 
-    public void addText(String text) {
-        TextNode textNode = new TextNode(" ");
-        textNode.append(text);
-        addTextNode(textNode);
-    }
-
-    public void addTextWithoutSpace(String text) {
-        addTextNode(new TextNode(text));
+    @Override
+    public void serialize(NodeSerializer serializer) {
+        NodeSerializer subSerializer = serializer.addElement(name, attributes);
+        for (Node node : nodes) {
+            node.serialize(subSerializer);
+        }
     }
 }

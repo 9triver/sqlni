@@ -19,7 +19,7 @@ public class TextNode implements Node {
         builder = new StringBuilder(text);
     }
 
-    public String text() {
+    public String getText() {
         return builder.toString();
     }
 
@@ -27,4 +27,8 @@ public class TextNode implements Node {
         builder.append(text);
     }
 
+    @Override
+    public void serialize(NodeSerializer serializer) {
+        serializer.addText(getText());
+    }
 }

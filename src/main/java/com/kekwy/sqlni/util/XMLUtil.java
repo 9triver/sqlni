@@ -1,8 +1,6 @@
 package com.kekwy.sqlni.util;
 
-import com.kekwy.sqlni.node.ElementNode;
-import com.kekwy.sqlni.node.Node;
-import com.kekwy.sqlni.node.TextNode;
+import com.kekwy.sqlni.node.*;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
@@ -33,38 +31,11 @@ public class XMLUtil {
         return document.addDocType(DOCTYPE_NAME, DOCTYPE_PUBLIC_ID, DOCTYPE_SYSTEM_ID);
     }
 
-    private static void addAttributes(Element element, Map<String, String> attributes) {
-        for (String key : attributes.keySet()) {
-            element.addAttribute(key, attributes.get(key));
-        }
-    }
-
-    private static void parseHelper(Node node, Element element) {
-        if (node instanceof TextNode textNode) {
-            String text = textNode.text();
-            element.addText(text);
-        } else if (node instanceof ElementNode elementNode) {
-            Element subElement = element.addElement(elementNode.name());
-
-            addAttributes(subElement, elementNode.attributes());
-//            elementNode.subNodes().forEach(n -> parseHelper(n, element));
-            elementNode.subNodes().forEach(n -> parseHelper(n, subElement)); // bugfix - 1.20
-        }
-    }
-
-    private static Document parseXMLElement(ElementNode root) {
+    public static void writeXMLFile(ElementNode root, Writer writer) throws IOException {
         Document document = createDocument();
 
-        Element element = document.addElement(root.name());
-
-        addAttributes(element, root.attributes());
-        root.subNodes().forEach(n -> parseHelper(n, element));
-
-        return document;
-    }
-
-    public static void writeXMLFile(ElementNode root, Writer writer) throws IOException {
-        Document document = parseXMLElement(root);
+        NodeSerializer serializer = new NodeSerializerDom4jImp(document);
+        root.serialize(serializer);
 
         // TODO: 解决 text 内容换行问题
         // 设置生成 XML 的格式

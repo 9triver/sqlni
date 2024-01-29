@@ -9,4 +9,6 @@ package com.kekwy.sqlni.node;
  */
 public interface Node {
 
+    void serialize(NodeSerializer serializer);
+
 }
