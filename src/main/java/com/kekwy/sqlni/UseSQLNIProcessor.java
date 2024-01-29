@@ -2,7 +2,7 @@ package com.kekwy.sqlni;
 
 import com.kekwy.sqlni.templates.SQLTemplates;
 import com.kekwy.sqlni.util.SQLTemplatesUtil;
-import com.kekwy.sqlni.util.XMLUtil;
+import com.kekwy.sqlni.util.Dom4jXMLUtil;
 
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
@@ -77,7 +77,7 @@ public class UseSQLNIProcessor extends AbstractProcessor {
                 for (MapperBuilder builder : builderMap.values()) {
                     Mapper mapper = builder.build();
                     Writer writer = getFilePath(mapper.packageName(), mapper.mapperName());
-                    XMLUtil.writeXMLFile(mapper.root(), writer);
+                    Dom4jXMLUtil.writeXMLFile(mapper.root(), writer);
                     writer.close();
                 }
             } catch (IOException e) {

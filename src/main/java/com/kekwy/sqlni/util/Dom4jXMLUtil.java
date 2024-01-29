@@ -3,13 +3,11 @@ package com.kekwy.sqlni.util;
 import com.kekwy.sqlni.node.*;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XMLWriter;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.Map;
 
 /**
  * 基于 Dom4j 实现 XML 文件的生成
@@ -18,7 +16,7 @@ import java.util.Map;
  * @version 1.0
  * @since 2024/1/18 9:47
  */
-public class XMLUtil {
+public class Dom4jXMLUtil {
 
     /* CONSTANT: doctype
      * --------------------------------------------------------------------------------------------------------- */
