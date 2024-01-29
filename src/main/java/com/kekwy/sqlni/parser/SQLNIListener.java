@@ -1,4 +1,4 @@
-package com.kekwy.sqlni.parser;// Generated from E:/projects/sqlni/sqlni-core/src/main/antlr/SQLNI.g4 by ANTLR 4.13.1
+package com.kekwy.sqlni.parser;// Generated from E:/projects/sqlni/src/main/antlr/SQLNI.g4 by ANTLR 4.13.1
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -36,6 +36,16 @@ public interface SQLNIListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitLimit(SQLNIParser.LimitContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link SQLNIParser#offset}.
+	 * @param ctx the parse tree
+	 */
+	void enterOffset(SQLNIParser.OffsetContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SQLNIParser#offset}.
+	 * @param ctx the parse tree
+	 */
+	void exitOffset(SQLNIParser.OffsetContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link SQLNIParser#columns}.
 	 * @param ctx the parse tree

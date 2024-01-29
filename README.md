@@ -415,3 +415,9 @@ SSH address: 127.0.0.1:2222
 vagrant 实现虚拟机的端口转发
 
 ![image-20240126230258539](README.assets/image-20240126230258539.png)
+
+最后一次调整架构了
+
+
+
+SQL 模板参考 queryDSL 实现。

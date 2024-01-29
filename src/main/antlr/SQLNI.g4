@@ -9,11 +9,15 @@ root
     ;
 
 select
-    : SELECT DISTINCT? ('*'|columns) FROM table (WHERE conditions)? limit? ';'?
+    : SELECT DISTINCT? ('*'|columns) FROM table (WHERE conditions)? limit? offset? ';'?
     ;
 
 limit
-    : LIMIT NUMBER (OFFSET NUMBER)?
+    : LIMIT NUMBER
+    ;
+
+offset
+    : OFFSET NUMBER
     ;
 
 columns
@@ -21,11 +25,11 @@ columns
     ;
 
 column
-    : ID                                # normalColumn
-    | param                             # paramColumn
-    | STRING                            # stringConst
-    | NUMBER                            # numberConst
-    | ID '(' column (',' column)* ')'   # funcColumn
+    : ID                    # normalColumn
+    | param                 # paramColumn
+    | STRING                # stringConst
+    | NUMBER                # numberConst
+    | ID '(' columns ')'    # funcColumn
     ;
 
 param: '#{' ID '}';

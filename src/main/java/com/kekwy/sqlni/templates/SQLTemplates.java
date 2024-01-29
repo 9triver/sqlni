@@ -1,10 +1,17 @@
 package com.kekwy.sqlni.templates;
 
 import com.kekwy.sqlni.SQLNISerializer;
+import com.kekwy.sqlni.node.Node;
+import com.kekwy.sqlni.node.TextNode;
+import com.kekwy.sqlni.parser.FuncTemplateBaseVisitor;
+import com.kekwy.sqlni.parser.FuncTemplateLexer;
+import com.kekwy.sqlni.parser.FuncTemplateParser;
+import com.kekwy.sqlni.parser.SQLNIParser;
+import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static com.kekwy.sqlni.templates.Keyword.*;
 
@@ -17,15 +24,11 @@ import static com.kekwy.sqlni.templates.Keyword.*;
  */
 public abstract class SQLTemplates {
 
-    private final String name;
-
     private final Map<Keyword, String> keywordMap = new HashMap<>();
 
     private final Map<String, String> funcTemplateMap = new HashMap<>();
 
-    protected SQLTemplates(String name) {
-        this.name = name;
-
+    protected SQLTemplates() {
         addKeyWord(SELECT, "SELECT");
         addKeyWord(FROM, "FROM");
         addKeyWord(WHERE, "WHERE");
@@ -39,6 +42,9 @@ public abstract class SQLTemplates {
         addFuncTemplate("<=", "{0} <= {1}");
         addFuncTemplate(">", "{0} > {1}");
         addFuncTemplate(">=", "{0} >= {1}");
+
+        addFuncTemplate("limit", "limit {0}");
+        addFuncTemplate("limitOffset", "offset {0}");
     }
 
     protected void addKeyWord(Keyword Keyword, String s) {
@@ -49,22 +55,119 @@ public abstract class SQLTemplates {
         funcTemplateMap.put(funcName, template);
     }
 
-    public String keyword(Keyword keyword) {
-        return keywordMap.get(keyword);
+    public String getSelect() {
+        return keywordMap.get(SELECT);
     }
 
-    public String function(String funcName) {
-        return funcTemplateMap.get(funcName);
+    public String getDistinct() {
+        return keywordMap.get(DISTINCT);
     }
 
-    public String name() {
-        return this.name;
+    public String getFrom() {
+        return keywordMap.get(FROM);
     }
 
-    // 参考 querydsl-sql 通过访问者模式解决 limit 的问题
-    public void serialize(ParseTree tree, SQLNISerializer sqlniSerializer) {
+    public String getWhere() {
+        return keywordMap.get(WHERE);
+    }
+
+    public String getAnd() {
+        return keywordMap.get(AND);
+    }
+
+    public String getOr() {
+        return keywordMap.get(OR);
+    }
+
+    public void serialize(SQLNIParser.SelectContext context, SQLNISerializer serializer) {
+        serializer.serialize(context);
+    }
+
+    public void serializeLimit(SQLNIParser.SelectContext context, SQLNISerializer serializer) {
+        if (context.limit() != null) {
+            String limitN = context.limit().NUMBER().getText();
+            function("limit", List.of(List.of(new TextNode(limitN))), serializer);
+            if (context.offset() != null) {
+                String offsetN = context.offset().NUMBER().getText();
+                function("limitOffset", List.of(List.of(new TextNode(offsetN))), serializer);
+            }
+        } else {
+            String offsetN = context.offset().NUMBER().getText();
+            function("limitOffset", List.of(List.of(new TextNode(offsetN))), serializer);
+        }
+    }
+
+    private final Map<String, ParseTree> funcParseTreeCache = new HashMap<>();
+
+    public void function(String funcName, List<List<Node>> args, SQLNISerializer serializer) {
+        ParseTree tree;
+        if (!funcParseTreeCache.containsKey(funcName)) {
+            tree = funcParseTreeCache.get(funcName);
+        } else {
+            tree = parseFuncTemplate(funcTemplateMap.get(funcName));
+            funcParseTreeCache.put(funcName, tree);
+        }
+        new FuncTemplateVisit(args, serializer).visit(tree);
+    }
+
+    public void function(String funcName, ParseTree context, SQLNISerializer serializer) {
 
     }
 
+    public static ParseTree parseFuncTemplate(String template) {
+        FuncTemplateLexer lexer = new FuncTemplateLexer(CharStreams.fromString(template));
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        FuncTemplateParser parser = new FuncTemplateParser(tokens);
+        return parser.function();
+    }
+
+    private static class FuncTemplateVisit extends FuncTemplateBaseVisitor<Void> {
+
+        private final List<List<Node>> args;
+        private final SQLNISerializer serializer;
+
+        public FuncTemplateVisit(List<List<Node>> args, SQLNISerializer serializer) {
+            this.args = args;
+            this.serializer = serializer;
+        }
+
+        @Override
+        public Void visitVarParams(FuncTemplateParser.VarParamsContext ctx) {
+            if (ctx.left != null) {
+                serializer.append(ctx.left.getText());
+            }
+            Iterator<List<Node>> it = args.iterator();
+            serializer.append(it.next());
+            while (it.hasNext()) {
+                serializer.append(ctx.separator.getText());
+                serializer.append(it.next());
+            }
+            if (ctx.right != null) {
+                serializer.append(ctx.right.getText());
+            }
+            return null;
+        }
+
+        @Override
+        public Void visitFixedParams(FuncTemplateParser.FixedParamsContext ctx) {
+            List<ParseTree> children = ctx.children;
+            for (ParseTree tree : children) {
+                visit(tree);
+            }
+            return null;
+        }
+
+        @Override
+        public Void visitParam(FuncTemplateParser.ParamContext ctx) {
+            serializer.append(args.get(Integer.parseInt(ctx.INT().getText())));
+            return null;
+        }
+
+        @Override
+        public Void visitText(FuncTemplateParser.TextContext ctx) {
+            serializer.append(ctx.getText());
+            return null;
+        }
+    }
 
 }

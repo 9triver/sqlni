@@ -1,4 +1,4 @@
-package com.kekwy.sqlni.parser;// Generated from E:/projects/sqlni/sqlni-core/src/main/antlr/SQLNI.g4 by ANTLR 4.13.1
+package com.kekwy.sqlni.parser;// Generated from E:/projects/sqlni/src/main/antlr/SQLNI.g4 by ANTLR 4.13.1
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
@@ -27,6 +27,12 @@ public interface SQLNIVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitLimit(SQLNIParser.LimitContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SQLNIParser#offset}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitOffset(SQLNIParser.OffsetContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link SQLNIParser#columns}.
 	 * @param ctx the parse tree

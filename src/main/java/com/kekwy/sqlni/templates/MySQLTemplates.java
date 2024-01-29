@@ -10,10 +10,6 @@ package com.kekwy.sqlni.templates;
 public class MySQLTemplates extends SQLTemplates {
 
     public MySQLTemplates() {
-        super("MySQL");
-
         addFuncTemplate("concat", "concat({0}, ...)");
-        addFuncTemplate("limit", "limit {0}");
-        addFuncTemplate("limitWithOffset", "limit {0} offset {1}");
     }
 }

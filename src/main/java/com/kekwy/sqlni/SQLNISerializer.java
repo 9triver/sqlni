@@ -13,8 +13,6 @@ import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.util.*;
 
-import static com.kekwy.sqlni.util.SQLTemplatesUtil.*;
-
 /**
  * 解析 SQLNI 语句并将其表达的查询序列化为 XML 格式
  *
@@ -22,9 +20,9 @@ import static com.kekwy.sqlni.util.SQLTemplatesUtil.*;
  * @version 1.0
  * @since 2024/1/28 16:29
  */
-public class SQLNISerializer extends SQLNIBaseVisitor<List<Node>> {
+public class SQLNISerializer extends SQLNIBaseVisitor<Void> {
 
-    private SQLTemplates sqlTemplates;
+    private final SQLTemplates sqlTemplates;
 
     private ElementNode root;
 
@@ -32,141 +30,138 @@ public class SQLNISerializer extends SQLNIBaseVisitor<List<Node>> {
         this.sqlTemplates = sqlTemplates;
     }
 
+    /**
+     * 将 SQLNI 语句序列化为 XML 格式，
+     */
     public ElementNode serialize(String statement) {
         ParseTree tree = parseSQLNI(statement);
-        sqlTemplates.serialize(tree, this); // 访问者模式
+        visit(tree);
         return root;
     }
 
-    public static ParseTree parseSQLNI(String statement) {
+    /**
+     * 解析 SQLNI 语句，生成语法树。
+     */
+    private ParseTree parseSQLNI(String statement) {
         SQLNILexer lexer = new SQLNILexer(CharStreams.fromString(statement));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         SQLNIParser parser = new SQLNIParser(tokens);
         return parser.root();
     }
 
+    public void append(String s) {
+        root.addNode(new TextNode(s));
+    }
+
+    public void append(List<Node> next) {
+        root.addNodes(next);
+    }
+
+    public String space(String s) {
+        return " " + s;
+    }
+
     private static final String TAG_SELECT = "select";
 
     @Override
-    public List<Node> visitSelect(SQLNIParser.SelectContext ctx) {
-        ElementNode selectNode = new ElementNode(TAG_SELECT);
-        selectNode.addTextWithoutSpace(select());     // select
+    public Void visitSelect(SQLNIParser.SelectContext ctx) {
+        root = new ElementNode(TAG_SELECT);
+        sqlTemplates.serialize(ctx, this); // 访问者模式
+        return null;
+    }
+
+    public void serialize(SQLNIParser.SelectContext ctx) {
+        append(sqlTemplates.getSelect());       // select
         /* distinct */
         if (ctx.DISTINCT() != null) {
-            selectNode.addText(distinct());
+            append(space(sqlTemplates.getDistinct()));
         }
         if (ctx.columns() != null) {
-            selectNode.addNodes(visit(ctx.columns()));    // select columns
+            visit(ctx.columns());               // select columns
         } else {
-            selectNode.addText("*");
+            append(space("*"));
         }
-        selectNode.addText(from()); // select columns from
-        selectNode.addNodes(visit(ctx.table()));      // select columns from table
+        append(space(sqlTemplates.getFrom()));  // select columns from
+        visit(ctx.table());                     // select columns from table
         /*  where   */
         if (ctx.WHERE() != null) {
-            selectNode.addText(where());
-            selectNode.addNodes(visit(ctx.conditions()));
+            append(space(sqlTemplates.getWhere()));
+            visit(ctx.conditions());
         }
         /*  limit   */
-        if (ctx.limit() != null) {
-            selectNode.addNode(new TextNode(" "));
-            selectNode.addNodes(visit(ctx.limit()));
+        if (ctx.limit() != null || ctx.offset() != null) {
+            sqlTemplates.serializeLimit(ctx, this);
         }
-        return List.of(selectNode);
     }
 
     private List<Node> textOf(String text) {
         return List.of(new TextNode(text));
     }
 
-
-    /* visit limit
-     * --------------------------------------------------------------------------------------------------------- */
-
-    @Override
-    public List<Node> visitLimit(SQLNIParser.LimitContext ctx) {
-        if (ctx.OFFSET() != null) {
-            return func("limitWithOffset", List.of(
-                    List.of(new TextNode(ctx.NUMBER(0).getText())),
-                    List.of(new TextNode(ctx.NUMBER(1).getText()))
-            ));
-        } else {
-            return func("limit", List.of(
-                    List.of(new TextNode(ctx.NUMBER(0).getText()))
-            ));
-        }
-    }
-
-
     /* visit column
      * --------------------------------------------------------------------------------------------------------- */
 
     @Override
-    public List<Node> visitColumns(SQLNIParser.ColumnsContext ctx) {
-        List<Node> nodes = new ArrayList<>(textOf(" "));
+    public Void visitColumns(SQLNIParser.ColumnsContext ctx) {
         List<SQLNIParser.ColumnContext> columnContexts = ctx.column();  // column1
-        nodes.addAll(visit(columnContexts.get(0)));
+        visit(columnContexts.get(0));
         for (int i = 1; i < columnContexts.size(); i++) {
-            nodes.addAll(textOf(", "));                                 // column1,
-            nodes.addAll(visit(columnContexts.get(i)));                 // column1, column2
+            append(", ");                                               // column1,
+            visit(columnContexts.get(i));                               // column1, column2
         }                                                               // column1, column2, ..., columnN
-        return nodes;
+        return null;
     }
 
     @Override
-    public List<Node> visitNormalColumn(SQLNIParser.NormalColumnContext ctx) {
-        return textOf(ctx.getText());
+    public Void visitNormalColumn(SQLNIParser.NormalColumnContext ctx) {
+        append(ctx.getText());
+        return null;
     }
 
     @Override
-    public List<Node> visitParamColumn(SQLNIParser.ParamColumnContext ctx) {
+    public Void visitParamColumn(SQLNIParser.ParamColumnContext ctx) {
         visit(ctx.param());
-        return textOf(ctx.getText());
+        append(ctx.getText());
+        return null;
     }
 
     @Override
-    public List<Node> visitFuncColumn(SQLNIParser.FuncColumnContext ctx) {
+    public Void visitFuncColumn(SQLNIParser.FuncColumnContext ctx) {
         String func = ctx.ID().getText();
-        List<List<Node>> params = new LinkedList<>();
-        List<SQLNIParser.ColumnContext> columnCtxList = ctx.column();
-        for (SQLNIParser.ColumnContext columnCtx : columnCtxList) {
-            params.add(visit(columnCtx));
-        }
-        List<Node> res = new LinkedList<>();
-        res.add(new TextNode(" "));
-        res.addAll(func(func, params));
-        return res;
+        append(space(""));
+        sqlTemplates.function(func, ctx.columns(), this);
+        return null;
     }
 
     /* visit const
      * --------------------------------------------------------------------------------------------------------- */
 
     @Override
-    public List<Node> visitStringConst(SQLNIParser.StringConstContext ctx) {
-        return textOf(ctx.getText());
+    public Void visitStringConst(SQLNIParser.StringConstContext ctx) {
+        append(ctx.getText());
+        return null;
     }
 
     @Override
-    public List<Node> visitNumberConst(SQLNIParser.NumberConstContext ctx) {
-        return textOf(ctx.getText());
+    public Void visitNumberConst(SQLNIParser.NumberConstContext ctx) {
+        append(ctx.getText());
+        return null;
     }
 
     /* visit table
      * --------------------------------------------------------------------------------------------------------- */
 
     @Override
-    public List<Node> visitConstTable(SQLNIParser.ConstTableContext ctx) {
-        List<Node> nodes = new ArrayList<>(textOf(" "));
-        nodes.addAll(textOf(ctx.getText()));
-        return nodes;
+    public Void visitConstTable(SQLNIParser.ConstTableContext ctx) {
+        append(space(ctx.getText()));
+        return null;
     }
-
 
     /* visit param
      * --------------------------------------------------------------------------------------------------------- */
 
     @Override
-    public List<Node> visitParam(SQLNIParser.ParamContext ctx) {
+    public Void visitParam(SQLNIParser.ParamContext ctx) {
         // TODO: 若为集合需要展开，若不在参数表里需要报错
         symbolsSet.add(ctx.ID().getText());
         return null;
@@ -177,39 +172,39 @@ public class SQLNISerializer extends SQLNIBaseVisitor<List<Node>> {
      * --------------------------------------------------------------------------------------------------------- */
 
     @Override
-    public List<Node> visitSingleCondition(SQLNIParser.SingleConditionContext ctx) {
-        return visit(ctx.condition());
+    public Void visitSingleCondition(SQLNIParser.SingleConditionContext ctx) {
+        visit(ctx.condition());
+        return null;
     }
 
     @Override
-    public List<Node> visitMultiCondtions(SQLNIParser.MultiCondtionsContext ctx) {
-        List<Node> res = new LinkedList<>(visit(ctx.condition()));
+    public Void visitMultiCondtions(SQLNIParser.MultiCondtionsContext ctx) {
+        visit(ctx.condition());
         if (ctx.AND() != null) {
-            res.add(new TextNode(" " + and()));
+            append(space(sqlTemplates.getAnd()));
         } else if (ctx.OR() != null) {
-            res.add(new TextNode(" " + or()));
+            append(space(sqlTemplates.getOr()));
         }
-        return res;
+        return null;
     }
 
     /* visit condition
      * --------------------------------------------------------------------------------------------------------- */
 
     @Override
-    public List<Node> visitCmpCondition(SQLNIParser.CmpConditionContext ctx) {
-        List<Node> left = visit(ctx.column(0));
-        List<Node> right = visit(ctx.column(1));
+    public Void visitCmpCondition(SQLNIParser.CmpConditionContext ctx) {
 //        '='|'!='|'<'|'<='|'>'|'>=
-        return func(ctx.OP().getText(), List.of(left, right));
+        sqlTemplates.function(ctx.OP().getText(), ctx, this);
+        return null;
     }
 
     @Override
-    public List<Node> visitInParamCondition(SQLNIParser.InParamConditionContext ctx) {
+    public Void visitInParamCondition(SQLNIParser.InParamConditionContext ctx) {
         return super.visitInParamCondition(ctx);
     }
 
     @Override
-    public List<Node> visitInSetCondition(SQLNIParser.InSetConditionContext ctx) {
+    public Void visitInSetCondition(SQLNIParser.InSetConditionContext ctx) {
         return super.visitInSetCondition(ctx);
     }
 

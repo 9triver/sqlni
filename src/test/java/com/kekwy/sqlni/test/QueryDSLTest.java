@@ -1,5 +1,6 @@
 package com.kekwy.sqlni.test;
 
+import com.querydsl.sql.MySQLTemplates;
 import com.querydsl.sql.OracleTemplates;
 import com.querydsl.sql.SQLQuery;
 import org.junit.Test;
@@ -17,7 +18,7 @@ public class QueryDSLTest {
 
     @Test
     public void sqlTemplatesTest() {
-        SQLQuery<?> query = new SQLQuery<>(new OracleTemplates());
+        SQLQuery<?> query = new SQLQuery<>(new MySQLTemplates());
         System.out.println(query.select(stringTemplate("a"), stringTemplate("b"))
                 .from(stringTemplate("t_table"))
                 .where(stringTemplate("c").eq(stringTemplate("234")))
