@@ -1,4 +1,4 @@
-package com.kekwy.sqlni;
+package com.kekwy.sqlni.mapper;
 
 import com.kekwy.sqlni.node.ElementNode;
 

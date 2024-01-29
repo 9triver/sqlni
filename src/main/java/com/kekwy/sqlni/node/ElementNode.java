@@ -5,13 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-/**
- * description
- *
- * @author Kekwy
- * @version 1.0
- * @since 2024/1/19 16:37
- */
 public class ElementNode implements Node {
 
     private final String name;

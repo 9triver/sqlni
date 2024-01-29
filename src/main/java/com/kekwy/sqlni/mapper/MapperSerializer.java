@@ -1,4 +1,4 @@
-package com.kekwy.sqlni;
+package com.kekwy.sqlni.mapper;
 
 import com.kekwy.sqlni.node.ElementNode;
 import com.kekwy.sqlni.node.Node;
@@ -21,13 +21,13 @@ import java.util.*;
  * @version 1.0
  * @since 2024/1/28 16:29
  */
-public class SQLNISerializer extends SQLNIBaseVisitor<Void> {
+public class MapperSerializer extends SQLNIBaseVisitor<Void> {
 
     private final SQLTemplates sqlTemplates;
 
     private ElementNode root;
 
-    public SQLNISerializer(SQLTemplates sqlTemplates) {
+    public MapperSerializer(SQLTemplates sqlTemplates) {
         this.sqlTemplates = sqlTemplates;
     }
 

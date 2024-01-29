@@ -1,5 +1,7 @@
 package com.kekwy.sqlni;
 
+import com.kekwy.sqlni.mapper.Mapper;
+import com.kekwy.sqlni.mapper.MapperBuilder;
 import com.kekwy.sqlni.templates.SQLTemplates;
 import com.kekwy.sqlni.util.SQLTemplatesUtil;
 import com.kekwy.sqlni.util.Dom4jXMLUtil;

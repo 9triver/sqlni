@@ -1,10 +1,7 @@
-package com.kekwy.sqlni;
+package com.kekwy.sqlni.mapper;
 
 import com.kekwy.sqlni.node.ElementNode;
-import com.kekwy.sqlni.node.Node;
-import com.kekwy.sqlni.parser.SQLNIBaseVisitor;
 import com.kekwy.sqlni.templates.SQLTemplates;
-import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -98,7 +95,7 @@ public class MapperBuilder {
         }
 
         public ElementNode build() {
-            ElementNode node = new SQLNISerializer(sqlTemplates).serialize(statement);
+            ElementNode node = new MapperSerializer(sqlTemplates).serialize(statement);
             node.addAttributes(Map.of(
                     NAME_ID, id,
                     NAME_RESULT_TYPE, resultType

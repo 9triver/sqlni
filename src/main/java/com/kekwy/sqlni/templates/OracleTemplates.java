@@ -1,6 +1,6 @@
 package com.kekwy.sqlni.templates;
 
-import com.kekwy.sqlni.SQLNISerializer;
+import com.kekwy.sqlni.mapper.MapperSerializer;
 import com.kekwy.sqlni.parser.SQLNIParser;
 
 import java.util.List;
@@ -25,7 +25,7 @@ public class OracleTemplates extends SQLTemplates {
 
     // 参考 querydsl-sql 通过访问者模式解决 limit 的问题
     @Override
-    public void serialize(SQLNIParser.SelectContext context, SQLNISerializer serializer) {
+    public void serialize(SQLNIParser.SelectContext context, MapperSerializer serializer) {
         if (context.limit() != null || context.limit() != null) {
             if (context.offset() == null) {
                 serializer.append(limitQueryStart);
@@ -47,7 +47,7 @@ public class OracleTemplates extends SQLTemplates {
     }
 
     @Override
-    public void serializeLimit(SQLNIParser.SelectContext context, SQLNISerializer serializer) {
+    public void serializeLimit(SQLNIParser.SelectContext context, MapperSerializer serializer) {
         // do nothing.
     }
 

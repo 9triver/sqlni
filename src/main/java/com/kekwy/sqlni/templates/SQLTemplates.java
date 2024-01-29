@@ -1,13 +1,12 @@
 package com.kekwy.sqlni.templates;
 
-import com.kekwy.sqlni.SQLNISerializer;
+import com.kekwy.sqlni.mapper.MapperSerializer;
 import com.kekwy.sqlni.parser.FuncTemplateBaseVisitor;
 import com.kekwy.sqlni.parser.FuncTemplateLexer;
 import com.kekwy.sqlni.parser.FuncTemplateParser;
 import com.kekwy.sqlni.parser.SQLNIParser;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.util.HashMap;
@@ -81,11 +80,11 @@ public abstract class SQLTemplates {
         return keywordMap.get(OR);
     }
 
-    public void serialize(SQLNIParser.SelectContext context, SQLNISerializer serializer) {
+    public void serialize(SQLNIParser.SelectContext context, MapperSerializer serializer) {
         serializer.serialize(context);
     }
 
-    public void serializeLimit(SQLNIParser.SelectContext context, SQLNISerializer serializer) {
+    public void serializeLimit(SQLNIParser.SelectContext context, MapperSerializer serializer) {
         serializer.append(" "); // 添加一个空格分割关键字
         if (context.limit() != null) {
             function("limit", List.of(context.limit()), serializer);
@@ -100,7 +99,7 @@ public abstract class SQLTemplates {
 
     private final Map<String, ParseTree> funcParseTreeCache = new HashMap<>();
 
-    public void function(String funcName, List<? extends ParseTree> contexts, SQLNISerializer serializer) {
+    public void function(String funcName, List<? extends ParseTree> contexts, MapperSerializer serializer) {
         ParseTree tree;
         if (funcParseTreeCache.containsKey(funcName)) {
             tree = funcParseTreeCache.get(funcName);
@@ -121,9 +120,9 @@ public abstract class SQLTemplates {
     private static class FuncTemplateVisit extends FuncTemplateBaseVisitor<Void> {
 
         private final List<? extends ParseTree> contexts;
-        private final SQLNISerializer serializer;
+        private final MapperSerializer serializer;
 
-        public FuncTemplateVisit(List<? extends ParseTree> contexts, SQLNISerializer serializer) {
+        public FuncTemplateVisit(List<? extends ParseTree> contexts, MapperSerializer serializer) {
             this.contexts = contexts;
             this.serializer = serializer;
         }
