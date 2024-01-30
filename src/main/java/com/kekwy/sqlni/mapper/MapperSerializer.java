@@ -168,7 +168,7 @@ public class MapperSerializer extends SQLNIBaseVisitor<Void> {
 
     @Override
     public Void visitParam(SQLNIParser.ParamContext ctx) {
-        // TODO: 若为集合需要展开，若不在参数表里需要报错
+        // oldTODO: 若为集合需要展开，若不在参数表里需要报错
         symbolsSet.add(ctx.ID().getText());
         return null;
     }
