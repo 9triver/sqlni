@@ -24,8 +24,13 @@ import java.util.*;
 public class MapperSerializer extends SQLNIBaseVisitor<Void> {
 
     private final SQLTemplates sqlTemplates;
-
     private ElementNode root;
+    private String lastConditionConnector = null;
+
+    private static final String TAG_SELECT = "select";
+    private static final String TAG_IF = "if";
+    private static final String TAG_FOREACH = "foreach";
+    private static final String ATTR_TEST = "test";
 
     public MapperSerializer(SQLTemplates sqlTemplates) {
         this.sqlTemplates = sqlTemplates;
@@ -62,8 +67,6 @@ public class MapperSerializer extends SQLNIBaseVisitor<Void> {
         return " " + s;
     }
 
-    private static final String TAG_SELECT = "select";
-
     @Override
     public Void visitSelect(SQLNIParser.SelectContext ctx) {
         root = new ElementNode(TAG_SELECT);
@@ -87,7 +90,7 @@ public class MapperSerializer extends SQLNIBaseVisitor<Void> {
         visit(ctx.table());                     // select columns from table
         /*  where   */
         if (ctx.WHERE() != null) {
-            append(space(sqlTemplates.getWhere()));
+            lastConditionConnector = sqlTemplates.getWhere();
             visit(ctx.conditions());
         }
         /*  limit   */
@@ -184,10 +187,11 @@ public class MapperSerializer extends SQLNIBaseVisitor<Void> {
     public Void visitMultiCondtions(SQLNIParser.MultiCondtionsContext ctx) {
         visit(ctx.condition());
         if (ctx.AND() != null) {
-            append(space(sqlTemplates.getAnd()));
+            lastConditionConnector = sqlTemplates.getAnd();
         } else if (ctx.OR() != null) {
-            append(space(sqlTemplates.getOr()));
+            lastConditionConnector = sqlTemplates.getOr();
         }
+        visit(ctx.conditions());
         return null;
     }
 
@@ -196,14 +200,58 @@ public class MapperSerializer extends SQLNIBaseVisitor<Void> {
 
     @Override
     public Void visitCmpCondition(SQLNIParser.CmpConditionContext ctx) {
+        append(space(lastConditionConnector));
 //        '='|'!='|'<'|'<='|'>'|'>=
         sqlTemplates.function(ctx.OP().getText(), ctx.column(), this);
         return null;
     }
 
+    private static final String IS_NOT_NULL_TEMPLATE = "%s != null";
+
     @Override
     public Void visitInParamCondition(SQLNIParser.InParamConditionContext ctx) {
-        return super.visitInParamCondition(ctx);
+        if (Objects.equals(lastConditionConnector, sqlTemplates.getWhere())) {
+            append(space(lastConditionConnector));
+            append(space("1 = 1"));
+            lastConditionConnector = sqlTemplates.getAnd();
+        }
+        visit(ctx.param());
+        String param = ctx.param().ID().getText();
+        Stack<ElementNode> stack = new Stack<>();
+        // 创建 IF 结点
+        stack.push(root);
+        root = root.addElement(TAG_IF);
+        root.addAttribute(ATTR_TEST,
+                IS_NOT_NULL_TEMPLATE.formatted(param)
+        );
+        append(space(lastConditionConnector));
+        append(" "); // 添加空格
+        visit(ctx.column());
+        append(space(sqlTemplates.getIn()));
+        // 创建 ForEach 结点
+        stack.push(root);
+        root = root.addElement(TAG_FOREACH);
+        String item = generateItem(param);
+        root.addAttributes(Map.of(
+                "collection", param,
+                "index", "index",
+                "item", item,
+                "open", " {",
+                "close", "} ",
+                "separator", ", "
+        ));
+        append("#{" + item + "}");
+        root = stack.pop(); // 退出 foreach 结点
+        root = stack.pop(); // 退出 if 结点
+        return null;
+    }
+
+    private String generateItem(String param) {
+        String res = param + "Item";
+        while (symbolsSet.contains(res)) { // 避免在上下文中有重复的变量名
+            res += "I";
+        }
+        return res;
     }
 
     @Override
@@ -237,7 +285,6 @@ public class MapperSerializer extends SQLNIBaseVisitor<Void> {
         append(ctx.getText());
         return null;
     }
-
 
 
     /**

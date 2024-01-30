@@ -73,6 +73,12 @@ public class ElementNode implements Node {
         }
     }
 
+    public ElementNode addElement(String name) {
+        ElementNode node = new ElementNode(name);
+        nodes.add(node);
+        return node;
+    }
+
     @Override
     public void serialize(NodeSerializer serializer) {
         NodeSerializer subSerializer = serializer.addElement(name, attributes);

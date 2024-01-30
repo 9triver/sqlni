@@ -143,7 +143,25 @@ initial release.
 **2024-1-28 更新说明**：
 
 1. 调整架构，通过访问者模式解决 Oracle 方言需要通过子查询实现 limit 功能的问题；
-2. 增加对方法中参数的解析校验功能，若在 SQLNI 语句中出现在方法参数表中未出现的参数需要向用户发出警告，若在 SQLNI 语句中出现的参数在方法参数表中对应的参数类型为集合，则需要根据其在 SQLNI 语句中的上下文环境通过添加 `<foreach>` 标签进行展开。
+
+2. 实现对 `inParamCondition` 规则的处理，支持生成 `<if>` 与 `<foreach>` 标签。
+
+   在通过 `<foreach>` 标签遍历集合时，需要先通过 `<if>` 标签判空，若 IN 条件紧跟着 WHERE 关键字，则会自动在 WHERE 之后添加 `1 = 1` 恒等条件，保证语法正确。
+
+   ```text
+   SELECT * FROM t_employee WHERE department IN #{departmentSet};
+   ```
+
+   ```xml
+   <select resultType="com.kekwy.sqlni.example.entity.Employee" id="getEmployeeWhoseDepartmentInSet">
+     SELECT * FROM t_employee WHERE 1 = 1
+     <if test="departmentSet != null"> 
+       AND department IN
+       <foreach item="departmentSetItem" index="index" collection="departmentSet" close="} " separator=", " open=" {">
+         #{departmentSetItem}
+       </foreach>
+     </if>
+   </select>
 
 **2024-1-27 更新说明**：
 

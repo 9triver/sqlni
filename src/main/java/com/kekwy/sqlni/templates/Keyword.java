@@ -13,5 +13,6 @@ public enum Keyword {
     WHERE,
     AND,
     OR,
-    DISTINCT
+    DISTINCT,
+    IN
 }

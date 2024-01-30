@@ -36,6 +36,7 @@ public abstract class SQLTemplates {
         addKeyWord(AND, "AND");
         addKeyWord(OR, "OR");
         addKeyWord(DISTINCT, "DISTINCT");
+        addKeyWord(IN, "IN");
 
         addFuncTemplate("=", "{0} = {1}");
         addFuncTemplate("!=", "{0} != {1}");
@@ -78,6 +79,10 @@ public abstract class SQLTemplates {
 
     public String getOr() {
         return keywordMap.get(OR);
+    }
+
+    public String getIn() {
+        return keywordMap.get(IN);
     }
 
     public void serialize(SQLNIParser.SelectContext context, MapperSerializer serializer) {
