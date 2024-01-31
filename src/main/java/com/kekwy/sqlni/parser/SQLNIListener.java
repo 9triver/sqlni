@@ -75,6 +75,40 @@ public interface SQLNIListener extends ParseTreeListener {
 	 */
 	void exitNumberOffset(SQLNIParser.NumberOffsetContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code orderByColumns}
+	 * labeled alternative in {@link SQLNIParser#orderBy}.
+	 * @param ctx the parse tree
+	 */
+	void enterOrderByColumns(SQLNIParser.OrderByColumnsContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code orderByColumns}
+	 * labeled alternative in {@link SQLNIParser#orderBy}.
+	 * @param ctx the parse tree
+	 */
+	void exitOrderByColumns(SQLNIParser.OrderByColumnsContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code orderByParam}
+	 * labeled alternative in {@link SQLNIParser#orderBy}.
+	 * @param ctx the parse tree
+	 */
+	void enterOrderByParam(SQLNIParser.OrderByParamContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code orderByParam}
+	 * labeled alternative in {@link SQLNIParser#orderBy}.
+	 * @param ctx the parse tree
+	 */
+	void exitOrderByParam(SQLNIParser.OrderByParamContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link SQLNIParser#orderColumn}.
+	 * @param ctx the parse tree
+	 */
+	void enterOrderColumn(SQLNIParser.OrderColumnContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SQLNIParser#orderColumn}.
+	 * @param ctx the parse tree
+	 */
+	void exitOrderColumn(SQLNIParser.OrderColumnContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link SQLNIParser#columns}.
 	 * @param ctx the parse tree
 	 */

@@ -12,6 +12,7 @@ select
     :   SELECT DISTINCT? ('*'|columns)
         FROM table
         (WHERE conditions)?
+        orderBy?
         (LIMIT limit)? (OFFSET offset)? ';'?
     |
     ;
@@ -24,6 +25,15 @@ limit
 offset
     : param     # paramOffset
     | NUMBER    # numberOffset
+    ;
+
+orderBy
+    : ORDER BY orderColumn (',' orderColumn)* # orderByColumns
+    | ORDER BY param                          # orderByParam
+    ;
+
+orderColumn
+    : column (DESC|ASC)?
     ;
 
 columns
@@ -68,14 +78,15 @@ condition
 SELECT: [Ss][Ee][Ll][Ee][Cc][Tt]; // select
 FROM  : [Ff][Rr][Oo][Mm];         // from
 WHERE : [Ww][Hh][Ee][Rr][Ee];     // where
-
-LIMIT: [Ll][Ii][Mm][Ii][Tt];        // limit
+LIMIT : [Ll][Ii][Mm][Ii][Tt];        // limit
 OFFSET: [Oo][Ff][Ff][Ss][Ee][Tt];   // offset
-
-AND : [Aa][Nn][Dd]; // and
-OR  : [Oo][Rr];     // or
-
-IN: [Ii][Nn];
+AND   : [Aa][Nn][Dd]; // and
+OR    : [Oo][Rr];     // or
+IN    : [Ii][Nn]; // in
+ORDER : [Oo][Rr][Dd][Ee][Rr]; // order
+BY    : [Bb][Yy];
+DESC  : [Dd][Ee][Ss][Cc];
+ASC   : [Aa][Ss][Cc];
 
 OP: '='|'!='|'<'|'<='|'>'|'>=';
 

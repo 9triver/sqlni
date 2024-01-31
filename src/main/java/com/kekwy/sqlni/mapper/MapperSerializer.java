@@ -31,6 +31,7 @@ public class MapperSerializer extends SQLNIBaseVisitor<Void> {
     private static final String TAG_IF = "if";
     private static final String TAG_FOREACH = "foreach";
     private static final String ATTR_TEST = "test";
+    private static final String STR_SPACE = " ";
 
     public MapperSerializer(SQLTemplates sqlTemplates) {
         this.sqlTemplates = sqlTemplates;
@@ -74,6 +75,9 @@ public class MapperSerializer extends SQLNIBaseVisitor<Void> {
         return null;
     }
 
+    /**
+     * 序列化 SELECT 语句
+     */
     public void serialize(SQLNIParser.SelectContext ctx) {
         append(sqlTemplates.getSelect());       // select
         /* distinct */
@@ -92,6 +96,9 @@ public class MapperSerializer extends SQLNIBaseVisitor<Void> {
         if (ctx.WHERE() != null) {
             lastConditionConnector = sqlTemplates.getWhere();
             visit(ctx.conditions());
+        }
+        if (ctx.orderBy() != null) {
+            visit(ctx.orderBy());
         }
         /*  limit   */
         if (ctx.limit() != null || ctx.offset() != null) {
@@ -284,6 +291,37 @@ public class MapperSerializer extends SQLNIBaseVisitor<Void> {
         visit(ctx.param());
         append(ctx.getText());
         return null;
+    }
+
+    /* visit order by
+     * --------------------------------------------------------------------------------------------------------- */
+
+    @Override
+    public Void visitOrderByColumns(SQLNIParser.OrderByColumnsContext ctx) {
+        append(STR_SPACE + sqlTemplates.getOrderBy() + STR_SPACE);
+        Iterator<SQLNIParser.OrderColumnContext> it = ctx.orderColumn().iterator();
+        visit(it.next());
+        while (it.hasNext()) {
+            append(", ");
+            visit(it.next());
+        }
+        return null;
+    }
+
+    @Override
+    public Void visitOrderColumn(SQLNIParser.OrderColumnContext ctx) {
+        visit(ctx.column());
+        if (ctx.ASC() != null) {
+            append(space(sqlTemplates.getASC()));
+        } else if (ctx.DESC() != null) {
+            append(space(sqlTemplates.getDESC()));
+        }
+        return null;
+    }
+
+    @Override
+    public Void visitOrderByParam(SQLNIParser.OrderByParamContext ctx) {
+        return super.visitOrderByParam(ctx);
     }
 
 

@@ -37,6 +37,9 @@ public abstract class SQLTemplates {
         addKeyWord(OR, "OR");
         addKeyWord(DISTINCT, "DISTINCT");
         addKeyWord(IN, "IN");
+        addKeyWord(ORDER_BY, "ORDER BY");
+        addKeyWord(ASC, "ASC");
+        addKeyWord(DESC, "DESC");
 
         addFuncTemplate("=", "{0} = {1}");
         addFuncTemplate("!=", "{0} != {1}");
@@ -83,6 +86,18 @@ public abstract class SQLTemplates {
 
     public String getIn() {
         return keywordMap.get(IN);
+    }
+
+    public String getOrderBy() {
+        return keywordMap.get(ORDER_BY);
+    }
+
+    public String getASC() {
+        return keywordMap.get(ASC);
+    }
+
+    public String getDESC() {
+        return keywordMap.get(DESC);
     }
 
     public void serialize(SQLNIParser.SelectContext context, MapperSerializer serializer) {

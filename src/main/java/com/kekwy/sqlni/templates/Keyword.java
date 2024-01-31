@@ -14,5 +14,8 @@ public enum Keyword {
     AND,
     OR,
     DISTINCT,
-    IN
+    IN,
+    ORDER_BY,
+    ASC,
+    DESC
 }

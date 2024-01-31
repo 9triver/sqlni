@@ -88,6 +88,42 @@ public class SQLNIBaseListener implements SQLNIListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterOrderByColumns(SQLNIParser.OrderByColumnsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitOrderByColumns(SQLNIParser.OrderByColumnsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterOrderByParam(SQLNIParser.OrderByParamContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitOrderByParam(SQLNIParser.OrderByParamContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterOrderColumn(SQLNIParser.OrderColumnContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitOrderColumn(SQLNIParser.OrderColumnContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterColumns(SQLNIParser.ColumnsContext ctx) { }
 	/**
 	 * {@inheritDoc}

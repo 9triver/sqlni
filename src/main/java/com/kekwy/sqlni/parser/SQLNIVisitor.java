@@ -50,6 +50,26 @@ public interface SQLNIVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitNumberOffset(SQLNIParser.NumberOffsetContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code orderByColumns}
+	 * labeled alternative in {@link SQLNIParser#orderBy}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitOrderByColumns(SQLNIParser.OrderByColumnsContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code orderByParam}
+	 * labeled alternative in {@link SQLNIParser#orderBy}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitOrderByParam(SQLNIParser.OrderByParamContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SQLNIParser#orderColumn}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitOrderColumn(SQLNIParser.OrderColumnContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link SQLNIParser#columns}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
