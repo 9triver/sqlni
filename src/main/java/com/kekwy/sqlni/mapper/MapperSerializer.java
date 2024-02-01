@@ -7,6 +7,7 @@ import com.kekwy.sqlni.parser.SQLNIBaseVisitor;
 import com.kekwy.sqlni.parser.SQLNILexer;
 import com.kekwy.sqlni.parser.SQLNIParser;
 import com.kekwy.sqlni.templates.SQLTemplates;
+import com.kekwy.sqlni.util.NodeUtil;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -24,13 +25,14 @@ import java.util.*;
 public class MapperSerializer extends SQLNIBaseVisitor<Void> {
 
     private final SQLTemplates sqlTemplates;
-    private ElementNode root;
     private String lastConditionConnector = null;
+    // 对 SQL 语句中某些关键字或分隔符等字段进行延迟写入，
+    // 因为有时需要根据其后的部分决定是否在该字段前添加 <if> 标签
+    private Stack<String> connectorStack = new Stack<>();
 
     private static final String TAG_SELECT = "select";
-    private static final String TAG_IF = "if";
-    private static final String TAG_FOREACH = "foreach";
-    private static final String ATTR_TEST = "test";
+
+
     private static final String STR_SPACE = " ";
 
     public MapperSerializer(SQLTemplates sqlTemplates) {
@@ -43,7 +45,7 @@ public class MapperSerializer extends SQLNIBaseVisitor<Void> {
     public ElementNode serialize(String statement) {
         ParseTree tree = parseSQLNI(statement);
         visit(tree);
-        return root;
+        return top();
     }
 
     /**
@@ -57,11 +59,11 @@ public class MapperSerializer extends SQLNIBaseVisitor<Void> {
     }
 
     public void append(String s) {
-        root.addNode(new TextNode(s));
+        top().addNode(new TextNode(s));
     }
 
     public void append(List<Node> next) {
-        root.addNodes(next);
+        top().addNodes(next);
     }
 
     private String space(String s) {
@@ -70,7 +72,7 @@ public class MapperSerializer extends SQLNIBaseVisitor<Void> {
 
     @Override
     public Void visitSelect(SQLNIParser.SelectContext ctx) {
-        root = new ElementNode(TAG_SELECT);
+        nodeStack.push(new ElementNode(TAG_SELECT));
         sqlTemplates.serialize(ctx, this); // 访问者模式
         return null;
     }
@@ -126,9 +128,20 @@ public class MapperSerializer extends SQLNIBaseVisitor<Void> {
         return null;
     }
 
+    private void pop() {
+        nodeStack.pop();
+    }
+
+
+
     @Override
     public Void visitParamColumn(SQLNIParser.ParamColumnContext ctx) {
         visit(ctx.param());
+        String param = ctx.param().ID().getText();
+        if (isCollection.contains(param)) {
+            push(NodeUtil.ifNotNull(param));
+
+        }
         append(ctx.getText());
         return null;
     }
@@ -137,7 +150,7 @@ public class MapperSerializer extends SQLNIBaseVisitor<Void> {
     public Void visitFuncColumn(SQLNIParser.FuncColumnContext ctx) {
         String func = ctx.ID().getText();
         append(space(""));
-        sqlTemplates.function(func, ctx.columns().column(), this);
+        sqlTemplates.function(func, ctx.column(), this);
         return null;
     }
 
@@ -213,7 +226,17 @@ public class MapperSerializer extends SQLNIBaseVisitor<Void> {
         return null;
     }
 
-    private static final String IS_NOT_NULL_TEMPLATE = "%s != null";
+    private final Stack<ElementNode> nodeStack = new Stack<>();
+
+    private ElementNode top() {
+        return nodeStack.peek();
+    }
+
+    private void push(ElementNode node) {
+        nodeStack.peek().addNode(node);
+        nodeStack.push(node);
+    }
+
 
     @Override
     public Void visitInParamCondition(SQLNIParser.InParamConditionContext ctx) {
@@ -224,32 +247,20 @@ public class MapperSerializer extends SQLNIBaseVisitor<Void> {
         }
         visit(ctx.param());
         String param = ctx.param().ID().getText();
-        Stack<ElementNode> stack = new Stack<>();
-        // 创建 IF 结点
-        stack.push(root);
-        root = root.addElement(TAG_IF);
-        root.addAttribute(ATTR_TEST,
-                IS_NOT_NULL_TEMPLATE.formatted(param)
-        );
+        push(NodeUtil.ifNotNull(param)); // 创建 IF 结点
         append(space(lastConditionConnector));
         append(" "); // 添加空格
         visit(ctx.column());
         append(space(sqlTemplates.getIn()));
-        // 创建 ForEach 结点
-        stack.push(root);
-        root = root.addElement(TAG_FOREACH);
+
         String item = generateItem(param);
-        root.addAttributes(Map.of(
-                "collection", param,
-                "index", "index",
-                "item", item,
-                "open", " {",
-                "close", "} ",
-                "separator", ", "
-        ));
+        append(" {");
+        push(NodeUtil.foreach(param, item)); // 创建 ForEach 结点
         append("#{" + item + "}");
-        root = stack.pop(); // 退出 foreach 结点
-        root = stack.pop(); // 退出 if 结点
+        pop(); // 退出 foreach 结点
+
+        append("} ");
+        pop(); // 退出 if 结点
         return null;
     }
 
@@ -258,6 +269,7 @@ public class MapperSerializer extends SQLNIBaseVisitor<Void> {
         while (symbolsSet.contains(res)) { // 避免在上下文中有重复的变量名
             res += "I";
         }
+        symbolsSet.add(res);
         return res;
     }
 
@@ -297,12 +309,12 @@ public class MapperSerializer extends SQLNIBaseVisitor<Void> {
      * --------------------------------------------------------------------------------------------------------- */
 
     @Override
-    public Void visitOrderByColumns(SQLNIParser.OrderByColumnsContext ctx) {
-        append(STR_SPACE + sqlTemplates.getOrderBy() + STR_SPACE);
+    public Void visitOrderBy(SQLNIParser.OrderByContext ctx) {
+        connectorStack.push(STR_SPACE + sqlTemplates.getOrderBy() + STR_SPACE);
         Iterator<SQLNIParser.OrderColumnContext> it = ctx.orderColumn().iterator();
         visit(it.next());
         while (it.hasNext()) {
-            append(", ");
+            connectorStack.push(", ");
             visit(it.next());
         }
         return null;
@@ -319,9 +331,13 @@ public class MapperSerializer extends SQLNIBaseVisitor<Void> {
         return null;
     }
 
+    /* visit as
+     * --------------------------------------------------------------------------------------------------------- */
+
     @Override
-    public Void visitOrderByParam(SQLNIParser.OrderByParamContext ctx) {
-        return super.visitOrderByParam(ctx);
+    public Void visitAs(SQLNIParser.AsContext ctx) {
+        append(space(sqlTemplates.getAs()));
+        return null;
     }
 
 
@@ -338,5 +354,14 @@ public class MapperSerializer extends SQLNIBaseVisitor<Void> {
         }
     }
 
+    private Map<String, String> parameterType = new HashMap<>();
+
+    private Set<String> isCollection = new HashSet<>();
+
+    public MapperSerializer parameters(Map<String, String> parameterType, Set<String> isCollection) {
+        this.parameterType = parameterType;
+        this.isCollection = isCollection;
+        return this;
+    }
 }
 
