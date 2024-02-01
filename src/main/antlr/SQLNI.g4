@@ -28,8 +28,7 @@ offset
     ;
 
 orderBy
-    : ORDER BY orderColumn (',' orderColumn)* # orderByColumns
-    | ORDER BY param                          # orderByParam
+    : ORDER BY orderColumn (',' orderColumn)*
     ;
 
 orderColumn
@@ -37,22 +36,29 @@ orderColumn
     ;
 
 columns
-    : column (',' column)*
+    : column as? (',' column as?)*
     ;
 
 column
-    : ID                    # normalColumn
-    | param                 # paramColumn
-    | STRING                # stringConst
-    | NUMBER                # numberConst
-    | ID '(' columns ')'    # funcColumn
+    : (ID|ID'.'ID)                      # normalColumn
+    | param                             # paramColumn
+    | STRING                            # stringConst
+    | NUMBER                            # numberConst
+    | ID '(' column (',' column)* ')'   # funcColumn
     ;
 
-param: '#{' ID '}';
+param
+    : left='#{' ID right='}'
+    | left='${' ID right='}'
+    ;
 
 table
-    : ID        # constTable
-    | param     # paramTable
+    : ID as?    # constTable
+    | param as? # paramTable
+    ;
+
+as
+    : AS ID
     ;
 
 conditions
@@ -63,8 +69,7 @@ conditions
 
 condition
     : column OP column  # cmpCondition
-    | column IN param   # inParamCondition
-    | column IN SET     # inSetCondition
+    | column IN '{' columns '}' # inCondition
     ;
 
 
@@ -75,18 +80,19 @@ condition
 
 
 /* Lexer */
-SELECT: [Ss][Ee][Ll][Ee][Cc][Tt]; // select
-FROM  : [Ff][Rr][Oo][Mm];         // from
-WHERE : [Ww][Hh][Ee][Rr][Ee];     // where
-LIMIT : [Ll][Ii][Mm][Ii][Tt];        // limit
+SELECT: [Ss][Ee][Ll][Ee][Cc][Tt];   // select
+FROM  : [Ff][Rr][Oo][Mm];           // from
+WHERE : [Ww][Hh][Ee][Rr][Ee];       // where
+LIMIT : [Ll][Ii][Mm][Ii][Tt];       // limit
 OFFSET: [Oo][Ff][Ff][Ss][Ee][Tt];   // offset
-AND   : [Aa][Nn][Dd]; // and
-OR    : [Oo][Rr];     // or
-IN    : [Ii][Nn]; // in
-ORDER : [Oo][Rr][Dd][Ee][Rr]; // order
-BY    : [Bb][Yy];
-DESC  : [Dd][Ee][Ss][Cc];
-ASC   : [Aa][Ss][Cc];
+AND   : [Aa][Nn][Dd];               // and
+OR    : [Oo][Rr];                   // or
+IN    : [Ii][Nn];                   // in
+ORDER : [Oo][Rr][Dd][Ee][Rr];       // order
+BY    : [Bb][Yy];                   // by
+DESC  : [Dd][Ee][Ss][Cc];           // desc
+ASC   : [Aa][Ss][Cc];               // asc
+AS    : [Aa][Ss];                   // as
 
 OP: '='|'!='|'<'|'<='|'>'|'>=';
 
