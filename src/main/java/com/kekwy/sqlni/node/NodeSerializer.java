@@ -15,4 +15,6 @@ public interface NodeSerializer {
 
     void addText(String text);
 
+    void addComment(String comment);
+
 }

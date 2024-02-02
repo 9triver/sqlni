@@ -29,6 +29,11 @@ public class NodeSerializerDom4jImp implements NodeSerializer {
         public void addText(String text) {
             // do nothing
         }
+
+        @Override
+        public void addComment(String comment) {
+            // do nothing
+        }
     }
 
     private record ElementSerializer(Element element) implements NodeSerializer {
@@ -43,6 +48,11 @@ public class NodeSerializerDom4jImp implements NodeSerializer {
         @Override
         public void addText(String text) {
             element.addText(text);
+        }
+
+        @Override
+        public void addComment(String comment) {
+            element.addComment(comment);
         }
     }
 
@@ -62,6 +72,11 @@ public class NodeSerializerDom4jImp implements NodeSerializer {
     @Override
     public void addText(String text) {
         innerSerializer.addText(text);
+    }
+
+    @Override
+    public void addComment(String comment) {
+        innerSerializer.addComment(comment);
     }
 
 }

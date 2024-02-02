@@ -31,7 +31,7 @@ public class UseSQLNIProcessor extends AbstractProcessor {
     private SQLTemplates sqlTemplates;
 
     /**
-     * 从
+     * 从 pom.xml 文件中读取有关 SQL 模板的配置信息
      *
      * @param processingEnv environment to access facilities the tool framework
      *                      provides to the processor
@@ -105,7 +105,6 @@ public class UseSQLNIProcessor extends AbstractProcessor {
                 // 添加方法并设置 resultType 和 statement
                 // TODO: 处理 resultMap 的情况
 //                Map<String, String> parameterTypeMap = buildParameterTypeMap(methodElement.getParameters());
-                
                 builder.addMethod(methodName)
                         .resultType(resultType)
                         .statement(statement);

@@ -1,5 +1,6 @@
 package com.kekwy.sqlni.mapper;
 
+import com.kekwy.sqlni.node.CommentNode;
 import com.kekwy.sqlni.node.ElementNode;
 import com.kekwy.sqlni.templates.SQLTemplates;
 
@@ -48,6 +49,7 @@ public class MapperBuilder {
         root.addAttribute(NAME_NAMESPACE, namespace);
         // 遍历 methodBuilder，并调用 build() 方法
         for (MethodBuilder methodBuilder : methodBuilders) {
+            root.addNode(new CommentNode(methodBuilder.id));
             root.addNode(methodBuilder.build());
         }
         // 解析 Mapper 的包名和类名，创建 Mapper 对象

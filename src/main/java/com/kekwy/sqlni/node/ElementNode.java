@@ -49,18 +49,14 @@ public class ElementNode implements Node {
     public void addNode(Node node) {
         if (node instanceof TextNode textNode) {
             addTextNode(textNode);
-        } else if (node instanceof ElementNode elementNode) {
-            addElementNode(elementNode);
+        } else {
+            lastTextNode = null;
+            nodes.add(node);
         }
     }
 
     public void addNodes(List<Node> nodes) {
         nodes.forEach(this::addNode);
-    }
-
-    private void addElementNode(ElementNode node) {
-        lastTextNode = null;
-        nodes.add(node);
     }
 
     private void addTextNode(TextNode textNode) {
