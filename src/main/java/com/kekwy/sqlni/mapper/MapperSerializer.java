@@ -28,7 +28,7 @@ public class MapperSerializer extends SQLNIBaseVisitor<Void> {
 
     // 对 SQL 语句中某些关键字或分隔符等字段进行延迟写入，
     // 因为有时需要根据其后的部分决定是否在该字段前添加 <if> 标签
-    private final Stack<String> connectorStack = new Stack<>();
+    private final Queue<String> connectorQueue = new LinkedList<>();
 
     private static final String TAG_SELECT = "select";
 
@@ -97,9 +97,10 @@ public class MapperSerializer extends SQLNIBaseVisitor<Void> {
         visit(ctx.table());                     // select columns from table
         /*  where   */
         if (ctx.WHERE() != null) {
-            connectorStack.push(sqlTemplates.getWhere());
+            connectorQueue.offer(sqlTemplates.getWhere());
             visit(ctx.conditions());
         }
+        poll();
         if (ctx.orderBy() != null) {
             visit(ctx.orderBy());
         }
@@ -216,14 +217,30 @@ public class MapperSerializer extends SQLNIBaseVisitor<Void> {
     }
 
     @Override
-    public Void visitMultiCondtions(SQLNIParser.MultiCondtionsContext ctx) {
-        visit(ctx.condition());
-        if (ctx.AND() != null) {
-            connectorStack.push(sqlTemplates.getAnd());
-        } else if (ctx.OR() != null) {
-            connectorStack.push(sqlTemplates.getOr());
-        }
+    public Void visitNotConditions(SQLNIParser.NotConditionsContext ctx) {
+        offer(sqlTemplates.getNot());
         visit(ctx.conditions());
+        return null;
+    }
+
+    @Override
+    public Void visitSubConditions(SQLNIParser.SubConditionsContext ctx) {
+        offer(" (");
+        visit(ctx.conditions());
+        offer(") ");
+        return null;
+    }
+
+    @Override
+    public Void visitMultiCondtions(SQLNIParser.MultiCondtionsContext ctx) {
+        visit(ctx.conditions(0));
+        // bug: ctx.opt.getTokenIndex()
+        if (ctx.opt.getType() == SQLNILexer.AND) {
+            offer(sqlTemplates.getAnd());
+        } else {
+            offer(sqlTemplates.getOr());
+        }
+        visit(ctx.conditions(1));
         return null;
     }
 
@@ -232,7 +249,8 @@ public class MapperSerializer extends SQLNIBaseVisitor<Void> {
 
     @Override
     public Void visitCmpCondition(SQLNIParser.CmpConditionContext ctx) {
-        append(STR_SPACE + connectorStack.pop() + STR_SPACE);
+        poll();
+        append(STR_SPACE);
 //        '='|'!='|'<'|'<='|'>'|'>=
         sqlTemplates.function(ctx.OP().getText(), ctx.column(), this);
         return null;
@@ -249,20 +267,33 @@ public class MapperSerializer extends SQLNIBaseVisitor<Void> {
         nodeStack.push(node);
     }
 
+    private void poll() {
+        while (!connectorQueue.isEmpty()) {
+            append(STR_SPACE + connectorQueue.poll());
+        }
+    }
+
+    private void offer(String s) {
+        connectorQueue.offer(s);
+    }
+
+    private String front() {
+        return connectorQueue.peek();
+    }
 
     @Override
     public Void visitInParamSetCondition(SQLNIParser.InParamSetConditionContext ctx) {
-        if (Objects.equals(connectorStack.peek(), sqlTemplates.getWhere())) {
-            append(space(connectorStack.pop()));
-            append(space("1 = 1"));
-            connectorStack.push(sqlTemplates.getAnd());
+        if (Objects.equals(front(), sqlTemplates.getWhere())) {
+            poll();
+            append(" 1 = 1");
+            offer(sqlTemplates.getAnd());
         }
 
         visit(ctx.param());
         String param = ctx.param().ID().getText();
         push(NodeUtil.ifNotNull(param)); // 创建 IF 结点
-        append(space(connectorStack.pop()));
-        append(" "); // 添加空格
+        poll();
+        append(STR_SPACE); // 添加空格
         visit(ctx.column());
         append(space(sqlTemplates.getIn()));
 
@@ -279,7 +310,9 @@ public class MapperSerializer extends SQLNIBaseVisitor<Void> {
 
     @Override
     public Void visitBetweenAndCondition(SQLNIParser.BetweenAndConditionContext ctx) {
-        append(STR_SPACE + connectorStack.pop() + STR_SPACE);
+        append(STR_SPACE);
+        poll();
+        append(STR_SPACE);
         visit(ctx.column(0));
         append(STR_SPACE + sqlTemplates.getBetween() + STR_SPACE);
         visit(ctx.column(1));
@@ -290,7 +323,9 @@ public class MapperSerializer extends SQLNIBaseVisitor<Void> {
 
     @Override
     public Void visitIsNullCondition(SQLNIParser.IsNullConditionContext ctx) {
-        append(STR_SPACE + connectorStack.pop() + STR_SPACE);
+        append(STR_SPACE);
+        poll();
+        append(STR_SPACE);
         visit(ctx.column());
         append(STR_SPACE + sqlTemplates.getIsNull() + STR_SPACE);
         return null;
@@ -337,11 +372,11 @@ public class MapperSerializer extends SQLNIBaseVisitor<Void> {
 
     @Override
     public Void visitOrderBy(SQLNIParser.OrderByContext ctx) {
-        connectorStack.push(STR_SPACE + sqlTemplates.getOrderBy() + STR_SPACE);
+        connectorQueue.offer(STR_SPACE + sqlTemplates.getOrderBy() + STR_SPACE);
         Iterator<SQLNIParser.OrderColumnContext> it = ctx.orderColumn().iterator();
         visit(it.next());
         while (it.hasNext()) {
-            connectorStack.push(", ");
+            connectorQueue.offer(", ");
             visit(it.next());
         }
         return null;
@@ -349,8 +384,8 @@ public class MapperSerializer extends SQLNIBaseVisitor<Void> {
 
     @Override
     public Void visitNormalOrderColumn(SQLNIParser.NormalOrderColumnContext ctx) {
-        if (!connectorStack.empty()) {
-            append(connectorStack.pop());
+        if (!connectorQueue.isEmpty()) {
+            append(connectorQueue.poll());
         }
         visit(ctx.column());
         if (ctx.ASC() != null) {
@@ -366,8 +401,8 @@ public class MapperSerializer extends SQLNIBaseVisitor<Void> {
         visit(ctx.param());
         String param = ctx.param().ID().getText();
         push(NodeUtil.ifNotNull(param));
-        if (!connectorStack.empty()) {
-            append(connectorStack.pop());
+        if (!connectorQueue.isEmpty()) {
+            poll();
         }
         String item = generateItem(param);
         push(NodeUtil.foreach(param, item));

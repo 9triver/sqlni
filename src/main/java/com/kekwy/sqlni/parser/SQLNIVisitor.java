@@ -143,13 +143,6 @@ public interface SQLNIVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAs(SQLNIParser.AsContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code singleCondition}
-	 * labeled alternative in {@link SQLNIParser#conditions}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitSingleCondition(SQLNIParser.SingleConditionContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code multiCondtions}
 	 * labeled alternative in {@link SQLNIParser#conditions}.
 	 * @param ctx the parse tree
@@ -157,12 +150,26 @@ public interface SQLNIVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitMultiCondtions(SQLNIParser.MultiCondtionsContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code notConditions}
+	 * labeled alternative in {@link SQLNIParser#conditions}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNotConditions(SQLNIParser.NotConditionsContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code subConditions}
 	 * labeled alternative in {@link SQLNIParser#conditions}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitSubConditions(SQLNIParser.SubConditionsContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code singleCondition}
+	 * labeled alternative in {@link SQLNIParser#conditions}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSingleCondition(SQLNIParser.SingleConditionContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code cmpCondition}
 	 * labeled alternative in {@link SQLNIParser#condition}.

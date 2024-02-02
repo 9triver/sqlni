@@ -42,6 +42,7 @@ public abstract class SQLTemplates {
         addKeyWord(AS, "AS");
         addKeyWord(BETWEEN, "BETWEEN");
         addKeyWord(IS_NULL, "IS NULL");
+        addKeyWord(NOT, "NOT");
 
         addFuncTemplate("=", "{0} = {1}");
         addFuncTemplate("!=", "{0} != {1}");
@@ -108,6 +109,10 @@ public abstract class SQLTemplates {
 
     public String getBetween() {
         return keywordMap.get(BETWEEN);
+    }
+
+    public String getNot() {
+        return keywordMap.get(NOT);
     }
 
     public String getIsNull() {

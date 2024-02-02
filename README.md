@@ -8,9 +8,11 @@
     <img src="https://img.shields.io/badge/README-draft-red" alt="README status">
     <img src="https://img.shields.io/github/commit-activity/w/9triver/sqlni?color=yellow" alt="commits">
 </p>
-
-
-> 基于 Mybatis 实现对不同方言数据库编写统一查询的 DSL 语言工具。
+> 1. 基于 Mybatis 实现对不同方言数据库编写统一查询的 DSL 语言工具。
+> 2. 使用统一方式编写针对不同数据库方言的 MyBatis 可识别的 XML 文件。
+> 3. 通过统一的 DSL 编写查询，并根据指定的 SQL 模板，自动生成针对不同数据库方言，MyBatis 可以直接使用的 XML 文件。
+> 4. 自动生成 MyBatis 中定义 Mapper 的 XML 映射文件，并且支持多数据库方言。
+> 5. 再考虑如何组织一下语言。。。
 >
 > 示例仓库：[Kekwy/sqlni-examples](https://github.com/Kekwy/sqlni-examples)
 
@@ -78,6 +80,10 @@ SQLNI 语言是一种 SQL-like 的 DSL，在标准 SQL 的基础上进行部分�
 ### 2.2 定义查询
 
 
+
+
+
+输出结果不依赖用户对关键字的具体书写形式，使用 SQL 模板中对相应关键字的定义统一进行格式化输出。
 
 ### 2.3 执行查询
 
@@ -163,9 +169,13 @@ mvnDebug clean install
    SELECT item1, #{paramCol} FROM t_table WHERE NOT (NOT col1 = n1 AND col2 = n2) AND (col2 = n3 OR col3 = n3) AND col4 IN [#{paramSet}];
    ```
 
-   语法树：
+   语法树（注意 SQLNI 语法变现为对 SQL 语法的拓展但其目的是生成 MyBatis 可用的 XML 文件，而不是直接执行 SQL 语句，故在 SQLNI 的语法树中，不体现 SQL 语句中 AND 与 OR 的优先级关系）：
 
    ![image-20240202163033860](README.assets/image-20240202163033860.png)
+
+6. 由于先遍历到的分隔符或逻辑操作符应当先写入，故将 SQLNISerializer 中暂存分隔符或逻辑操作符的数据结构由栈改为队列；
+
+7. **问题记录**：目前对分隔符或逻辑操作符的延迟写入机制较为混乱应考虑进行优化。
 
 **2024-2-1 更新说明**：
 

@@ -233,18 +233,6 @@ public interface SQLNIListener extends ParseTreeListener {
 	 */
 	void exitAs(SQLNIParser.AsContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code singleCondition}
-	 * labeled alternative in {@link SQLNIParser#conditions}.
-	 * @param ctx the parse tree
-	 */
-	void enterSingleCondition(SQLNIParser.SingleConditionContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code singleCondition}
-	 * labeled alternative in {@link SQLNIParser#conditions}.
-	 * @param ctx the parse tree
-	 */
-	void exitSingleCondition(SQLNIParser.SingleConditionContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code multiCondtions}
 	 * labeled alternative in {@link SQLNIParser#conditions}.
 	 * @param ctx the parse tree
@@ -257,6 +245,18 @@ public interface SQLNIListener extends ParseTreeListener {
 	 */
 	void exitMultiCondtions(SQLNIParser.MultiCondtionsContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code notConditions}
+	 * labeled alternative in {@link SQLNIParser#conditions}.
+	 * @param ctx the parse tree
+	 */
+	void enterNotConditions(SQLNIParser.NotConditionsContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code notConditions}
+	 * labeled alternative in {@link SQLNIParser#conditions}.
+	 * @param ctx the parse tree
+	 */
+	void exitNotConditions(SQLNIParser.NotConditionsContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code subConditions}
 	 * labeled alternative in {@link SQLNIParser#conditions}.
 	 * @param ctx the parse tree
@@ -268,6 +268,18 @@ public interface SQLNIListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitSubConditions(SQLNIParser.SubConditionsContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code singleCondition}
+	 * labeled alternative in {@link SQLNIParser#conditions}.
+	 * @param ctx the parse tree
+	 */
+	void enterSingleCondition(SQLNIParser.SingleConditionContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code singleCondition}
+	 * labeled alternative in {@link SQLNIParser#conditions}.
+	 * @param ctx the parse tree
+	 */
+	void exitSingleCondition(SQLNIParser.SingleConditionContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code cmpCondition}
 	 * labeled alternative in {@link SQLNIParser#condition}.

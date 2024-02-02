@@ -20,5 +20,6 @@ public enum Keyword {
     DESC,
     AS,
     BETWEEN,
-    IS_NULL
+    IS_NULL,
+    NOT
 }

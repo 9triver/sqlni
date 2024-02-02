@@ -256,18 +256,6 @@ public class SQLNIBaseListener implements SQLNIListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterSingleCondition(SQLNIParser.SingleConditionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitSingleCondition(SQLNIParser.SingleConditionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterMultiCondtions(SQLNIParser.MultiCondtionsContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -280,6 +268,18 @@ public class SQLNIBaseListener implements SQLNIListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterNotConditions(SQLNIParser.NotConditionsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitNotConditions(SQLNIParser.NotConditionsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterSubConditions(SQLNIParser.SubConditionsContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -287,6 +287,18 @@ public class SQLNIBaseListener implements SQLNIListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitSubConditions(SQLNIParser.SubConditionsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterSingleCondition(SQLNIParser.SingleConditionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSingleCondition(SQLNIParser.SingleConditionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
