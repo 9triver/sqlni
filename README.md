@@ -137,8 +137,24 @@ mvnDebug clean install
 **2024-2-2 更新说明**：
 
 1. 生成 XML 文件时在每个方法对应的标签结点之间添加注释进行分隔，提高 XML 文件的可读性；
+
 2. 增加对 `BETWEEN AND` 子句的支持；
-3. 增加对 `IS NULL` 子句的支持。
+
+3. 增加对 `IS NULL` 子句的支持；
+
+4. 增加对 `NOT` 子句的支持；
+
+5. 调整 conditions 规则的定义，使其可以更好地支持复杂条件：
+
+   测试语句：
+
+   ```text
+   SELECT item1, #{paramCol} FROM t_table WHERE (NOT col1 = n1 AND col2 = n2) AND (col2 = n3 OR col3 = n3) AND col4 IN [#{paramSet}];
+   ```
+
+   语法树：
+
+   ![image-20240202162702691](README.assets/image-20240202162702691.png)
 
 **2024-2-1 更新说明**：
 

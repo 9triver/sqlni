@@ -68,8 +68,9 @@ as
 
 conditions
     : condition                             # singleCondition
-    | condition (AND|OR) conditions         # multiCondtions
-    | condition (AND|OR) '(' conditions ')' # subConditions
+    | NOT conditions                        # notConditions
+    | '(' conditions ')'                    # subConditions
+    | conditions opt=(AND|OR) conditions    # multiCondtions
     ;
 
 condition
@@ -104,6 +105,7 @@ AS     : [Aa][Ss];                     // as
 BETWEEN: [Bb][Ee][Tt][Ww][Ee][Ee][Nn]; // between
 IS     : [Ii][Ss];                     // is
 NULL   : [Nn][Uu][Ll][Ll];             // null
+NOT    : [Nn][Oo][Tt];                 // not
 
 OP: '='|'!='|'<'|'<='|'>'|'>=';
 
