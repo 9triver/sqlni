@@ -71,6 +71,7 @@ conditions
 condition
     : column OP column      # cmpCondition
     | column IN '{' param '}' # inParamSetCondition
+    | column BETWEEN column AND column # betweenAndCondition
     | column IN SET     # inSetCondition
     ;
 
@@ -82,19 +83,20 @@ condition
 
 
 /* Lexer */
-SELECT: [Ss][Ee][Ll][Ee][Cc][Tt];   // select
-FROM  : [Ff][Rr][Oo][Mm];           // from
-WHERE : [Ww][Hh][Ee][Rr][Ee];       // where
-LIMIT : [Ll][Ii][Mm][Ii][Tt];       // limit
-OFFSET: [Oo][Ff][Ff][Ss][Ee][Tt];   // offset
-AND   : [Aa][Nn][Dd];               // and
-OR    : [Oo][Rr];                   // or
-IN    : [Ii][Nn];                   // in
-ORDER : [Oo][Rr][Dd][Ee][Rr];       // order
-BY    : [Bb][Yy];                   // by
-DESC  : [Dd][Ee][Ss][Cc];           // desc
-ASC   : [Aa][Ss][Cc];               // asc
-AS    : [Aa][Ss];                   // as
+SELECT : [Ss][Ee][Ll][Ee][Cc][Tt];     // select
+FROM   : [Ff][Rr][Oo][Mm];             // from
+WHERE  : [Ww][Hh][Ee][Rr][Ee];         // where
+LIMIT  : [Ll][Ii][Mm][Ii][Tt];         // limit
+OFFSET : [Oo][Ff][Ff][Ss][Ee][Tt];     // offset
+AND    : [Aa][Nn][Dd];                 // and
+OR     : [Oo][Rr];                     // or
+IN     : [Ii][Nn];                     // in
+ORDER  : [Oo][Rr][Dd][Ee][Rr];         // order
+BY     : [Bb][Yy];                     // by
+DESC   : [Dd][Ee][Ss][Cc];             // desc
+ASC    : [Aa][Ss][Cc];                 // asc
+AS     : [Aa][Ss];                     // as
+BETWEEN: [Bb][Ee][Tt][Ww][Ee][Ee][Nn]; // between
 
 OP: '='|'!='|'<'|'<='|'>'|'>=';
 

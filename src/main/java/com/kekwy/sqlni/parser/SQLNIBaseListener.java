@@ -304,6 +304,18 @@ public class SQLNIBaseListener implements SQLNIListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterBetweenAndCondition(SQLNIParser.BetweenAndConditionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBetweenAndCondition(SQLNIParser.BetweenAndConditionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterInSetCondition(SQLNIParser.InSetConditionContext ctx) { }
 	/**
 	 * {@inheritDoc}

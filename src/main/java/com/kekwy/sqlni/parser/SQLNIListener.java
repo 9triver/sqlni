@@ -283,6 +283,18 @@ public interface SQLNIListener extends ParseTreeListener {
 	 */
 	void exitInParamSetCondition(SQLNIParser.InParamSetConditionContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code betweenAndCondition}
+	 * labeled alternative in {@link SQLNIParser#condition}.
+	 * @param ctx the parse tree
+	 */
+	void enterBetweenAndCondition(SQLNIParser.BetweenAndConditionContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code betweenAndCondition}
+	 * labeled alternative in {@link SQLNIParser#condition}.
+	 * @param ctx the parse tree
+	 */
+	void exitBetweenAndCondition(SQLNIParser.BetweenAndConditionContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code inSetCondition}
 	 * labeled alternative in {@link SQLNIParser#condition}.
 	 * @param ctx the parse tree

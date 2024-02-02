@@ -40,6 +40,7 @@ public abstract class SQLTemplates {
         addKeyWord(ASC, "ASC");
         addKeyWord(DESC, "DESC");
         addKeyWord(AS, "AS");
+        addKeyWord(BETWEEN, "BETWEEN");
 
         addFuncTemplate("=", "{0} = {1}");
         addFuncTemplate("!=", "{0} != {1}");
@@ -102,6 +103,10 @@ public abstract class SQLTemplates {
 
     public String getAs() {
         return keywordMap.get(AS);
+    }
+
+    public String getBetween() {
+        return keywordMap.get(BETWEEN);
     }
 
     public void serialize(SQLNIParser.SelectContext context, MapperSerializer serializer) {

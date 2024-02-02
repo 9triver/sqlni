@@ -18,5 +18,6 @@ public enum Keyword {
     ORDER_BY,
     ASC,
     DESC,
-    AS
+    AS,
+    BETWEEN
 }

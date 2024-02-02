@@ -172,6 +172,13 @@ public interface SQLNIVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitInParamSetCondition(SQLNIParser.InParamSetConditionContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code betweenAndCondition}
+	 * labeled alternative in {@link SQLNIParser#condition}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBetweenAndCondition(SQLNIParser.BetweenAndConditionContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code inSetCondition}
 	 * labeled alternative in {@link SQLNIParser#condition}.
 	 * @param ctx the parse tree
