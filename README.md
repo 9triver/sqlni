@@ -146,6 +146,17 @@ mvnDebug clean install
 
 5. 调整 conditions 规则的定义，使其可以更好地支持复杂条件：
 
+   定义：
+
+   ```antlr
+   conditions
+       : condition                             # singleCondition
+       | NOT conditions                        # notConditions
+       | '(' conditions ')'                    # subConditions
+       | conditions opt=(AND|OR) conditions    # multiCondtions
+       ;
+   ```
+
    测试语句：
 
    ```text
