@@ -119,6 +119,16 @@ public interface SQLNIListener extends ParseTreeListener {
 	 */
 	void exitColumns(SQLNIParser.ColumnsContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link SQLNIParser#selectColumn}.
+	 * @param ctx the parse tree
+	 */
+	void enterSelectColumn(SQLNIParser.SelectColumnContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SQLNIParser#selectColumn}.
+	 * @param ctx the parse tree
+	 */
+	void exitSelectColumn(SQLNIParser.SelectColumnContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code normalColumn}
 	 * labeled alternative in {@link SQLNIParser#column}.
 	 * @param ctx the parse tree
@@ -189,17 +199,17 @@ public interface SQLNIListener extends ParseTreeListener {
 	 */
 	void exitParam(SQLNIParser.ParamContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code constTable}
+	 * Enter a parse tree produced by the {@code normalTable}
 	 * labeled alternative in {@link SQLNIParser#table}.
 	 * @param ctx the parse tree
 	 */
-	void enterConstTable(SQLNIParser.ConstTableContext ctx);
+	void enterNormalTable(SQLNIParser.NormalTableContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code constTable}
+	 * Exit a parse tree produced by the {@code normalTable}
 	 * labeled alternative in {@link SQLNIParser#table}.
 	 * @param ctx the parse tree
 	 */
-	void exitConstTable(SQLNIParser.ConstTableContext ctx);
+	void exitNormalTable(SQLNIParser.NormalTableContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code paramTable}
 	 * labeled alternative in {@link SQLNIParser#table}.
@@ -294,6 +304,18 @@ public interface SQLNIListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitBetweenAndCondition(SQLNIParser.BetweenAndConditionContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code isNullCondition}
+	 * labeled alternative in {@link SQLNIParser#condition}.
+	 * @param ctx the parse tree
+	 */
+	void enterIsNullCondition(SQLNIParser.IsNullConditionContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code isNullCondition}
+	 * labeled alternative in {@link SQLNIParser#condition}.
+	 * @param ctx the parse tree
+	 */
+	void exitIsNullCondition(SQLNIParser.IsNullConditionContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code inSetCondition}
 	 * labeled alternative in {@link SQLNIParser#condition}.

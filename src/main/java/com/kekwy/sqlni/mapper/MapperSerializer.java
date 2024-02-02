@@ -34,6 +34,7 @@ public class MapperSerializer extends SQLNIBaseVisitor<Void> {
 
 
     private static final String STR_SPACE = " ";
+    private static final String STR_SEPARATOR = ", ";
 
     public MapperSerializer(SQLTemplates sqlTemplates) {
         this.sqlTemplates = sqlTemplates;
@@ -113,12 +114,21 @@ public class MapperSerializer extends SQLNIBaseVisitor<Void> {
 
     @Override
     public Void visitColumns(SQLNIParser.ColumnsContext ctx) {
-        List<SQLNIParser.ColumnContext> columnContexts = ctx.column();  // column1
-        visit(columnContexts.get(0));
-        for (int i = 1; i < columnContexts.size(); i++) {
-            append(", ");                                               // column1,
-            visit(columnContexts.get(i));                               // column1, column2
-        }                                                               // column1, column2, ..., columnN
+        Iterator<SQLNIParser.SelectColumnContext> it = ctx.selectColumn().iterator();
+        visit(it.next());           // column1
+        while (it.hasNext()) {
+            append(STR_SEPARATOR);  // column1,
+            visit(it.next());       // column1, column2
+        }                           // column1, column2, ..., columnN
+        return null;
+    }
+
+    @Override
+    public Void visitSelectColumn(SQLNIParser.SelectColumnContext ctx) {
+        visit(ctx.column());
+        if (ctx.as() != null) {
+            visit(ctx.as());
+        }
         return null;
     }
 
@@ -143,7 +153,7 @@ public class MapperSerializer extends SQLNIBaseVisitor<Void> {
     @Override
     public Void visitFuncColumn(SQLNIParser.FuncColumnContext ctx) {
         String func = ctx.ID().getText();
-        append(space(""));
+        append(STR_SPACE);
         sqlTemplates.function(func, ctx.column(), this);
         return null;
     }
@@ -167,14 +177,22 @@ public class MapperSerializer extends SQLNIBaseVisitor<Void> {
      * --------------------------------------------------------------------------------------------------------- */
 
     @Override
-    public Void visitConstTable(SQLNIParser.ConstTableContext ctx) {
-        append(space(ctx.getText()));
+    public Void visitNormalTable(SQLNIParser.NormalTableContext ctx) {
+        append(space(ctx.ID().getText()));
+        if (ctx.as() != null) {
+            visit(ctx.as());
+        }
         return null;
     }
 
     @Override
     public Void visitParamTable(SQLNIParser.ParamTableContext ctx) {
-        return super.visitParamTable(ctx);
+        visit(ctx.param());
+        append(ctx.param().getText());
+        if (ctx.as() != null) {
+            visit(ctx.as());
+        }
+        return null;
     }
 
     /* visit param
@@ -270,6 +288,14 @@ public class MapperSerializer extends SQLNIBaseVisitor<Void> {
         return null;
     }
 
+    @Override
+    public Void visitIsNullCondition(SQLNIParser.IsNullConditionContext ctx) {
+        append(STR_SPACE + connectorStack.pop() + STR_SPACE);
+        visit(ctx.column());
+        append(STR_SPACE + sqlTemplates.getIsNull() + STR_SPACE);
+        return null;
+    }
+
     private String generateItem(String param) {
         String res = param + "Item";
         while (symbolsSet.contains(res)) { // 避免在上下文中有重复的变量名
@@ -359,6 +385,7 @@ public class MapperSerializer extends SQLNIBaseVisitor<Void> {
     @Override
     public Void visitAs(SQLNIParser.AsContext ctx) {
         append(space(sqlTemplates.getAs()));
+        append(STR_SPACE + ctx.ID().getText());
         return null;
     }
 

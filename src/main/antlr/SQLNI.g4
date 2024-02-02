@@ -37,7 +37,11 @@ orderColumn
     ;
 
 columns
-    : column as? (',' column as?)*
+    : selectColumn (',' selectColumn)*
+    ;
+
+selectColumn
+    : column as?
     ;
 
 column
@@ -54,7 +58,7 @@ param
     ;
 
 table
-    : ID as?    # constTable
+    : ID as?    # normalTable
     | param as? # paramTable
     ;
 
@@ -72,6 +76,7 @@ condition
     : column OP column      # cmpCondition
     | column IN '{' param '}' # inParamSetCondition
     | column BETWEEN column AND column # betweenAndCondition
+    | column IS NULL                # isNullCondition
     | column IN SET     # inSetCondition
     ;
 
@@ -97,6 +102,8 @@ DESC   : [Dd][Ee][Ss][Cc];             // desc
 ASC    : [Aa][Ss][Cc];                 // asc
 AS     : [Aa][Ss];                     // as
 BETWEEN: [Bb][Ee][Tt][Ww][Ee][Ee][Nn]; // between
+IS     : [Ii][Ss];                     // is
+NULL   : [Nn][Uu][Ll][Ll];             // null
 
 OP: '='|'!='|'<'|'<='|'>'|'>=';
 

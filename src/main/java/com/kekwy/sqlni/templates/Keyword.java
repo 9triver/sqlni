@@ -19,5 +19,6 @@ public enum Keyword {
     ASC,
     DESC,
     AS,
-    BETWEEN
+    BETWEEN,
+    IS_NULL
 }

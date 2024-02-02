@@ -76,6 +76,12 @@ public interface SQLNIVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitColumns(SQLNIParser.ColumnsContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link SQLNIParser#selectColumn}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSelectColumn(SQLNIParser.SelectColumnContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code normalColumn}
 	 * labeled alternative in {@link SQLNIParser#column}.
 	 * @param ctx the parse tree
@@ -117,12 +123,12 @@ public interface SQLNIVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitParam(SQLNIParser.ParamContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code constTable}
+	 * Visit a parse tree produced by the {@code normalTable}
 	 * labeled alternative in {@link SQLNIParser#table}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitConstTable(SQLNIParser.ConstTableContext ctx);
+	T visitNormalTable(SQLNIParser.NormalTableContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code paramTable}
 	 * labeled alternative in {@link SQLNIParser#table}.
@@ -178,6 +184,13 @@ public interface SQLNIVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitBetweenAndCondition(SQLNIParser.BetweenAndConditionContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code isNullCondition}
+	 * labeled alternative in {@link SQLNIParser#condition}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIsNullCondition(SQLNIParser.IsNullConditionContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code inSetCondition}
 	 * labeled alternative in {@link SQLNIParser#condition}.

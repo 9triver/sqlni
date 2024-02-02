@@ -136,6 +136,18 @@ public class SQLNIBaseListener implements SQLNIListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterSelectColumn(SQLNIParser.SelectColumnContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSelectColumn(SQLNIParser.SelectColumnContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterNormalColumn(SQLNIParser.NormalColumnContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -208,13 +220,13 @@ public class SQLNIBaseListener implements SQLNIListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterConstTable(SQLNIParser.ConstTableContext ctx) { }
+	@Override public void enterNormalTable(SQLNIParser.NormalTableContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitConstTable(SQLNIParser.ConstTableContext ctx) { }
+	@Override public void exitNormalTable(SQLNIParser.NormalTableContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -311,6 +323,18 @@ public class SQLNIBaseListener implements SQLNIListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitBetweenAndCondition(SQLNIParser.BetweenAndConditionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterIsNullCondition(SQLNIParser.IsNullConditionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitIsNullCondition(SQLNIParser.IsNullConditionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
