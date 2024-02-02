@@ -8,6 +8,7 @@
     <img src="https://img.shields.io/badge/README-draft-red" alt="README status">
     <img src="https://img.shields.io/github/commit-activity/w/9triver/sqlni?color=yellow" alt="commits">
 </p>
+
 > 1. 基于 Mybatis 实现对不同方言数据库编写统一查询的 DSL 语言工具。
 > 2. 使用统一方式编写针对不同数据库方言的 MyBatis 可识别的 XML 文件。
 > 3. 通过统一的 DSL 编写查询，并根据指定的 SQL 模板，自动生成针对不同数据库方言，MyBatis 可以直接使用的 XML 文件。
