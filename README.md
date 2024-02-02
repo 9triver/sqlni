@@ -149,12 +149,12 @@ mvnDebug clean install
    测试语句：
 
    ```text
-   SELECT item1, #{paramCol} FROM t_table WHERE (NOT col1 = n1 AND col2 = n2) AND (col2 = n3 OR col3 = n3) AND col4 IN [#{paramSet}];
+   SELECT item1, #{paramCol} FROM t_table WHERE NOT (NOT col1 = n1 AND col2 = n2) AND (col2 = n3 OR col3 = n3) AND col4 IN [#{paramSet}];
    ```
 
    语法树：
 
-   ![image-20240202162702691](README.assets/image-20240202162702691.png)
+   ![image-20240202163033860](README.assets/image-20240202163033860.png)
 
 **2024-2-1 更新说明**：
 
