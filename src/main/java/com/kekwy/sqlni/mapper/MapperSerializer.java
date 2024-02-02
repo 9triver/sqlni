@@ -267,12 +267,12 @@ public class MapperSerializer extends SQLNIBaseVisitor<Void> {
         append(space(sqlTemplates.getIn()));
 
         String item = generateItem(param);
-        append(" {");
+        append(" (");
         push(NodeUtil.foreach(param, item)); // 创建 ForEach 结点
         append("#{" + item + "}");
         pop(); // 退出 foreach 结点
 
-        append("} ");
+        append(") ");
         pop(); // 退出 if 结点
         return null;
     }
