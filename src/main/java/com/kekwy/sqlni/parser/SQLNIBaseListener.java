@@ -88,37 +88,37 @@ public class SQLNIBaseListener implements SQLNIListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterOrderByColumns(SQLNIParser.OrderByColumnsContext ctx) { }
+	@Override public void enterOrderBy(SQLNIParser.OrderByContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitOrderByColumns(SQLNIParser.OrderByColumnsContext ctx) { }
+	@Override public void exitOrderBy(SQLNIParser.OrderByContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterOrderByParam(SQLNIParser.OrderByParamContext ctx) { }
+	@Override public void enterNormalOrderColumn(SQLNIParser.NormalOrderColumnContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitOrderByParam(SQLNIParser.OrderByParamContext ctx) { }
+	@Override public void exitNormalOrderColumn(SQLNIParser.NormalOrderColumnContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterOrderColumn(SQLNIParser.OrderColumnContext ctx) { }
+	@Override public void enterParamSetOrderColumn(SQLNIParser.ParamSetOrderColumnContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitOrderColumn(SQLNIParser.OrderColumnContext ctx) { }
+	@Override public void exitParamSetOrderColumn(SQLNIParser.ParamSetOrderColumnContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -232,6 +232,18 @@ public class SQLNIBaseListener implements SQLNIListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterAs(SQLNIParser.AsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAs(SQLNIParser.AsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterSingleCondition(SQLNIParser.SingleConditionContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -280,13 +292,13 @@ public class SQLNIBaseListener implements SQLNIListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterInParamCondition(SQLNIParser.InParamConditionContext ctx) { }
+	@Override public void enterInParamSetCondition(SQLNIParser.InParamSetConditionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitInParamCondition(SQLNIParser.InParamConditionContext ctx) { }
+	@Override public void exitInParamSetCondition(SQLNIParser.InParamSetConditionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

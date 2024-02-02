@@ -50,25 +50,25 @@ public interface SQLNIVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitNumberOffset(SQLNIParser.NumberOffsetContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code orderByColumns}
-	 * labeled alternative in {@link SQLNIParser#orderBy}.
+	 * Visit a parse tree produced by {@link SQLNIParser#orderBy}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitOrderByColumns(SQLNIParser.OrderByColumnsContext ctx);
+	T visitOrderBy(SQLNIParser.OrderByContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code orderByParam}
-	 * labeled alternative in {@link SQLNIParser#orderBy}.
+	 * Visit a parse tree produced by the {@code normalOrderColumn}
+	 * labeled alternative in {@link SQLNIParser#orderColumn}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitOrderByParam(SQLNIParser.OrderByParamContext ctx);
+	T visitNormalOrderColumn(SQLNIParser.NormalOrderColumnContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link SQLNIParser#orderColumn}.
+	 * Visit a parse tree produced by the {@code paramSetOrderColumn}
+	 * labeled alternative in {@link SQLNIParser#orderColumn}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitOrderColumn(SQLNIParser.OrderColumnContext ctx);
+	T visitParamSetOrderColumn(SQLNIParser.ParamSetOrderColumnContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link SQLNIParser#columns}.
 	 * @param ctx the parse tree
@@ -131,6 +131,12 @@ public interface SQLNIVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitParamTable(SQLNIParser.ParamTableContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link SQLNIParser#as}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAs(SQLNIParser.AsContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code singleCondition}
 	 * labeled alternative in {@link SQLNIParser#conditions}.
 	 * @param ctx the parse tree
@@ -159,12 +165,12 @@ public interface SQLNIVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitCmpCondition(SQLNIParser.CmpConditionContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code inParamCondition}
+	 * Visit a parse tree produced by the {@code inParamSetCondition}
 	 * labeled alternative in {@link SQLNIParser#condition}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitInParamCondition(SQLNIParser.InParamConditionContext ctx);
+	T visitInParamSetCondition(SQLNIParser.InParamSetConditionContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code inSetCondition}
 	 * labeled alternative in {@link SQLNIParser#condition}.

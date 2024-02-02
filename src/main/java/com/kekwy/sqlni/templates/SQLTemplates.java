@@ -26,7 +26,6 @@ import static com.kekwy.sqlni.templates.Keyword.*;
 public abstract class SQLTemplates {
 
     private final Map<Keyword, String> keywordMap = new HashMap<>();
-
     private final Map<String, String> funcTemplateMap = new HashMap<>();
 
     protected SQLTemplates() {
@@ -40,6 +39,7 @@ public abstract class SQLTemplates {
         addKeyWord(ORDER_BY, "ORDER BY");
         addKeyWord(ASC, "ASC");
         addKeyWord(DESC, "DESC");
+        addKeyWord(AS, "AS");
 
         addFuncTemplate("=", "{0} = {1}");
         addFuncTemplate("!=", "{0} != {1}");
@@ -98,6 +98,10 @@ public abstract class SQLTemplates {
 
     public String getDESC() {
         return keywordMap.get(DESC);
+    }
+
+    public String getAs() {
+        return keywordMap.get(AS);
     }
 
     public void serialize(SQLNIParser.SelectContext context, MapperSerializer serializer) {

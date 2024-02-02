@@ -8,19 +8,13 @@ import com.kekwy.sqlni.util.Dom4jXMLUtil;
 
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
-import javax.lang.model.element.Element;
-import javax.lang.model.element.ElementKind;
-import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.*;
 import javax.tools.Diagnostic;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
 import java.io.IOException;
 import java.io.Writer;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * UseSQLNI 注解对应的处理器，在项目编译时执行，
@@ -40,7 +34,7 @@ public class UseSQLNIProcessor extends AbstractProcessor {
      * 从
      *
      * @param processingEnv environment to access facilities the tool framework
-     * provides to the processor
+     *                      provides to the processor
      */
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv) {
@@ -110,11 +104,23 @@ public class UseSQLNIProcessor extends AbstractProcessor {
                 String resultType = methodElement.getReturnType().toString();
                 // 添加方法并设置 resultType 和 statement
                 // TODO: 处理 resultMap 的情况
-                builder.addMethod(methodName).resultType(resultType).statement(statement);
+//                Map<String, String> parameterTypeMap = buildParameterTypeMap(methodElement.getParameters());
+                
+                builder.addMethod(methodName)
+                        .resultType(resultType)
+                        .statement(statement);
             }
         }
         return true;
     }
+
+//    private Map<String, String> buildParameterTypeMap(List<? extends VariableElement> parameters) {
+//        Map<String, String> res = new HashMap<>();
+//        for (VariableElement parameter : parameters) {
+//            res.put(parameter.getSimpleName().toString(), parameter.asType().toString());
+//        }
+//        return res;
+//    }
 
 }
 

@@ -32,7 +32,8 @@ orderBy
     ;
 
 orderColumn
-    : column (DESC|ASC)?
+    : column (DESC|ASC)?        # normalOrderColumn
+    | '{' param '}' (DESC|ASC)? # paramSetOrderColumn
     ;
 
 columns
@@ -68,8 +69,9 @@ conditions
     ;
 
 condition
-    : column OP column  # cmpCondition
-    | column IN '{' columns '}' # inCondition
+    : column OP column      # cmpCondition
+    | column IN '{' param '}' # inParamSetCondition
+    | column IN SET     # inSetCondition
     ;
 
 

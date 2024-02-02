@@ -3,9 +3,7 @@ package com.kekwy.sqlni.mapper;
 import com.kekwy.sqlni.node.ElementNode;
 import com.kekwy.sqlni.templates.SQLTemplates;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -94,8 +92,13 @@ public class MapperBuilder {
             return this;
         }
 
+//        private final static Set<String> COLLECTION_TYPE = Set.of(
+//                "java.util.Set", "java.util.List"
+//        );
+
         public ElementNode build() {
-            ElementNode node = new MapperSerializer(sqlTemplates).serialize(statement);
+            ElementNode node = new MapperSerializer(sqlTemplates)
+                    .serialize(statement);
             node.addAttributes(Map.of(
                     NAME_ID, id,
                     NAME_RESULT_TYPE, resultType
@@ -105,7 +108,7 @@ public class MapperBuilder {
 
         /* CONSTANT: pattern
          * --------------------------------------------------------------------------------------------------------- */
-        private static final Pattern RESULT_TYPE_PATTERN = Pattern.compile(".+<(.+)>");
+        private static final Pattern RESULT_TYPE_PATTERN = Pattern.compile("(.+)<(.+)>");
 
         /**
          * 当用户编写的方法返回值类型为集合时，解析出集合中元素的类型，作为 resultType
@@ -116,7 +119,7 @@ public class MapperBuilder {
         private String parseResultType(String resultType) {
             Matcher matcher = RESULT_TYPE_PATTERN.matcher(resultType);
             if (matcher.find()) {
-                return matcher.group(1);
+                return matcher.group(2);
             } else {
                 return resultType;
             }

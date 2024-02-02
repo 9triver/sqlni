@@ -12,6 +12,7 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.*;
 
@@ -137,11 +138,6 @@ public class MapperSerializer extends SQLNIBaseVisitor<Void> {
     @Override
     public Void visitParamColumn(SQLNIParser.ParamColumnContext ctx) {
         visit(ctx.param());
-        String param = ctx.param().ID().getText();
-        if (isCollection.contains(param)) {
-            push(NodeUtil.ifNotNull(param));
-
-        }
         append(ctx.getText());
         return null;
     }
@@ -239,12 +235,13 @@ public class MapperSerializer extends SQLNIBaseVisitor<Void> {
 
 
     @Override
-    public Void visitInParamCondition(SQLNIParser.InParamConditionContext ctx) {
+    public Void visitInParamSetCondition(SQLNIParser.InParamSetConditionContext ctx) {
         if (Objects.equals(lastConditionConnector, sqlTemplates.getWhere())) {
             append(space(lastConditionConnector));
             append(space("1 = 1"));
             lastConditionConnector = sqlTemplates.getAnd();
         }
+
         visit(ctx.param());
         String param = ctx.param().ID().getText();
         push(NodeUtil.ifNotNull(param)); // 创建 IF 结点
@@ -271,11 +268,6 @@ public class MapperSerializer extends SQLNIBaseVisitor<Void> {
         }
         symbolsSet.add(res);
         return res;
-    }
-
-    @Override
-    public Void visitInSetCondition(SQLNIParser.InSetConditionContext ctx) {
-        return super.visitInSetCondition(ctx);
     }
 
 
@@ -321,13 +313,34 @@ public class MapperSerializer extends SQLNIBaseVisitor<Void> {
     }
 
     @Override
-    public Void visitOrderColumn(SQLNIParser.OrderColumnContext ctx) {
+    public Void visitNormalOrderColumn(SQLNIParser.NormalOrderColumnContext ctx) {
+        if (!connectorStack.empty()) {
+            append(connectorStack.pop());
+        }
         visit(ctx.column());
         if (ctx.ASC() != null) {
             append(space(sqlTemplates.getASC()));
         } else if (ctx.DESC() != null) {
             append(space(sqlTemplates.getDESC()));
         }
+        return null;
+    }
+
+    @Override
+    public Void visitParamSetOrderColumn(SQLNIParser.ParamSetOrderColumnContext ctx) {
+        visit(ctx.param());
+        String param = ctx.param().ID().getText();
+        push(NodeUtil.ifNotNull(param));
+        if (!connectorStack.empty()) {
+            append(connectorStack.pop());
+        }
+        String item = generateItem(param);
+        push(NodeUtil.foreach(param, item));
+        String left = ctx.param().left.getText();
+        String right = ctx.param().right.getText();
+        append(left + item + right);
+        pop();
+        pop();
         return null;
     }
 
@@ -354,14 +367,5 @@ public class MapperSerializer extends SQLNIBaseVisitor<Void> {
         }
     }
 
-    private Map<String, String> parameterType = new HashMap<>();
-
-    private Set<String> isCollection = new HashSet<>();
-
-    public MapperSerializer parameters(Map<String, String> parameterType, Set<String> isCollection) {
-        this.parameterType = parameterType;
-        this.isCollection = isCollection;
-        return this;
-    }
 }
 

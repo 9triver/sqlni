@@ -5,6 +5,8 @@ import com.kekwy.sqlni.parser.SQLNIParser;
 
 import java.util.List;
 
+import static com.kekwy.sqlni.templates.Keyword.AS;
+
 /**
  * 支持 Oracle 方言的 SQL 模板
  *
@@ -15,6 +17,8 @@ import java.util.List;
 public class OracleTemplates extends SQLTemplates {
 
     public OracleTemplates() {
+        addKeyWord(AS, "");
+
         addFuncTemplate("concat", "({0} || ...)");
 
         addFuncTemplate("limitQueryEnd", limitQueryEnd);

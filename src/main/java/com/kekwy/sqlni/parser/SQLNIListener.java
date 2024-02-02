@@ -75,39 +75,39 @@ public interface SQLNIListener extends ParseTreeListener {
 	 */
 	void exitNumberOffset(SQLNIParser.NumberOffsetContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code orderByColumns}
-	 * labeled alternative in {@link SQLNIParser#orderBy}.
+	 * Enter a parse tree produced by {@link SQLNIParser#orderBy}.
 	 * @param ctx the parse tree
 	 */
-	void enterOrderByColumns(SQLNIParser.OrderByColumnsContext ctx);
+	void enterOrderBy(SQLNIParser.OrderByContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code orderByColumns}
-	 * labeled alternative in {@link SQLNIParser#orderBy}.
+	 * Exit a parse tree produced by {@link SQLNIParser#orderBy}.
 	 * @param ctx the parse tree
 	 */
-	void exitOrderByColumns(SQLNIParser.OrderByColumnsContext ctx);
+	void exitOrderBy(SQLNIParser.OrderByContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code orderByParam}
-	 * labeled alternative in {@link SQLNIParser#orderBy}.
+	 * Enter a parse tree produced by the {@code normalOrderColumn}
+	 * labeled alternative in {@link SQLNIParser#orderColumn}.
 	 * @param ctx the parse tree
 	 */
-	void enterOrderByParam(SQLNIParser.OrderByParamContext ctx);
+	void enterNormalOrderColumn(SQLNIParser.NormalOrderColumnContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code orderByParam}
-	 * labeled alternative in {@link SQLNIParser#orderBy}.
+	 * Exit a parse tree produced by the {@code normalOrderColumn}
+	 * labeled alternative in {@link SQLNIParser#orderColumn}.
 	 * @param ctx the parse tree
 	 */
-	void exitOrderByParam(SQLNIParser.OrderByParamContext ctx);
+	void exitNormalOrderColumn(SQLNIParser.NormalOrderColumnContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link SQLNIParser#orderColumn}.
+	 * Enter a parse tree produced by the {@code paramSetOrderColumn}
+	 * labeled alternative in {@link SQLNIParser#orderColumn}.
 	 * @param ctx the parse tree
 	 */
-	void enterOrderColumn(SQLNIParser.OrderColumnContext ctx);
+	void enterParamSetOrderColumn(SQLNIParser.ParamSetOrderColumnContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link SQLNIParser#orderColumn}.
+	 * Exit a parse tree produced by the {@code paramSetOrderColumn}
+	 * labeled alternative in {@link SQLNIParser#orderColumn}.
 	 * @param ctx the parse tree
 	 */
-	void exitOrderColumn(SQLNIParser.OrderColumnContext ctx);
+	void exitParamSetOrderColumn(SQLNIParser.ParamSetOrderColumnContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link SQLNIParser#columns}.
 	 * @param ctx the parse tree
@@ -213,6 +213,16 @@ public interface SQLNIListener extends ParseTreeListener {
 	 */
 	void exitParamTable(SQLNIParser.ParamTableContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link SQLNIParser#as}.
+	 * @param ctx the parse tree
+	 */
+	void enterAs(SQLNIParser.AsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SQLNIParser#as}.
+	 * @param ctx the parse tree
+	 */
+	void exitAs(SQLNIParser.AsContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code singleCondition}
 	 * labeled alternative in {@link SQLNIParser#conditions}.
 	 * @param ctx the parse tree
@@ -261,17 +271,17 @@ public interface SQLNIListener extends ParseTreeListener {
 	 */
 	void exitCmpCondition(SQLNIParser.CmpConditionContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code inParamCondition}
+	 * Enter a parse tree produced by the {@code inParamSetCondition}
 	 * labeled alternative in {@link SQLNIParser#condition}.
 	 * @param ctx the parse tree
 	 */
-	void enterInParamCondition(SQLNIParser.InParamConditionContext ctx);
+	void enterInParamSetCondition(SQLNIParser.InParamSetConditionContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code inParamCondition}
+	 * Exit a parse tree produced by the {@code inParamSetCondition}
 	 * labeled alternative in {@link SQLNIParser#condition}.
 	 * @param ctx the parse tree
 	 */
-	void exitInParamCondition(SQLNIParser.InParamConditionContext ctx);
+	void exitInParamSetCondition(SQLNIParser.InParamSetConditionContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code inSetCondition}
 	 * labeled alternative in {@link SQLNIParser#condition}.
