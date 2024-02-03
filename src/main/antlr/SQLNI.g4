@@ -50,6 +50,7 @@ column
     | STRING                            # stringConst
     | NUMBER                            # numberConst
     | ID '(' column (',' column)* ')'   # funcColumn
+    | select                            # subQuery
     ;
 
 param
@@ -78,6 +79,7 @@ condition
     | column IN '[' param ']' # inParamSetCondition
     | column BETWEEN column AND column # betweenAndCondition
     | column IS NULL                # isNullCondition
+    | column LIKE '%' column '%'    # likeCondition
     | column IN SET     # inSetCondition
     ;
 
@@ -106,6 +108,7 @@ BETWEEN: [Bb][Ee][Tt][Ww][Ee][Ee][Nn]; // between
 IS     : [Ii][Ss];                     // is
 NULL   : [Nn][Uu][Ll][Ll];             // null
 NOT    : [Nn][Oo][Tt];                 // not
+LIKE   : [Ll][Ii][Kk][Ee];             // like
 
 OP: '='|'!='|'<'|'<='|'>'|'>=';
 

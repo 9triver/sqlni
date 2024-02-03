@@ -438,5 +438,9 @@ public class MapperSerializer extends SQLNIBaseVisitor<Void> {
         }
     }
 
+    private static class ConditionBuilder {
+
+    }
+
 }
 
