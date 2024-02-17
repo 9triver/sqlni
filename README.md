@@ -46,6 +46,16 @@ SQLNI 语言是一种 SQL-like 的 DSL，在标准 SQL 的基础上进行部分�
 4. 在实现上述目标的基础上，保留 MyBatis 原有的灵活性，通过对标准 SQL 进行拓展，使用户可以使用 SQLNI 语言表达动态 SQL 的语义；
 5. **降低学习成本**：现有的许多项目（如 Calcite、querydsl）提供了 SQL 方言间的转化功能，但其提供的 API 较多，学习成本较高；而本项目仅向外提供 `@UseSQLNI` 注解作为 API，用户不需要额外编写代码，易上手，易使用。
 
+#### com.kekwy.mapper.EmployeeMapper
+
+##### Employee getEmployeeByName(String name);
+
+select item from t_table if
+
+
+
+
+
 ## 2 快速开始
 
 ### 2.1 添加配置
@@ -132,11 +142,9 @@ mvnDebug clean install
 
 
 
-1. 可以对整个 Mapper 接口或其中某些方法指定不同的 SQL 模板；
-2. 在示例项目中编写测试，进行成果检验；
-3. 实现现阶段的所有功能，发布 1.0 版本。
+**2024-2-7 更新说明**：需求变更，调整设计。
 
-2024-2-3:
+**2024-2-3 更新说明**：
 
 **问题记录（重要）**：重新查看老师提供的例子，发现很多复杂的动态标签当前语法结构无法通过简单的扩展对其提供支持。
 
@@ -269,9 +277,9 @@ mvnDebug clean install
 
 [8] Querying SQL[EB/OL]. http://querydsl.com/static/querydsl/latest/reference/html/ch02s03.html
 
+[9] Spring Data JPA 中文文档[EB/OL]. https://springdoc.cn/spring-data-jpa/
 
-
-
+[10] MyBatis-Plus[EB/OL]. https://baomidou.com/
 
 ```xml
 
