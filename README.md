@@ -19,6 +19,10 @@
 
 ## <img src="https://img.shields.io/badge/TOC-8A2BE2"/> 目录
 
+语言注入，自定义注解
+
+https://www.jetbrains.com/help/idea/using-language-injections.html
+
 - **[1 项目简介](#1-项目简介)**
 - **[2 快速开始](#2-快速开始)**
   - [2.1 添加依赖](#21-添加依赖)
@@ -46,7 +50,7 @@ SQLNI 语言是一种 SQL-like 的 DSL，在标准 SQL 的基础上进行部分�
 4. 在实现上述目标的基础上，保留 MyBatis 原有的灵活性，通过对标准 SQL 进行拓展，使用户可以使用 SQLNI 语言表达动态 SQL 的语义；
 5. **降低学习成本**：现有的许多项目（如 Calcite、querydsl）提供了 SQL 方言间的转化功能，但其提供的 API 较多，学习成本较高；而本项目仅向外提供 `@UseSQLNI` 注解作为 API，用户不需要额外编写代码，易上手，易使用。
 
-#### com.kekwy.mapper.EmployeeMapper
+#### com.kekwy.mapperRecord.EmployeeMapper
 
 ##### Employee getEmployeeByName(String name);
 
@@ -140,7 +144,11 @@ mvnDebug clean install
 
 ## 6 更新记录
 
+**2024-2-18 更新说明**：
 
+1. 过完年了；
+
+2. 学习使用了 IDEA 的语言注入功能，为自定义 SQL 添加高亮显示。
 
 **2024-2-7 更新说明**：需求变更，调整设计。
 

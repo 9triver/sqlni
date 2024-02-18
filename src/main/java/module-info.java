@@ -3,6 +3,8 @@ module com.kekwy.sqlni {
     requires java.compiler;
     requires java.xml;
     requires org.dom4j;
+    requires org.mybatis;
+    requires org.jetbrains.annotations;
 
     exports com.kekwy.sqlni;
 }

@@ -44,7 +44,7 @@ public class MapperBuilder {
     /**
      * 根据输入进行语法分析，生成目标 Mapper XML 文件对应的数据结构
      */
-    public Mapper build() {
+    public MapperRecord build() {
         ElementNode root = new ElementNode(NAME_ROOT);
         root.addAttribute(NAME_NAMESPACE, namespace);
         // 遍历 methodBuilder，并调用 build() 方法
@@ -54,7 +54,7 @@ public class MapperBuilder {
         }
         // 解析 Mapper 的包名和类名，创建 Mapper 对象
         int index = namespace.lastIndexOf('.');
-        return new Mapper(namespace.substring(0, index),
+        return new MapperRecord(namespace.substring(0, index),
                 namespace.substring(index + 1), root);
     }
 

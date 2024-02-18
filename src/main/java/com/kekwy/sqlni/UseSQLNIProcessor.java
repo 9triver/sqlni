@@ -1,10 +1,12 @@
 package com.kekwy.sqlni;
 
-import com.kekwy.sqlni.mapper.Mapper;
+import com.kekwy.sqlni.mapper.MapperRecord;
 import com.kekwy.sqlni.mapper.MapperBuilder;
 import com.kekwy.sqlni.templates.SQLTemplates;
 import com.kekwy.sqlni.util.SQLTemplatesUtil;
 import com.kekwy.sqlni.util.Dom4jXMLUtil;
+import org.apache.ibatis.annotations.Mapper;
+import org.intellij.lang.annotations.Language;
 
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
@@ -24,7 +26,7 @@ import java.util.*;
  * @version 1.0
  * @since 2024/1/11 17:03
  */
-@SupportedAnnotationTypes({"com.kekwy.sqlni.UseSQLNI"}) // BUGFIX: 更改注解名未同步此处名称
+@SupportedAnnotationTypes({"org.apache.ibatis.annotations.Mapper"}) // BUGFIX: 更改注解名未同步此处名称
 @SupportedSourceVersion(SourceVersion.RELEASE_17)
 public class UseSQLNIProcessor extends AbstractProcessor {
 
@@ -71,18 +73,18 @@ public class UseSQLNIProcessor extends AbstractProcessor {
             try {
                 // 遍历上下文中所有的 mapperBuilder，生成用户定义的 mapper 所对应的 XML 文件
                 for (MapperBuilder builder : builderMap.values()) {
-                    Mapper mapper = builder.build();
-                    Writer writer = getFilePath(mapper.packageName(), mapper.mapperName());
-                    Dom4jXMLUtil.writeXMLFile(mapper.root(), writer);
+                    MapperRecord mapperRecord = builder.build();
+                    Writer writer = getFilePath(mapperRecord.packageName(), mapperRecord.mapperName());
+                    Dom4jXMLUtil.writeXMLFile(mapperRecord.root(), writer);
                     writer.close();
                 }
             } catch (IOException e) {
                 handleException(e);
             }
-            return false;
         }
+
         // 处理注解
-        for (Element element : roundEnv.getElementsAnnotatedWith(UseSQLNI.class)) {
+        for (Element element : roundEnv.getElementsAnnotatedWith(Mapper.class)) {
 
             if (element.getKind() == ElementKind.METHOD && element instanceof ExecutableElement methodElement) {
                 UseSQLNI useSQLNIAnnotation = methodElement.getAnnotation(UseSQLNI.class);
