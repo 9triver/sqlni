@@ -95,7 +95,7 @@ public class Processor extends AbstractProcessor {
                 TypeMirror tempTypeMirror = declaredType.getTypeArguments().get(0);
                 TypeElement tempTypeElement = (TypeElement) ((DeclaredType) tempTypeMirror).asElement();
 
-                return tempTypeElement.getSimpleName().toString();
+                return tempTypeElement.getQualifiedName().toString();
             }
         }
         return null;

@@ -2,9 +2,11 @@ package com.kekwy.sqlni.generator;
 
 
 import com.kekwy.sqlni.util.DateTimeUtil;
+import com.kekwy.sqlni.util.DocCommentUtil;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.*;
+import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -27,17 +29,9 @@ public class MapperGenerator {
         this.entityName = entityName;
     }
 
-    private String[] processDocComment(String docComment) {
-        if (docComment != null) {
-            return docComment.split("\n");
-        } else {
-            return null;
-        }
-    }
-
     private final Pattern TYPE_PATTERN = Pattern.compile("(.+)?<(.+)?>");
 
-    private String processType(String type) {
+    private String processTypeHelper(String type) {
         String res;
         Matcher matcher = TYPE_PATTERN.matcher(type);
         if (matcher.find()) {
@@ -45,7 +39,7 @@ public class MapperGenerator {
             imports.add(t);
             res = t.substring(t.lastIndexOf(".") + 1);
             res += "<";
-            res += processType(matcher.group(2));
+            res += processTypeHelper(matcher.group(2));
             res += ">";
             return res;
         } else {
@@ -55,29 +49,35 @@ public class MapperGenerator {
         return res;
     }
 
+    private String processType(TypeMirror type) {
+        if (type.getKind().isPrimitive()) return type.toString(); // 避免将基元类型加入 import 语句
+        return processTypeHelper(type.toString());
+    }
+
     public Map<String, Object> generate() {
         Map<String, Object> model = new HashMap<>();
+        imports.add(entityName);
         model.put("time", DateTimeUtil.getNowDateTime());
         // 获取软件包名
         model.put("package", processingEnv.getElementUtils().getPackageOf(mapperElement)
                                      .getQualifiedName().toString() + ".mapper");
-        model.put("mapperName", entityName + "Mapper");
-        model.put("entityName", entityName);
+        model.put("mapperName", entityName.substring(entityName.lastIndexOf(".") + 1) + "Mapper");
+        model.put("entityName", entityName.substring(entityName.lastIndexOf(".") + 1));
         // 获取 Mapper 接口上的文档注释
-        model.put("mapperComment", processDocComment(processingEnv.getElementUtils()
+        model.put("mapperComment", DocCommentUtil.processDocComment(processingEnv.getElementUtils()
                 .getDocComment(mapperElement)));
         // 处理方法
         List<Method> methods = new ArrayList<>();
         for (Element element : mapperElement.getEnclosedElements()) {
             if (element.getKind() == ElementKind.METHOD
                 && element instanceof ExecutableElement methodElement) {
-                String[] comment = processDocComment(processingEnv.getElementUtils()
+                String[] comment = DocCommentUtil.processDocComment(processingEnv.getElementUtils()
                         .getDocComment(methodElement));
-                String returnType = processType(methodElement.getReturnType().toString());
+                String returnType = processType(methodElement.getReturnType());
                 String name = methodElement.getSimpleName().toString();
                 Method method = new Method(comment, returnType, name);
                 for (VariableElement parameter : methodElement.getParameters()) {
-                    method.addParameter(parameter.getSimpleName().toString(), processType(parameter.asType().toString()));
+                    method.addParameter(parameter.getSimpleName().toString(), processType(parameter.asType()));
                 }
                 methods.add(method);
             }
