@@ -126,7 +126,7 @@ public class Processor extends AbstractProcessor {
             String packageName = (String) serviceModel.get("package");
             String className = (String) serviceModel.get("serviceName");
             FileObject fileObject = processingEnv.getFiler().createResource(
-                    StandardLocation.SOURCE_OUTPUT, packageName, className + ".java"
+                    StandardLocation.SOURCE_OUTPUT, "java." + packageName, className + ".java"
             );
             Template template = freeMarkerTemplates.get("service");
             Writer writer = fileObject.openWriter();
@@ -144,7 +144,7 @@ public class Processor extends AbstractProcessor {
             String packageName = (String) serviceImplModel.get("package");
             String className = (String) serviceImplModel.get("serviceImplName");
             FileObject fileObject = processingEnv.getFiler().createResource(
-                    StandardLocation.SOURCE_OUTPUT, packageName, className + ".java"
+                    StandardLocation.SOURCE_OUTPUT, "java." + packageName, className + ".java"
             );
             Template template = freeMarkerTemplates.get("serviceImpl");
             Writer writer = fileObject.openWriter();

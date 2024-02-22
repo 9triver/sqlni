@@ -10,14 +10,15 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class ServiceGenerator {
+public class ServiceImplGenerator {
+
 
     private final ProcessingEnvironment processingEnv;
     private final TypeElement mapperElement;
     private final String entityName;
     private final Set<String> imports = new HashSet<>();
 
-    public ServiceGenerator(ProcessingEnvironment processingEnv, TypeElement mapperElement, String entityName) {
+    public ServiceImplGenerator(ProcessingEnvironment processingEnv, TypeElement mapperElement, String entityName) {
         this.processingEnv = processingEnv;
         this.mapperElement = mapperElement;
         this.entityName = entityName;
@@ -28,13 +29,19 @@ public class ServiceGenerator {
         Map<String, Object> model = new HashMap<>();
         model.put("time", DateTimeUtil.getNowDateTime());
         // 获取软件包名
-        model.put("package", processingEnv.getElementUtils().getPackageOf(mapperElement)
-                                     .getQualifiedName().toString() + ".service");
-        model.put("serviceName", entityName.substring(entityName.lastIndexOf(".") + 1) + "Service");
-        model.put("entityName", entityName.substring(entityName.lastIndexOf(".") + 1));
+        String packageName = processingEnv.getElementUtils().getPackageOf(mapperElement)
+                .getQualifiedName().toString();
+        model.put("package", packageName + ".service.impl");
+        String entitySimpleName = entityName.substring(entityName.lastIndexOf(".") + 1);
+        model.put("serviceName", entitySimpleName + "Service");
+        model.put("mapperName", entitySimpleName + "Mapper");
+        model.put("serviceImplName", entitySimpleName + "ServiceImpl");
+        model.put("entityName", entitySimpleName);
         // 获取 Mapper 接口上的文档注释
-        model.put("serviceComment", DocCommentUtil.processDocComment(processingEnv.getElementUtils()
+        model.put("serviceImplComment", DocCommentUtil.processDocComment(processingEnv.getElementUtils()
                 .getDocComment(mapperElement)));
+        imports.add(packageName + ".mapper." + model.get("mapperName"));
+        imports.add(packageName + ".service." + model.get("serviceName"));
         model.put("imports", imports);
         return model;
     }

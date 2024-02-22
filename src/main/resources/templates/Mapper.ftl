@@ -9,11 +9,11 @@ import ${import};
 </#list>
 
 <#if mapperComment?has_content>
-  /**
-    <#list mapperComment as line>
-      *${line}
-    </#list>
-  */
+/**
+  <#list mapperComment as line>
+ *${line}
+  </#list>
+ */
 </#if>
 @Mapper
 public interface ${mapperName} extends BaseMapper<${entityName}> {
