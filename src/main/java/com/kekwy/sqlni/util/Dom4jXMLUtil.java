@@ -16,6 +16,7 @@ import java.io.Writer;
  * @version 1.0
  * @since 2024/1/18 9:47
  */
+@Deprecated
 public class Dom4jXMLUtil {
 
     /* CONSTANT: doctype

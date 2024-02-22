@@ -1,12 +1,10 @@
 package com.kekwy.sqlni;
 
 import com.kekwy.sqlni.generator.MapperGenerator;
+import com.kekwy.sqlni.generator.MapperXMLGenerator;
 import com.kekwy.sqlni.generator.ServiceGenerator;
 import com.kekwy.sqlni.generator.ServiceImplGenerator;
-import com.kekwy.sqlni.generator.XMLGenerator;
-import com.kekwy.sqlni.node.ElementNode;
 import com.kekwy.sqlni.templates.SQLTemplates;
-import com.kekwy.sqlni.util.Dom4jXMLUtil;
 import com.kekwy.sqlni.util.SQLTemplatesUtil;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -69,6 +67,7 @@ public class Processor extends AbstractProcessor {
             freeMarkerTemplates.put("mapper", config.getTemplate("Mapper.ftl"));
             freeMarkerTemplates.put("service", config.getTemplate("Service.ftl"));
             freeMarkerTemplates.put("serviceImpl", config.getTemplate("ServiceImpl.ftl"));
+            freeMarkerTemplates.put("mapperXML", config.getTemplate("MapperXML.ftl"));
         } catch (IOException e) {
             handleException(e);
         }
@@ -156,17 +155,21 @@ public class Processor extends AbstractProcessor {
         }
     }
 
-    private void generateXML(TypeElement mapper, String entityName) {
-        Map<String, Object> xmlModel = new XMLGenerator(processingEnv, mapper, entityName).generate();
+    private void generateMapperXML(TypeElement mapper, String entityName) {
+        Map<String, Object> mapperXMLModel =
+                new MapperXMLGenerator(processingEnv, mapper, entityName, sqlTemplates).generate();
         try {
-            String packageName = (String) xmlModel.get("package");
-            String fileName = (String) xmlModel.get("fileName");
-            ElementNode root = (ElementNode) xmlModel.get("root");
+            String packageName = (String) mapperXMLModel.get("package");
+            String fileName = (String) mapperXMLModel.get("mapperName") + ".xml";
             FileObject fileObject = processingEnv.getFiler().createResource(
                     StandardLocation.SOURCE_OUTPUT, "recourses." + packageName, fileName
             );
-            Dom4jXMLUtil.writeXMLFile(root, fileObject.openWriter());
-        } catch (IOException e) {
+            Template template = freeMarkerTemplates.get("mapperXML");
+            Writer writer = fileObject.openWriter();
+            template.process(mapperXMLModel, writer);
+            writer.flush();
+            writer.close();
+        } catch (IOException | TemplateException e) {
             handleException(e);
         }
     }
@@ -179,7 +182,7 @@ public class Processor extends AbstractProcessor {
                 generateMapper(mapper, entityName);
                 generateService(mapper, entityName);
                 generateServiceImpl(mapper, entityName);
-                generateXML(mapper, entityName); // core
+                generateMapperXML(mapper, entityName); // core
             }
         }
         return true;
