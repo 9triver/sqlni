@@ -20,11 +20,11 @@ public interface ${mapperName} extends BaseMapper<${entityName}> {
 
 <#list methods as method>
     <#if method.comment?has_content>
-      /**
-        <#list method.comment as line>
-          *${line}
-        </#list>
-      */
+    /**
+      <#list method.comment as line>
+     *${line}
+      </#list>
+     */
     </#if>
     ${method.returnType} ${method.name}(<#list method.parameters as parameter>@Param("${parameter.name}") ${parameter.type} ${parameter.name}<#if parameter_has_next>, </#if></#list>);
 
