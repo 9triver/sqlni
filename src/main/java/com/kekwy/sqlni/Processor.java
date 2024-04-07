@@ -160,7 +160,7 @@ public class Processor extends AbstractProcessor {
                 new MapperXMLGenerator(processingEnv, mapper, entityName, sqlTemplates).generate();
         try {
             String packageName = (String) mapperXMLModel.get("package");
-            String fileName = (String) mapperXMLModel.get("mapperName") + ".xml";
+            String fileName = mapperXMLModel.get("mapperName") + ".xml";
             FileObject fileObject = processingEnv.getFiler().createResource(
                     StandardLocation.SOURCE_OUTPUT, "recourses." + packageName, fileName
             );

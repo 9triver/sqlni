@@ -23,6 +23,24 @@
 
 https://www.jetbrains.com/help/idea/using-language-injections.html
 
+mybatis 的注解天然的支持标签，只需在此基础上添加方言转换功能即可
+
+[Mybatis实现@Select等注解动态组合SQL语句](
+https://blog.csdn.net/apicescn/article/details/79507610)
+
+mybatisX 插件已经可以实现根据方法名生成具体方法及 XML 文件中具体 SQL 的功能。
+
+集成 mybatisX、mybatis、mybatisPlus、JPA、querydsl
+
+自定义 IDEA 语言插件实现语法高亮
+
+最终目标不明确导致的无从下手，化繁为简回归本心。
+
+**将立体化为平面再从平面重新生成立体：将 XML 结构转化为字符串，再递归的进行方言转换，重新生成 XML 结构。**
+
+在 maven 显示指定注解处理器会导致 Lombok 失效，原因暂未知。
+
+
 - **[1 项目简介](#1-项目简介)**
 - **[2 快速开始](#2-快速开始)**
   - [2.1 添加依赖](#21-添加依赖)
@@ -36,7 +54,7 @@ SQLNI 项目是一个针对 MyBatis 的辅助工具，可以帮助用户根据�
 
 SQLNI 语言是一种 SQL-like 的 DSL，在标准 SQL 的基础上进行部分拓展，将不同数据库方言中功能相同的函数统一命名，并且支持表达 MyBatis 中动态 SQL 的语义。
 
-生成 XML 文件时，默认根据 Mapper 接口中方法的返回值类型，自动设置对应查询的 resultType 属性。除此之外，还支持用户自定义 resultMap 用于处理指定方法的查询结构。 
+生成 XML 文件时，默认根据 Mapper 接口中方法的返回值类型，自动设置对应查询的 resultType 属性。除此之外，还支持用户自定义 resultMap 用于处理指定方法的查询结构。
 
 支持的 SQL 语句：SELECT；
 
@@ -65,6 +83,7 @@ select item from t_table if
 ### 2.1 添加配置
 
 ```xml
+
 <plugin>
   <groupId>org.apache.maven.plugins</groupId>
   <artifactId>maven-compiler-plugin</artifactId>
@@ -75,7 +94,7 @@ select item from t_table if
     <encoding>UTF-8</encoding>
     <annotationProcessors>
       <annotationProcessor>
-        com.kekwy.sqlni.UseSQLNIProcessor
+        com.kekwy.sqlni.Processor
       </annotationProcessor>
     </annotationProcessors>
     <compilerArgs>
@@ -289,19 +308,36 @@ mvnDebug clean install
 
 [10] MyBatis-Plus[EB/OL]. https://baomidou.com/
 
-```xml
 
+
+
+
+问题记录
+
+```
+<parent>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-parent</artifactId>
+  <version>3.2.2</version>
+  <relativePath/> <!-- lookup parent from repository -->
+</parent>
 ```
 
 
 
+Property 'sqlSessionFactory' or 'sqlSessionTemplate' are required
 
+需要升级 mybatis(plus) 版本
+
+
+
+https://zhuanlan.zhihu.com/p/670193148
 
 
 
 laskdjfklosadj lkasdj fglk;jsadl;zgfkkjAEWS:KIOD/fghjsdWOI'LJ GHKLJSDEF HBIKU;GVBFEWa:hLS GBUIKREWASY GLUEWWKSUHF DCF KIHEDSAJKFGHKDFJSHVKLSADHGKJHDS
 
-
+![image-20240219150050294](README.assets/image-20240219150050294.png)
 
 访问者模式
 

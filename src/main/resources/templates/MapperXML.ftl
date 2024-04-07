@@ -4,4 +4,15 @@
 
 <mapper namespace="${namespace}">
 
+<#list resultMaps as resultMap>
+  <resultMap id="${resultMap.id}" type="${resultMap.type}">
+
+  </resultMap>
+
+</#list>
+<#list methods as method>
+
+
+</#list>
+
 </mapper>
