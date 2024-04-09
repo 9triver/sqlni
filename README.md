@@ -593,3 +593,29 @@ SQL 模板参考 queryDSL 实现。
 关于模块化踩的坑：
 
 只有使用者同样进行模块化，被使用模块中的访问限制才会生效。
+
+
+
+Class 中 getName 与 getTypeName 的区别：
+
+`getName()` 和 `getTypeName()` 方法都是用于获取类的名称的方法，但它们在用途和返回结果上有所不同。
+
+1. **getName() 方法：**
+   - `getName()` 方法是`Class`类中的方法，它返回的是一个字符串，表示类的全限定名（fully qualified name）。这个全限定名包括包名和类名，例如："java.lang.String"。
+   - 在数组类的情况下，`getName()` 方法返回的是描述数组的字符串，该字符串的格式是类名后跟一系列的 "[]"，用来表示数组的维度。例如："int[]" 表示 int 类型的一维数组，"java.lang.String[][]" 表示 String 类型的二维数组。
+2. **getTypeName() 方法：**
+   - `getTypeName()` 方法是`java.lang.reflect.Type`接口中的方法，它返回的是一个字符串，表示类型的名称。
+   - 对于普通的类，`getTypeName()` 方法返回的结果和`getName()` 方法相同，即类的全限定名。
+   - 对于泛型类型、参数化类型、数组类型等复杂类型，`getTypeName()` 方法返回的是描述类型的字符串，其中包括了泛型参数、数组维度等信息。
+
+举例来说，考虑一个泛型类 `ArrayList<T>`，如果你调用 `ArrayList.class.getName()`，它会返回 `"java.util.ArrayList"`，而如果你调用 `ArrayList.class.getTypeName()`，它也会返回 `"java.util.ArrayList"`，这两个方法的结果是一样的。但如果你有一个 `ArrayList<String>` 的实例，那么 `ArrayList<String>.class.getName()` 会抛出编译错误，因为泛型类型的擦除，而 `ArrayList<String>.class.getTypeName()` 则会返回 `"java.util.ArrayList<java.lang.String>"`，这里包含了泛型参数的信息。
+
+
+
+解决 MirroredTypeException:Attempt to access Class object for TypeMirror：
+
+使用 `annotationMirror`
+
+
+
+可以先方言转换，再进行语法解析。

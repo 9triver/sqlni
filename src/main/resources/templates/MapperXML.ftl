@@ -6,7 +6,18 @@
 
 <#list resultMaps as resultMap>
   <resultMap id="${resultMap.id}" type="${resultMap.type}">
-
+<#list resultMap.idList as id>
+    <id property="${id.property}" column="${id.column}"<#if id.javaType?has_content> javaType="${id.javaType}"</#if><#if id.jdbcType?has_content> jdbcType="${id.jdbcType}"</#if><#if id.typeHandler?has_content> typeHandler="${id.typeHandler}"</#if>/>
+</#list>
+<#list resultMap.resultList as id>
+    <result property="${id.property}" column="${id.column}"<#if id.javaType?has_content> javaType="${id.javaType}"</#if><#if id.jdbcType?has_content> jdbcType="${id.jdbcType}"</#if><#if id.typeHandler?has_content> typeHandler="${id.typeHandler}"</#if>/>
+</#list>
+<#list resultMap.associationList as association>
+    <association property="${association.property}" column="${association.column}" select="${association.select}"<#if association.fetchType?has_content> fetchType="${association.fetchType}"</#if>/>
+</#list>
+<#list resultMap.collectionList as collection>
+    <collection property="${collection.property}" column="${collection.column}" select="${collection.select}"<#if collection.fetchType?has_content> fetchType="${collection.fetchType}"</#if>/>
+</#list>
   </resultMap>
 
 </#list>
