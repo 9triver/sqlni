@@ -1,7 +1,5 @@
 package com.kekwy.sqlni.util;
 
-import com.kekwy.sqlni.node.ElementNode;
-
 import java.util.Map;
 
 public class NodeUtil {

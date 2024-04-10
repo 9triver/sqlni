@@ -1,7 +1,7 @@
 package com.kekwy.sqlni.mapper;
 
-import com.kekwy.sqlni.node.CommentNode;
-import com.kekwy.sqlni.node.ElementNode;
+import com.kekwy.sqlni.util.CommentNode;
+import com.kekwy.sqlni.util.ElementNode;
 import com.kekwy.sqlni.templates.SQLTemplates;
 
 import java.util.*;

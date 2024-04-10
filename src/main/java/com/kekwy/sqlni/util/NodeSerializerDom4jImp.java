@@ -1,4 +1,4 @@
-package com.kekwy.sqlni.node;
+package com.kekwy.sqlni.util;
 
 import org.dom4j.Document;
 import org.dom4j.Element;
@@ -12,7 +12,6 @@ import java.util.Map;
  * @version 1.0
  * @since 2024/1/29 9:51
  */
-@Deprecated
 public class NodeSerializerDom4jImp implements NodeSerializer {
 
     private final NodeSerializer innerSerializer;

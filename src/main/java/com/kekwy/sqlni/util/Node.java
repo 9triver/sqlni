@@ -1,4 +1,4 @@
-package com.kekwy.sqlni.node;
+package com.kekwy.sqlni.util;
 
 /**
  * 保存由 SQLNI 语句转化得到的 XML 数据及其结构

@@ -1,6 +1,5 @@
 package com.kekwy.sqlni.util;
 
-import com.kekwy.sqlni.node.*;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.io.OutputFormat;

@@ -2,12 +2,11 @@ package com.kekwy.sqlni.generator;
 
 import com.kekwy.sqlni.templates.SQLTemplates;
 import com.kekwy.sqlni.util.DateTimeUtil;
+import com.kekwy.sqlni.util.DocCommentUtil;
 import com.kekwy.sqlni.util.ResultMirror;
 import com.kekwy.sqlni.util.ResultsMirror;
-import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.mapping.FetchType;
-import org.apache.ibatis.type.JdbcType;
-import org.apache.ibatis.type.UnknownTypeHandler;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.*;
@@ -37,20 +36,21 @@ public class MapperXMLGenerator {
         String mapperName = entityName.substring(entityName.lastIndexOf(".") + 1) + "Mapper";
         model.put("mapperName", mapperName);
         model.put("namespace", packageName + "." + mapperName); //
-        model.put("resultMaps", generateResultMap(mapper));     //
-        model.put("methods", new ArrayList<>());                //
+        model.put("resultMaps", generateResultMaps(mapper));    //
+        model.put("methods", generateMethods(mapper));          //
         return model;
     }
 
-    public List<ResultMap> generateResultMap(TypeElement mapper) {
-        List<ResultMap> res = new LinkedList<>();
+    private List<ResultMapModel> generateResultMaps(TypeElement mapper) {
+        List<ResultMapModel> res = new LinkedList<>();
         for (Element element : mapper.getEnclosedElements()) {
             if (element.getKind() == ElementKind.METHOD && element instanceof ExecutableElement methodElement) {
                 // 找到方法上的 Results 注解，以及该注解对应的 MirrorType
                 for (AnnotationMirror annotationMirror : methodElement.getAnnotationMirrors()) {
                     String annotationName = annotationMirror.getAnnotationType().asElement().asType().toString();
                     if (annotationName.equals(Results.class.getName())) {
-                        res.add(new ResultMap(new ResultsMirror(annotationMirror), methodElement.getReturnType().toString()));
+                        res.add(new ResultMapModel(new ResultsMirror(annotationMirror),
+                                processType(methodElement.getReturnType().toString())));
                     }
                 }
             }
@@ -58,17 +58,93 @@ public class MapperXMLGenerator {
         return res;
     }
 
-    public static class Method {
-        String[] comment;
+    private List<MethodModel> generateMethods(TypeElement mapper) {
+        List<MethodModel> res = new LinkedList<>();
+        for (Element element : mapper.getEnclosedElements()) {
+            if (element.getKind() == ElementKind.METHOD && element instanceof ExecutableElement methodElement) {
+                String statement = "";
+                String action = "";
+                Select select = methodElement.getAnnotation(Select.class);
+                Insert insert = methodElement.getAnnotation(Insert.class);
+                Update update = methodElement.getAnnotation(Update.class);
+                Delete delete = methodElement.getAnnotation(Delete.class);
+                if (select != null) {
+                    statement = select.value()[select.value().length - 1];
+                    action = "select";
+                } else if (insert != null) {
+                    statement = insert.value()[insert.value().length - 1];
+                    action = "insert";
+                } else if (update != null) {
+                    statement = update.value()[update.value().length - 1];
+                    action = "update";
+                } else if (delete != null) {
+                    statement = delete.value()[delete.value().length - 1];
+                    action = "delete";
+                } else {
+                    continue;
+                }
+                ResultMap resultMap = methodElement.getAnnotation(ResultMap.class);
+                Results results = methodElement.getAnnotation(Results.class);
+                String resultMapId = null;
+                if (resultMap != null) {
+                    resultMapId = resultMap.value()[resultMap.value().length - 1];
+                } else if (results != null) {
+                    resultMapId = results.id();
+                }
+                String[] comment = DocCommentUtil.processDocComment(processingEnv.getElementUtils()
+                        .getDocComment(methodElement));
+                res.add(new MethodModel(action,
+                        processType(methodElement.getReturnType().toString()),
+                        resultMapId, comment, statement));
+            }
+        }
+        return res;
+    }
 
-        String resultType;
-
-        String resultMap;
-
+    private List<MethodModel> generateInsert(TypeElement mapper) {
+        return new LinkedList<>();
     }
 
     @SuppressWarnings("unused")
-    public static class ResultMap {
+    public static class MethodModel {
+
+        private final String action;
+        private final String[] comment;
+        private final String resultType;
+        private final String resultMap;
+        private final String statement;
+
+        public MethodModel(String action, String resultType, String resultMap, String[] comment, String statement) {
+            this.action = action;
+            this.resultMap = resultMap;
+            this.resultType = resultType;
+            this.comment = comment;
+            this.statement = statement;
+        }
+
+        public String getAction() {
+            return action;
+        }
+
+        public String[] getComment() {
+            return comment;
+        }
+
+        public String getResultType() {
+            return resultType;
+        }
+
+        public String getResultMap() {
+            return resultMap;
+        }
+
+        public String getStatement() {
+            return statement;
+        }
+    }
+
+    @SuppressWarnings("unused")
+    public static class ResultMapModel {
         private String id = "";
         private final String type;
         private final List<Map<String, String>> idList = new LinkedList<>();
@@ -76,9 +152,9 @@ public class MapperXMLGenerator {
         private final List<Map<String, String>> collectionList = new LinkedList<>();
         private final List<Map<String, String>> associationList = new LinkedList<>();
 
-        public ResultMap(ResultsMirror results, String type) {
+        public ResultMapModel(ResultsMirror results, String type) {
             this.id = results.id();
-            this.type = processType(type);
+            this.type = type;
             for (ResultMirror result : results.value()) {
                 Map<String, String> map = new HashMap<>();
                 map.put("column", result.column());
@@ -133,17 +209,17 @@ public class MapperXMLGenerator {
         }
 
 
-        private final Pattern TYPE_PATTERN = Pattern.compile("(.+)?<(.+)?>");
+    }
 
-        private String processType(String type) {
-            Matcher matcher = TYPE_PATTERN.matcher(type);
-            if (matcher.find()) {
-                return matcher.group(2);
-            } else {
-                return type;
-            }
+    private static final Pattern TYPE_PATTERN = Pattern.compile("(.+)?<(.+)?>");
+
+    private static String processType(String type) {
+        Matcher matcher = TYPE_PATTERN.matcher(type);
+        if (matcher.find()) {
+            return matcher.group(2);
+        } else {
+            return type;
         }
-
     }
 
 

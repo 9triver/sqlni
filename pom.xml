@@ -82,19 +82,23 @@
       <artifactId>mybatis-plus-boot-starter</artifactId>
       <version>3.3.1</version>
     </dependency>
-
     <!-- https://mvnrepository.com/artifact/org.jetbrains/annotations -->
     <dependency>
       <groupId>org.jetbrains</groupId>
       <artifactId>annotations</artifactId>
       <version>24.1.0</version>
     </dependency>
-
     <!-- https://mvnrepository.com/artifact/org.freemarker/freemarker -->
     <dependency>
       <groupId>org.freemarker</groupId>
       <artifactId>freemarker</artifactId>
       <version>2.3.32</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/com.github.drinkjava2/jdialects -->
+    <dependency>
+    <groupId>com.github.drinkjava2</groupId>
+    <artifactId>jdialects</artifactId>
+    <version>5.0.13.jre8</version>
     </dependency>
 
 

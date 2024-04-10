@@ -1,8 +1,7 @@
-package com.kekwy.sqlni.node;
+package com.kekwy.sqlni.util;
 
 import java.util.Map;
 
-@Deprecated
 public interface NodeSerializer {
 
     NodeSerializer addElement(String name, Map<String, String> attributes);

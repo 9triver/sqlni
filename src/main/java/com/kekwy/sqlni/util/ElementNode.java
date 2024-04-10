@@ -1,4 +1,4 @@
-package com.kekwy.sqlni.node;
+package com.kekwy.sqlni.util;
 
 import java.util.HashMap;
 import java.util.LinkedList;

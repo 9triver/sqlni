@@ -1,8 +1,8 @@
 package com.kekwy.sqlni.mapper;
 
-import com.kekwy.sqlni.node.ElementNode;
-import com.kekwy.sqlni.node.Node;
-import com.kekwy.sqlni.node.TextNode;
+import com.kekwy.sqlni.util.ElementNode;
+import com.kekwy.sqlni.util.Node;
+import com.kekwy.sqlni.util.TextNode;
 import com.kekwy.sqlni.parser.SQLNIBaseVisitor;
 import com.kekwy.sqlni.parser.SQLNILexer;
 import com.kekwy.sqlni.parser.SQLNIParser;
