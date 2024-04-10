@@ -32,7 +32,7 @@ import com.github.drinkjava2.jlogs.LogFactory;
  * and DDL SQL for cross-databases developing. Currently jDialects support ~70
  * database dialects. It has no any 3rd party dependency, run on JDK1.6 or
  * above.
- * 
+ *
  * @author Yong Zhu
  * @since 1.7.0
  */
@@ -168,12 +168,12 @@ public class Dialect {
 
 	/** If disable, will use same SqlTemplate for first page pagination query */
 	private static Boolean globalEnableTopLimitPagin = true;
-	
+
 	/** if not null, will use this JavaConverter to convert jdbc type to Java type */
 	public static JavaConverter globalJdbcTypeConverter=new BasicJavaConverter();
-	
+
 	/** if not null, will use this NamingRule to convert entity name to database table and entity field to database column */
-    public static NamingConversion globalNamingConversion = null;	
+    public static NamingConversion globalNamingConversion = null;
 
 	public static final String NOT_SUPPORT = "NOT_SUPPORT";
 	private static final String SKIP_ROWS = "$SKIP_ROWS";
@@ -192,18 +192,18 @@ public class Dialect {
         DialectFunctionTemplate.initFunctionTemplates();
         DialectPaginationTemplate.initPaginTemplates();
         DDLFeatures.initDDLFeatures();
-        
+
         //=================Manual register extra functions in templates ================
         DialectFunctionTemplate.initExtraFunctionTemplates();
 
         //=================Manual fix special bugs in DDL ========================
         H2Dialect.ddlFeatures.supportsIdentityColumns = false; //H2 from 2.x Identity column has problem 
     }
-	   
+
     public Dialect() {
         this.name=this.getClass().getSimpleName();
     }
-    
+
     public Dialect(String name) {
         this.name = name;
     }
@@ -216,7 +216,7 @@ public class Dialect {
 
 	/**
 	 * Guess Dialect by given connection, note:this method does not close connection
-	 * 
+	 *
 	 * @param con
 	 *            The JDBC Connection
 	 * @return Dialect The Dialect intance, if can not guess out, return null
@@ -227,7 +227,7 @@ public class Dialect {
 
 	/**
 	 * Guess Dialect by given data source
-	 * 
+	 *
 	 * @param datasource
 	 * @return Dialect
 	 */
@@ -341,11 +341,11 @@ public class Dialect {
 	// ====================================================
 	// ====================================================
 
-	public String limitAndTrans(int offset, int limit, String... sql) {
+	public String limitAndTrans(String offset, String limit, String... sql) {
 		return limit(offset, limit, trans(sql));
 	}
 
-	public String limit(int offset, int limit, String sql) {
+	public String limit(String offset, String limit, String sql) {
 		String result = null;
 		DialectException.assureNotNull(sql, "sql string can not be null");
 		String trimedSql = sql.trim();
@@ -356,12 +356,8 @@ public class Dialect {
 		String body = trimedSql.substring(7).trim();
 		DialectException.assureNotEmpty(body, "SQL body can not be empty");
 
-		int skipRows = offset;
-		int skipRowsPlus1 = skipRows + 1;
-		int totalRows = offset + limit;
-		int totalRowsPlus1 = totalRows + 1;
 		String useTemplate;
-		if (globalEnableTopLimitPagin && skipRows == 0) {
+		if (globalEnableTopLimitPagin && offset == "0") {
 			useTemplate = topLimitTemplate;
 			if (SQLServer2012Dialect.equals(this) && !StrUtils.containsIgnoreCase(trimedSql, "order by "))
 				useTemplate = SQLServer2005Dialect.topLimitTemplate;
@@ -391,9 +387,9 @@ public class Dialect {
 		}
 
 		// if have $XXX tag, replaced by real values
-		result = StrUtils.replaceIgnoreCase(useTemplate, SKIP_ROWS, String.valueOf(skipRows));
-		result = StrUtils.replaceIgnoreCase(result, PAGESIZE, String.valueOf(limit));
-		result = StrUtils.replaceIgnoreCase(result, TOTAL_ROWS, String.valueOf(totalRows));
+		result = StrUtils.replaceIgnoreCase(useTemplate, SKIP_ROWS, offset);
+		result = StrUtils.replaceIgnoreCase(result, PAGESIZE, limit);
+		result = StrUtils.replaceIgnoreCase(result, TOTAL_ROWS, limit + " + " + offset);
 
 		// now insert the customer's real full SQL here
 		result = StrUtils.replace(result, "$SQL", trimedSql);
@@ -493,7 +489,7 @@ public class Dialect {
     public boolean isFamily(String databaseName) {
         return StrUtils.startsWithIgnoreCase(this.toString(), databaseName);
     }
-	
+
 	/**
 	 * @return true if is MySql family
 	 */
@@ -608,8 +604,8 @@ public class Dialect {
      */
     public String[] toDropColumnDDL(ColumnModel... columnModels) {
         return DDLDropUtils.toDropColumnDDL(this, columnModels);
-    } 
-	
+    }
+
 	/**
 	 * Transfer tables to drop and create DDL String array
 	 */
