@@ -1,8 +1,8 @@
 package com.kekwy.sqlni.generator;
 
 import com.github.drinkjava2.jdialects.Dialect;
-import com.kekwy.sqlni.parser.SQLNIPostprocessVisitor;
-import com.kekwy.sqlni.parser.SQLNIPreprocessor;
+import com.kekwy.sqlni.parser.SQLNIXMLProcessor;
+import com.kekwy.sqlni.parser.SQLNIDialectProcessor;
 import com.kekwy.sqlni.util.*;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.mapping.FetchType;
@@ -114,16 +114,7 @@ public class MapperXMLGenerator {
             this.resultMap = resultMap;
             this.resultType = resultType;
             this.comment = comment;
-            PreprocessResult preprocessResult = new SQLNIPreprocessor().process(statement, dialect);
-            String transResult;
-            if (preprocessResult.limit() != null) {
-                transResult =
-                        dialect.limitAndTrans(preprocessResult.offset(),
-                                preprocessResult.limit(), preprocessResult.statement());
-            } else {
-                transResult = dialect.trans(preprocessResult.statement());
-            }
-            this.statement = new SQLNIPostprocessVisitor().process(transResult);
+            this.statement = new SQLNIXMLProcessor().process(new SQLNIDialectProcessor().process(statement, dialect));
         }
 
         public String getAction() {
