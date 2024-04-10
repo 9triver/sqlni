@@ -22,33 +22,17 @@ public interface SQLNIVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitSelect(SQLNIParser.SelectContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code paramLimit}
-	 * labeled alternative in {@link SQLNIParser#limit}.
+	 * Visit a parse tree produced by {@link SQLNIParser#limit}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitParamLimit(SQLNIParser.ParamLimitContext ctx);
+	T visitLimit(SQLNIParser.LimitContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code numberLimit}
-	 * labeled alternative in {@link SQLNIParser#limit}.
+	 * Visit a parse tree produced by {@link SQLNIParser#offset}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitNumberLimit(SQLNIParser.NumberLimitContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code paramOffset}
-	 * labeled alternative in {@link SQLNIParser#offset}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitParamOffset(SQLNIParser.ParamOffsetContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code numberOffset}
-	 * labeled alternative in {@link SQLNIParser#offset}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitNumberOffset(SQLNIParser.NumberOffsetContext ctx);
+	T visitOffset(SQLNIParser.OffsetContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link SQLNIParser#orderBy}.
 	 * @param ctx the parse tree
@@ -117,6 +101,13 @@ public interface SQLNIVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFuncColumn(SQLNIParser.FuncColumnContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code subQuery}
+	 * labeled alternative in {@link SQLNIParser#column}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSubQuery(SQLNIParser.SubQueryContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link SQLNIParser#param}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -136,6 +127,13 @@ public interface SQLNIVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitParamTable(SQLNIParser.ParamTableContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code subQueryTable}
+	 * labeled alternative in {@link SQLNIParser#table}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSubQueryTable(SQLNIParser.SubQueryTableContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link SQLNIParser#as}.
 	 * @param ctx the parse tree
@@ -198,6 +196,13 @@ public interface SQLNIVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitIsNullCondition(SQLNIParser.IsNullConditionContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code likeCondition}
+	 * labeled alternative in {@link SQLNIParser#condition}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLikeCondition(SQLNIParser.LikeConditionContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code inSetCondition}
 	 * labeled alternative in {@link SQLNIParser#condition}.

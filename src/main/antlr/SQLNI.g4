@@ -13,18 +13,16 @@ select
         FROM table
         (WHERE conditions)?
         orderBy?
-        (LIMIT limit)? (OFFSET offset)? ';'?
+        (limit (offset)?)? ';'?
     |
     ;
 
 limit
-    : param     # paramLimit
-    | NUMBER    # numberLimit
+    : LIMIT (param | NUMBER)
     ;
 
 offset
-    : param     # paramOffset
-    | NUMBER    # numberOffset
+    : OFFSET (param | NUMBER)
     ;
 
 orderBy
@@ -50,7 +48,7 @@ column
     | STRING                            # stringConst
     | NUMBER                            # numberConst
     | ID '(' column (',' column)* ')'   # funcColumn
-    | select                            # subQuery
+    | '(' select ')'                            # subQuery
     ;
 
 param
@@ -61,10 +59,11 @@ param
 table
     : ID as?    # normalTable
     | param as? # paramTable
+    | '(' select ')' as # subQueryTable
     ;
 
 as
-    : AS ID
+    : ID
     ;
 
 conditions
@@ -103,7 +102,6 @@ ORDER  : [Oo][Rr][Dd][Ee][Rr];         // order
 BY     : [Bb][Yy];                     // by
 DESC   : [Dd][Ee][Ss][Cc];             // desc
 ASC    : [Aa][Ss][Cc];                 // asc
-AS     : [Aa][Ss];                     // as
 BETWEEN: [Bb][Ee][Tt][Ww][Ee][Ee][Nn]; // between
 IS     : [Ii][Ss];                     // is
 NULL   : [Nn][Uu][Ll][Ll];             // null

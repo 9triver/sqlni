@@ -17,10 +17,10 @@ public class SQLNIParser extends Parser {
 		new PredictionContextCache();
 	public static final int
 		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, 
-		T__9=10, T__10=11, SELECT=12, FROM=13, WHERE=14, LIMIT=15, OFFSET=16, 
-		AND=17, OR=18, IN=19, ORDER=20, BY=21, DESC=22, ASC=23, AS=24, BETWEEN=25, 
-		IS=26, NULL=27, NOT=28, OP=29, SET=30, DISTINCT=31, NUMBER=32, STRING=33, 
-		ID=34, WS=35;
+		T__9=10, T__10=11, T__11=12, SELECT=13, FROM=14, WHERE=15, LIMIT=16, OFFSET=17, 
+		AND=18, OR=19, IN=20, ORDER=21, BY=22, DESC=23, ASC=24, BETWEEN=25, IS=26, 
+		NULL=27, NOT=28, LIKE=29, OP=30, SET=31, DISTINCT=32, NUMBER=33, STRING=34, 
+		ID=35, WS=36;
 	public static final int
 		RULE_root = 0, RULE_select = 1, RULE_limit = 2, RULE_offset = 3, RULE_orderBy = 4, 
 		RULE_orderColumn = 5, RULE_columns = 6, RULE_selectColumn = 7, RULE_column = 8, 
@@ -36,16 +36,16 @@ public class SQLNIParser extends Parser {
 	private static String[] makeLiteralNames() {
 		return new String[] {
 			null, "'*'", "';'", "','", "'['", "']'", "'.'", "'('", "')'", "'#{'", 
-			"'}'", "'${'"
+			"'}'", "'${'", "'%'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
 			null, null, null, null, null, null, null, null, null, null, null, null, 
-			"SELECT", "FROM", "WHERE", "LIMIT", "OFFSET", "AND", "OR", "IN", "ORDER", 
-			"BY", "DESC", "ASC", "AS", "BETWEEN", "IS", "NULL", "NOT", "OP", "SET", 
-			"DISTINCT", "NUMBER", "STRING", "ID", "WS"
+			null, "SELECT", "FROM", "WHERE", "LIMIT", "OFFSET", "AND", "OR", "IN", 
+			"ORDER", "BY", "DESC", "ASC", "BETWEEN", "IS", "NULL", "NOT", "LIKE", 
+			"OP", "SET", "DISTINCT", "NUMBER", "STRING", "ID", "WS"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -162,11 +162,9 @@ public class SQLNIParser extends Parser {
 		public OrderByContext orderBy() {
 			return getRuleContext(OrderByContext.class,0);
 		}
-		public TerminalNode LIMIT() { return getToken(SQLNIParser.LIMIT, 0); }
 		public LimitContext limit() {
 			return getRuleContext(LimitContext.class,0);
 		}
-		public TerminalNode OFFSET() { return getToken(SQLNIParser.OFFSET, 0); }
 		public OffsetContext offset() {
 			return getRuleContext(OffsetContext.class,0);
 		}
@@ -194,7 +192,7 @@ public class SQLNIParser extends Parser {
 		enterRule(_localctx, 2, RULE_select);
 		int _la;
 		try {
-			setState(59);
+			setState(57);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case SELECT:
@@ -221,6 +219,7 @@ public class SQLNIParser extends Parser {
 					match(T__0);
 					}
 					break;
+				case T__6:
 				case T__8:
 				case T__10:
 				case NUMBER:
@@ -260,36 +259,32 @@ public class SQLNIParser extends Parser {
 					}
 				}
 
-				setState(49);
+				setState(51);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==LIMIT) {
 					{
 					setState(47);
-					match(LIMIT);
-					setState(48);
 					limit();
+					setState(49);
+					_errHandler.sync(this);
+					_la = _input.LA(1);
+					if (_la==OFFSET) {
+						{
+						setState(48);
+						offset();
+						}
+					}
+
 					}
 				}
 
-				setState(53);
-				_errHandler.sync(this);
-				_la = _input.LA(1);
-				if (_la==OFFSET) {
-					{
-					setState(51);
-					match(OFFSET);
-					setState(52);
-					offset();
-					}
-				}
-
-				setState(56);
+				setState(54);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==T__1) {
 					{
-					setState(55);
+					setState(53);
 					match(T__1);
 					}
 				}
@@ -297,6 +292,7 @@ public class SQLNIParser extends Parser {
 				}
 				break;
 			case EOF:
+			case T__7:
 				enterOuterAlt(_localctx, 2);
 				{
 				}
@@ -318,51 +314,26 @@ public class SQLNIParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class LimitContext extends ParserRuleContext {
+		public TerminalNode LIMIT() { return getToken(SQLNIParser.LIMIT, 0); }
+		public ParamContext param() {
+			return getRuleContext(ParamContext.class,0);
+		}
+		public TerminalNode NUMBER() { return getToken(SQLNIParser.NUMBER, 0); }
 		public LimitContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_limit; }
-	 
-		public LimitContext() { }
-		public void copyFrom(LimitContext ctx) {
-			super.copyFrom(ctx);
-		}
-	}
-	@SuppressWarnings("CheckReturnValue")
-	public static class NumberLimitContext extends LimitContext {
-		public TerminalNode NUMBER() { return getToken(SQLNIParser.NUMBER, 0); }
-		public NumberLimitContext(LimitContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof SQLNIListener ) ((SQLNIListener)listener).enterNumberLimit(this);
+			if ( listener instanceof SQLNIListener ) ((SQLNIListener)listener).enterLimit(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof SQLNIListener ) ((SQLNIListener)listener).exitNumberLimit(this);
+			if ( listener instanceof SQLNIListener ) ((SQLNIListener)listener).exitLimit(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof SQLNIVisitor) return ((SQLNIVisitor<? extends T>)visitor).visitNumberLimit(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	@SuppressWarnings("CheckReturnValue")
-	public static class ParamLimitContext extends LimitContext {
-		public ParamContext param() {
-			return getRuleContext(ParamContext.class,0);
-		}
-		public ParamLimitContext(LimitContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof SQLNIListener ) ((SQLNIListener)listener).enterParamLimit(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof SQLNIListener ) ((SQLNIListener)listener).exitParamLimit(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof SQLNIVisitor) return ((SQLNIVisitor<? extends T>)visitor).visitParamLimit(this);
+			if ( visitor instanceof SQLNIVisitor) return ((SQLNIVisitor<? extends T>)visitor).visitLimit(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -371,28 +342,29 @@ public class SQLNIParser extends Parser {
 		LimitContext _localctx = new LimitContext(_ctx, getState());
 		enterRule(_localctx, 4, RULE_limit);
 		try {
-			setState(63);
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(59);
+			match(LIMIT);
+			setState(62);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case T__8:
 			case T__10:
-				_localctx = new ParamLimitContext(_localctx);
-				enterOuterAlt(_localctx, 1);
 				{
-				setState(61);
+				setState(60);
 				param();
 				}
 				break;
 			case NUMBER:
-				_localctx = new NumberLimitContext(_localctx);
-				enterOuterAlt(_localctx, 2);
 				{
-				setState(62);
+				setState(61);
 				match(NUMBER);
 				}
 				break;
 			default:
 				throw new NoViableAltException(this);
+			}
 			}
 		}
 		catch (RecognitionException re) {
@@ -408,51 +380,26 @@ public class SQLNIParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class OffsetContext extends ParserRuleContext {
+		public TerminalNode OFFSET() { return getToken(SQLNIParser.OFFSET, 0); }
+		public ParamContext param() {
+			return getRuleContext(ParamContext.class,0);
+		}
+		public TerminalNode NUMBER() { return getToken(SQLNIParser.NUMBER, 0); }
 		public OffsetContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_offset; }
-	 
-		public OffsetContext() { }
-		public void copyFrom(OffsetContext ctx) {
-			super.copyFrom(ctx);
-		}
-	}
-	@SuppressWarnings("CheckReturnValue")
-	public static class ParamOffsetContext extends OffsetContext {
-		public ParamContext param() {
-			return getRuleContext(ParamContext.class,0);
-		}
-		public ParamOffsetContext(OffsetContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof SQLNIListener ) ((SQLNIListener)listener).enterParamOffset(this);
+			if ( listener instanceof SQLNIListener ) ((SQLNIListener)listener).enterOffset(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof SQLNIListener ) ((SQLNIListener)listener).exitParamOffset(this);
+			if ( listener instanceof SQLNIListener ) ((SQLNIListener)listener).exitOffset(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof SQLNIVisitor) return ((SQLNIVisitor<? extends T>)visitor).visitParamOffset(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	@SuppressWarnings("CheckReturnValue")
-	public static class NumberOffsetContext extends OffsetContext {
-		public TerminalNode NUMBER() { return getToken(SQLNIParser.NUMBER, 0); }
-		public NumberOffsetContext(OffsetContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof SQLNIListener ) ((SQLNIListener)listener).enterNumberOffset(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof SQLNIListener ) ((SQLNIListener)listener).exitNumberOffset(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof SQLNIVisitor) return ((SQLNIVisitor<? extends T>)visitor).visitNumberOffset(this);
+			if ( visitor instanceof SQLNIVisitor) return ((SQLNIVisitor<? extends T>)visitor).visitOffset(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -461,21 +408,21 @@ public class SQLNIParser extends Parser {
 		OffsetContext _localctx = new OffsetContext(_ctx, getState());
 		enterRule(_localctx, 6, RULE_offset);
 		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(64);
+			match(OFFSET);
 			setState(67);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case T__8:
 			case T__10:
-				_localctx = new ParamOffsetContext(_localctx);
-				enterOuterAlt(_localctx, 1);
 				{
 				setState(65);
 				param();
 				}
 				break;
 			case NUMBER:
-				_localctx = new NumberOffsetContext(_localctx);
-				enterOuterAlt(_localctx, 2);
 				{
 				setState(66);
 				match(NUMBER);
@@ -483,6 +430,7 @@ public class SQLNIParser extends Parser {
 				break;
 			default:
 				throw new NoViableAltException(this);
+			}
 			}
 		}
 		catch (RecognitionException re) {
@@ -632,6 +580,7 @@ public class SQLNIParser extends Parser {
 			setState(89);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
+			case T__6:
 			case T__8:
 			case T__10:
 			case NUMBER:
@@ -811,7 +760,7 @@ public class SQLNIParser extends Parser {
 			setState(101);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if (_la==AS) {
+			if (_la==ID) {
 				{
 				setState(100);
 				as();
@@ -944,13 +893,33 @@ public class SQLNIParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class SubQueryContext extends ColumnContext {
+		public SelectContext select() {
+			return getRuleContext(SelectContext.class,0);
+		}
+		public SubQueryContext(ColumnContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof SQLNIListener ) ((SQLNIListener)listener).enterSubQuery(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof SQLNIListener ) ((SQLNIListener)listener).exitSubQuery(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SQLNIVisitor) return ((SQLNIVisitor<? extends T>)visitor).visitSubQuery(this);
+			else return visitor.visitChildren(this);
+		}
+	}
 
 	public final ColumnContext column() throws RecognitionException {
 		ColumnContext _localctx = new ColumnContext(_ctx, getState());
 		enterRule(_localctx, 16, RULE_column);
 		int _la;
 		try {
-			setState(124);
+			setState(128);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,18,_ctx) ) {
 			case 1:
@@ -1033,6 +1002,18 @@ public class SQLNIParser extends Parser {
 				match(T__7);
 				}
 				break;
+			case 6:
+				_localctx = new SubQueryContext(_localctx);
+				enterOuterAlt(_localctx, 6);
+				{
+				setState(124);
+				match(T__6);
+				setState(125);
+				select();
+				setState(126);
+				match(T__7);
+				}
+				break;
 			}
 		}
 		catch (RecognitionException re) {
@@ -1074,28 +1055,28 @@ public class SQLNIParser extends Parser {
 		ParamContext _localctx = new ParamContext(_ctx, getState());
 		enterRule(_localctx, 18, RULE_param);
 		try {
-			setState(132);
+			setState(136);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case T__8:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(126);
+				setState(130);
 				((ParamContext)_localctx).left = match(T__8);
-				setState(127);
+				setState(131);
 				match(ID);
-				setState(128);
+				setState(132);
 				((ParamContext)_localctx).right = match(T__9);
 				}
 				break;
 			case T__10:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(129);
+				setState(133);
 				((ParamContext)_localctx).left = match(T__10);
-				setState(130);
+				setState(134);
 				match(ID);
-				setState(131);
+				setState(135);
 				((ParamContext)_localctx).right = match(T__9);
 				}
 				break;
@@ -1124,6 +1105,29 @@ public class SQLNIParser extends Parser {
 		public TableContext() { }
 		public void copyFrom(TableContext ctx) {
 			super.copyFrom(ctx);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class SubQueryTableContext extends TableContext {
+		public SelectContext select() {
+			return getRuleContext(SelectContext.class,0);
+		}
+		public AsContext as() {
+			return getRuleContext(AsContext.class,0);
+		}
+		public SubQueryTableContext(TableContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof SQLNIListener ) ((SQLNIListener)listener).enterSubQueryTable(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof SQLNIListener ) ((SQLNIListener)listener).exitSubQueryTable(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SQLNIVisitor) return ((SQLNIVisitor<? extends T>)visitor).visitSubQueryTable(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
@@ -1176,21 +1180,21 @@ public class SQLNIParser extends Parser {
 		enterRule(_localctx, 20, RULE_table);
 		int _la;
 		try {
-			setState(142);
+			setState(151);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case ID:
 				_localctx = new NormalTableContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(134);
+				setState(138);
 				match(ID);
-				setState(136);
+				setState(140);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				if (_la==AS) {
+				if (_la==ID) {
 					{
-					setState(135);
+					setState(139);
 					as();
 					}
 				}
@@ -1202,18 +1206,32 @@ public class SQLNIParser extends Parser {
 				_localctx = new ParamTableContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(138);
+				setState(142);
 				param();
-				setState(140);
+				setState(144);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				if (_la==AS) {
+				if (_la==ID) {
 					{
-					setState(139);
+					setState(143);
 					as();
 					}
 				}
 
+				}
+				break;
+			case T__6:
+				_localctx = new SubQueryTableContext(_localctx);
+				enterOuterAlt(_localctx, 3);
+				{
+				setState(146);
+				match(T__6);
+				setState(147);
+				select();
+				setState(148);
+				match(T__7);
+				setState(149);
+				as();
 				}
 				break;
 			default:
@@ -1233,7 +1251,6 @@ public class SQLNIParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class AsContext extends ParserRuleContext {
-		public TerminalNode AS() { return getToken(SQLNIParser.AS, 0); }
 		public TerminalNode ID() { return getToken(SQLNIParser.ID, 0); }
 		public AsContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1260,9 +1277,7 @@ public class SQLNIParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(144);
-			match(AS);
-			setState(145);
+			setState(153);
 			match(ID);
 			}
 		}
@@ -1393,55 +1408,49 @@ public class SQLNIParser extends Parser {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(155);
+			setState(163);
 			_errHandler.sync(this);
-			switch (_input.LA(1)) {
-			case T__8:
-			case T__10:
-			case NUMBER:
-			case STRING:
-			case ID:
+			switch ( getInterpreter().adaptivePredict(_input,23,_ctx) ) {
+			case 1:
 				{
 				_localctx = new SingleConditionContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
 
-				setState(148);
+				setState(156);
 				condition();
 				}
 				break;
-			case NOT:
+			case 2:
 				{
 				_localctx = new NotConditionsContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(149);
+				setState(157);
 				match(NOT);
-				setState(150);
+				setState(158);
 				conditions(3);
 				}
 				break;
-			case T__6:
+			case 3:
 				{
 				_localctx = new SubConditionsContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(151);
+				setState(159);
 				match(T__6);
-				setState(152);
+				setState(160);
 				conditions(0);
-				setState(153);
+				setState(161);
 				match(T__7);
 				}
 				break;
-			default:
-				throw new NoViableAltException(this);
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(162);
+			setState(170);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,24,_ctx);
-			while ( _alt!=2 && _alt!= ATN.INVALID_ALT_NUMBER ) {
+			while ( _alt!=2 && _alt != ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
 					_prevctx = _localctx;
@@ -1449,9 +1458,9 @@ public class SQLNIParser extends Parser {
 					{
 					_localctx = new MultiCondtionsContext(new ConditionsContext(_parentctx, _parentState));
 					pushNewRecursionContext(_localctx, _startState, RULE_conditions);
-					setState(157);
+					setState(165);
 					if (!(precpred(_ctx, 1))) throw new FailedPredicateException(this, "precpred(_ctx, 1)");
-					setState(158);
+					setState(166);
 					((MultiCondtionsContext)_localctx).opt = _input.LT(1);
 					_la = _input.LA(1);
 					if ( !(_la==AND || _la==OR) ) {
@@ -1462,12 +1471,12 @@ public class SQLNIParser extends Parser {
 						_errHandler.reportMatch(this);
 						consume();
 					}
-					setState(159);
+					setState(167);
 					conditions(2);
 					}
 					} 
 				}
-				setState(164);
+				setState(172);
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,24,_ctx);
 			}
@@ -1613,23 +1622,47 @@ public class SQLNIParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class LikeConditionContext extends ConditionContext {
+		public List<ColumnContext> column() {
+			return getRuleContexts(ColumnContext.class);
+		}
+		public ColumnContext column(int i) {
+			return getRuleContext(ColumnContext.class,i);
+		}
+		public TerminalNode LIKE() { return getToken(SQLNIParser.LIKE, 0); }
+		public LikeConditionContext(ConditionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof SQLNIListener ) ((SQLNIListener)listener).enterLikeCondition(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof SQLNIListener ) ((SQLNIListener)listener).exitLikeCondition(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SQLNIVisitor) return ((SQLNIVisitor<? extends T>)visitor).visitLikeCondition(this);
+			else return visitor.visitChildren(this);
+		}
+	}
 
 	public final ConditionContext condition() throws RecognitionException {
 		ConditionContext _localctx = new ConditionContext(_ctx, getState());
 		enterRule(_localctx, 26, RULE_condition);
 		try {
-			setState(189);
+			setState(203);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,25,_ctx) ) {
 			case 1:
 				_localctx = new CmpConditionContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(165);
+				setState(173);
 				column();
-				setState(166);
+				setState(174);
 				match(OP);
-				setState(167);
+				setState(175);
 				column();
 				}
 				break;
@@ -1637,15 +1670,15 @@ public class SQLNIParser extends Parser {
 				_localctx = new InParamSetConditionContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(169);
+				setState(177);
 				column();
-				setState(170);
+				setState(178);
 				match(IN);
-				setState(171);
+				setState(179);
 				match(T__3);
-				setState(172);
+				setState(180);
 				param();
-				setState(173);
+				setState(181);
 				match(T__4);
 				}
 				break;
@@ -1653,15 +1686,15 @@ public class SQLNIParser extends Parser {
 				_localctx = new BetweenAndConditionContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(175);
+				setState(183);
 				column();
-				setState(176);
+				setState(184);
 				match(BETWEEN);
-				setState(177);
+				setState(185);
 				column();
-				setState(178);
+				setState(186);
 				match(AND);
-				setState(179);
+				setState(187);
 				column();
 				}
 				break;
@@ -1669,23 +1702,39 @@ public class SQLNIParser extends Parser {
 				_localctx = new IsNullConditionContext(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(181);
+				setState(189);
 				column();
-				setState(182);
+				setState(190);
 				match(IS);
-				setState(183);
+				setState(191);
 				match(NULL);
 				}
 				break;
 			case 5:
-				_localctx = new InSetConditionContext(_localctx);
+				_localctx = new LikeConditionContext(_localctx);
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(185);
+				setState(193);
 				column();
-				setState(186);
+				setState(194);
+				match(LIKE);
+				setState(195);
+				match(T__11);
+				setState(196);
+				column();
+				setState(197);
+				match(T__11);
+				}
+				break;
+			case 6:
+				_localctx = new InSetConditionContext(_localctx);
+				enterOuterAlt(_localctx, 6);
+				{
+				setState(199);
+				column();
+				setState(200);
 				match(IN);
-				setState(187);
+				setState(201);
 				match(SET);
 				}
 				break;
@@ -1718,7 +1767,7 @@ public class SQLNIParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\u0004\u0001#\u00c0\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
+		"\u0004\u0001$\u00ce\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
 		"\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004\u0007\u0004\u0002"+
 		"\u0005\u0007\u0005\u0002\u0006\u0007\u0006\u0002\u0007\u0007\u0007\u0002"+
 		"\b\u0007\b\u0002\t\u0007\t\u0002\n\u0007\n\u0002\u000b\u0007\u000b\u0002"+
@@ -1726,9 +1775,9 @@ public class SQLNIParser extends Parser {
 		"\u0003\u0001!\b\u0001\u0001\u0001\u0001\u0001\u0003\u0001%\b\u0001\u0001"+
 		"\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0003\u0001+\b\u0001\u0001"+
 		"\u0001\u0003\u0001.\b\u0001\u0001\u0001\u0001\u0001\u0003\u00012\b\u0001"+
-		"\u0001\u0001\u0001\u0001\u0003\u00016\b\u0001\u0001\u0001\u0003\u0001"+
-		"9\b\u0001\u0001\u0001\u0003\u0001<\b\u0001\u0001\u0002\u0001\u0002\u0003"+
-		"\u0002@\b\u0002\u0001\u0003\u0001\u0003\u0003\u0003D\b\u0003\u0001\u0004"+
+		"\u0003\u00014\b\u0001\u0001\u0001\u0003\u00017\b\u0001\u0001\u0001\u0003"+
+		"\u0001:\b\u0001\u0001\u0002\u0001\u0002\u0001\u0002\u0003\u0002?\b\u0002"+
+		"\u0001\u0003\u0001\u0003\u0001\u0003\u0003\u0003D\b\u0003\u0001\u0004"+
 		"\u0001\u0004\u0001\u0004\u0001\u0004\u0001\u0004\u0005\u0004K\b\u0004"+
 		"\n\u0004\f\u0004N\t\u0004\u0001\u0005\u0001\u0005\u0003\u0005R\b\u0005"+
 		"\u0001\u0005\u0001\u0005\u0001\u0005\u0001\u0005\u0003\u0005X\b\u0005"+
@@ -1736,103 +1785,114 @@ public class SQLNIParser extends Parser {
 		"_\b\u0006\n\u0006\f\u0006b\t\u0006\u0001\u0007\u0001\u0007\u0003\u0007"+
 		"f\b\u0007\u0001\b\u0001\b\u0001\b\u0001\b\u0003\bl\b\b\u0001\b\u0001\b"+
 		"\u0001\b\u0001\b\u0001\b\u0001\b\u0001\b\u0001\b\u0005\bv\b\b\n\b\f\b"+
-		"y\t\b\u0001\b\u0001\b\u0003\b}\b\b\u0001\t\u0001\t\u0001\t\u0001\t\u0001"+
-		"\t\u0001\t\u0003\t\u0085\b\t\u0001\n\u0001\n\u0003\n\u0089\b\n\u0001\n"+
-		"\u0001\n\u0003\n\u008d\b\n\u0003\n\u008f\b\n\u0001\u000b\u0001\u000b\u0001"+
-		"\u000b\u0001\f\u0001\f\u0001\f\u0001\f\u0001\f\u0001\f\u0001\f\u0001\f"+
-		"\u0003\f\u009c\b\f\u0001\f\u0001\f\u0001\f\u0005\f\u00a1\b\f\n\f\f\f\u00a4"+
-		"\t\f\u0001\r\u0001\r\u0001\r\u0001\r\u0001\r\u0001\r\u0001\r\u0001\r\u0001"+
+		"y\t\b\u0001\b\u0001\b\u0001\b\u0001\b\u0001\b\u0001\b\u0003\b\u0081\b"+
+		"\b\u0001\t\u0001\t\u0001\t\u0001\t\u0001\t\u0001\t\u0003\t\u0089\b\t\u0001"+
+		"\n\u0001\n\u0003\n\u008d\b\n\u0001\n\u0001\n\u0003\n\u0091\b\n\u0001\n"+
+		"\u0001\n\u0001\n\u0001\n\u0001\n\u0003\n\u0098\b\n\u0001\u000b\u0001\u000b"+
+		"\u0001\f\u0001\f\u0001\f\u0001\f\u0001\f\u0001\f\u0001\f\u0001\f\u0003"+
+		"\f\u00a4\b\f\u0001\f\u0001\f\u0001\f\u0005\f\u00a9\b\f\n\f\f\f\u00ac\t"+
+		"\f\u0001\r\u0001\r\u0001\r\u0001\r\u0001\r\u0001\r\u0001\r\u0001\r\u0001"+
 		"\r\u0001\r\u0001\r\u0001\r\u0001\r\u0001\r\u0001\r\u0001\r\u0001\r\u0001"+
-		"\r\u0001\r\u0001\r\u0001\r\u0001\r\u0001\r\u0001\r\u0003\r\u00be\b\r\u0001"+
-		"\r\u0000\u0001\u0018\u000e\u0000\u0002\u0004\u0006\b\n\f\u000e\u0010\u0012"+
-		"\u0014\u0016\u0018\u001a\u0000\u0002\u0001\u0000\u0016\u0017\u0001\u0000"+
-		"\u0011\u0012\u00d2\u0000\u001c\u0001\u0000\u0000\u0000\u0002;\u0001\u0000"+
-		"\u0000\u0000\u0004?\u0001\u0000\u0000\u0000\u0006C\u0001\u0000\u0000\u0000"+
-		"\bE\u0001\u0000\u0000\u0000\nY\u0001\u0000\u0000\u0000\f[\u0001\u0000"+
-		"\u0000\u0000\u000ec\u0001\u0000\u0000\u0000\u0010|\u0001\u0000\u0000\u0000"+
-		"\u0012\u0084\u0001\u0000\u0000\u0000\u0014\u008e\u0001\u0000\u0000\u0000"+
-		"\u0016\u0090\u0001\u0000\u0000\u0000\u0018\u009b\u0001\u0000\u0000\u0000"+
-		"\u001a\u00bd\u0001\u0000\u0000\u0000\u001c\u001d\u0003\u0002\u0001\u0000"+
-		"\u001d\u0001\u0001\u0000\u0000\u0000\u001e \u0005\f\u0000\u0000\u001f"+
-		"!\u0005\u001f\u0000\u0000 \u001f\u0001\u0000\u0000\u0000 !\u0001\u0000"+
-		"\u0000\u0000!$\u0001\u0000\u0000\u0000\"%\u0005\u0001\u0000\u0000#%\u0003"+
-		"\f\u0006\u0000$\"\u0001\u0000\u0000\u0000$#\u0001\u0000\u0000\u0000%&"+
-		"\u0001\u0000\u0000\u0000&\'\u0005\r\u0000\u0000\'*\u0003\u0014\n\u0000"+
-		"()\u0005\u000e\u0000\u0000)+\u0003\u0018\f\u0000*(\u0001\u0000\u0000\u0000"+
-		"*+\u0001\u0000\u0000\u0000+-\u0001\u0000\u0000\u0000,.\u0003\b\u0004\u0000"+
-		"-,\u0001\u0000\u0000\u0000-.\u0001\u0000\u0000\u0000.1\u0001\u0000\u0000"+
-		"\u0000/0\u0005\u000f\u0000\u000002\u0003\u0004\u0002\u00001/\u0001\u0000"+
-		"\u0000\u000012\u0001\u0000\u0000\u000025\u0001\u0000\u0000\u000034\u0005"+
-		"\u0010\u0000\u000046\u0003\u0006\u0003\u000053\u0001\u0000\u0000\u0000"+
-		"56\u0001\u0000\u0000\u000068\u0001\u0000\u0000\u000079\u0005\u0002\u0000"+
-		"\u000087\u0001\u0000\u0000\u000089\u0001\u0000\u0000\u00009<\u0001\u0000"+
-		"\u0000\u0000:<\u0001\u0000\u0000\u0000;\u001e\u0001\u0000\u0000\u0000"+
-		";:\u0001\u0000\u0000\u0000<\u0003\u0001\u0000\u0000\u0000=@\u0003\u0012"+
-		"\t\u0000>@\u0005 \u0000\u0000?=\u0001\u0000\u0000\u0000?>\u0001\u0000"+
-		"\u0000\u0000@\u0005\u0001\u0000\u0000\u0000AD\u0003\u0012\t\u0000BD\u0005"+
-		" \u0000\u0000CA\u0001\u0000\u0000\u0000CB\u0001\u0000\u0000\u0000D\u0007"+
-		"\u0001\u0000\u0000\u0000EF\u0005\u0014\u0000\u0000FG\u0005\u0015\u0000"+
-		"\u0000GL\u0003\n\u0005\u0000HI\u0005\u0003\u0000\u0000IK\u0003\n\u0005"+
-		"\u0000JH\u0001\u0000\u0000\u0000KN\u0001\u0000\u0000\u0000LJ\u0001\u0000"+
-		"\u0000\u0000LM\u0001\u0000\u0000\u0000M\t\u0001\u0000\u0000\u0000NL\u0001"+
-		"\u0000\u0000\u0000OQ\u0003\u0010\b\u0000PR\u0007\u0000\u0000\u0000QP\u0001"+
-		"\u0000\u0000\u0000QR\u0001\u0000\u0000\u0000RZ\u0001\u0000\u0000\u0000"+
-		"ST\u0005\u0004\u0000\u0000TU\u0003\u0012\t\u0000UW\u0005\u0005\u0000\u0000"+
-		"VX\u0007\u0000\u0000\u0000WV\u0001\u0000\u0000\u0000WX\u0001\u0000\u0000"+
-		"\u0000XZ\u0001\u0000\u0000\u0000YO\u0001\u0000\u0000\u0000YS\u0001\u0000"+
-		"\u0000\u0000Z\u000b\u0001\u0000\u0000\u0000[`\u0003\u000e\u0007\u0000"+
-		"\\]\u0005\u0003\u0000\u0000]_\u0003\u000e\u0007\u0000^\\\u0001\u0000\u0000"+
-		"\u0000_b\u0001\u0000\u0000\u0000`^\u0001\u0000\u0000\u0000`a\u0001\u0000"+
-		"\u0000\u0000a\r\u0001\u0000\u0000\u0000b`\u0001\u0000\u0000\u0000ce\u0003"+
-		"\u0010\b\u0000df\u0003\u0016\u000b\u0000ed\u0001\u0000\u0000\u0000ef\u0001"+
-		"\u0000\u0000\u0000f\u000f\u0001\u0000\u0000\u0000gl\u0005\"\u0000\u0000"+
-		"hi\u0005\"\u0000\u0000ij\u0005\u0006\u0000\u0000jl\u0005\"\u0000\u0000"+
-		"kg\u0001\u0000\u0000\u0000kh\u0001\u0000\u0000\u0000l}\u0001\u0000\u0000"+
-		"\u0000m}\u0003\u0012\t\u0000n}\u0005!\u0000\u0000o}\u0005 \u0000\u0000"+
-		"pq\u0005\"\u0000\u0000qr\u0005\u0007\u0000\u0000rw\u0003\u0010\b\u0000"+
-		"st\u0005\u0003\u0000\u0000tv\u0003\u0010\b\u0000us\u0001\u0000\u0000\u0000"+
-		"vy\u0001\u0000\u0000\u0000wu\u0001\u0000\u0000\u0000wx\u0001\u0000\u0000"+
-		"\u0000xz\u0001\u0000\u0000\u0000yw\u0001\u0000\u0000\u0000z{\u0005\b\u0000"+
-		"\u0000{}\u0001\u0000\u0000\u0000|k\u0001\u0000\u0000\u0000|m\u0001\u0000"+
-		"\u0000\u0000|n\u0001\u0000\u0000\u0000|o\u0001\u0000\u0000\u0000|p\u0001"+
-		"\u0000\u0000\u0000}\u0011\u0001\u0000\u0000\u0000~\u007f\u0005\t\u0000"+
-		"\u0000\u007f\u0080\u0005\"\u0000\u0000\u0080\u0085\u0005\n\u0000\u0000"+
-		"\u0081\u0082\u0005\u000b\u0000\u0000\u0082\u0083\u0005\"\u0000\u0000\u0083"+
-		"\u0085\u0005\n\u0000\u0000\u0084~\u0001\u0000\u0000\u0000\u0084\u0081"+
-		"\u0001\u0000\u0000\u0000\u0085\u0013\u0001\u0000\u0000\u0000\u0086\u0088"+
-		"\u0005\"\u0000\u0000\u0087\u0089\u0003\u0016\u000b\u0000\u0088\u0087\u0001"+
-		"\u0000\u0000\u0000\u0088\u0089\u0001\u0000\u0000\u0000\u0089\u008f\u0001"+
-		"\u0000\u0000\u0000\u008a\u008c\u0003\u0012\t\u0000\u008b\u008d\u0003\u0016"+
-		"\u000b\u0000\u008c\u008b\u0001\u0000\u0000\u0000\u008c\u008d\u0001\u0000"+
-		"\u0000\u0000\u008d\u008f\u0001\u0000\u0000\u0000\u008e\u0086\u0001\u0000"+
-		"\u0000\u0000\u008e\u008a\u0001\u0000\u0000\u0000\u008f\u0015\u0001\u0000"+
-		"\u0000\u0000\u0090\u0091\u0005\u0018\u0000\u0000\u0091\u0092\u0005\"\u0000"+
-		"\u0000\u0092\u0017\u0001\u0000\u0000\u0000\u0093\u0094\u0006\f\uffff\uffff"+
-		"\u0000\u0094\u009c\u0003\u001a\r\u0000\u0095\u0096\u0005\u001c\u0000\u0000"+
-		"\u0096\u009c\u0003\u0018\f\u0003\u0097\u0098\u0005\u0007\u0000\u0000\u0098"+
-		"\u0099\u0003\u0018\f\u0000\u0099\u009a\u0005\b\u0000\u0000\u009a\u009c"+
-		"\u0001\u0000\u0000\u0000\u009b\u0093\u0001\u0000\u0000\u0000\u009b\u0095"+
-		"\u0001\u0000\u0000\u0000\u009b\u0097\u0001\u0000\u0000\u0000\u009c\u00a2"+
-		"\u0001\u0000\u0000\u0000\u009d\u009e\n\u0001\u0000\u0000\u009e\u009f\u0007"+
-		"\u0001\u0000\u0000\u009f\u00a1\u0003\u0018\f\u0002\u00a0\u009d\u0001\u0000"+
-		"\u0000\u0000\u00a1\u00a4\u0001\u0000\u0000\u0000\u00a2\u00a0\u0001\u0000"+
-		"\u0000\u0000\u00a2\u00a3\u0001\u0000\u0000\u0000\u00a3\u0019\u0001\u0000"+
-		"\u0000\u0000\u00a4\u00a2\u0001\u0000\u0000\u0000\u00a5\u00a6\u0003\u0010"+
-		"\b\u0000\u00a6\u00a7\u0005\u001d\u0000\u0000\u00a7\u00a8\u0003\u0010\b"+
-		"\u0000\u00a8\u00be\u0001\u0000\u0000\u0000\u00a9\u00aa\u0003\u0010\b\u0000"+
-		"\u00aa\u00ab\u0005\u0013\u0000\u0000\u00ab\u00ac\u0005\u0004\u0000\u0000"+
-		"\u00ac\u00ad\u0003\u0012\t\u0000\u00ad\u00ae\u0005\u0005\u0000\u0000\u00ae"+
-		"\u00be\u0001\u0000\u0000\u0000\u00af\u00b0\u0003\u0010\b\u0000\u00b0\u00b1"+
-		"\u0005\u0019\u0000\u0000\u00b1\u00b2\u0003\u0010\b\u0000\u00b2\u00b3\u0005"+
-		"\u0011\u0000\u0000\u00b3\u00b4\u0003\u0010\b\u0000\u00b4\u00be\u0001\u0000"+
-		"\u0000\u0000\u00b5\u00b6\u0003\u0010\b\u0000\u00b6\u00b7\u0005\u001a\u0000"+
-		"\u0000\u00b7\u00b8\u0005\u001b\u0000\u0000\u00b8\u00be\u0001\u0000\u0000"+
-		"\u0000\u00b9\u00ba\u0003\u0010\b\u0000\u00ba\u00bb\u0005\u0013\u0000\u0000"+
-		"\u00bb\u00bc\u0005\u001e\u0000\u0000\u00bc\u00be\u0001\u0000\u0000\u0000"+
-		"\u00bd\u00a5\u0001\u0000\u0000\u0000\u00bd\u00a9\u0001\u0000\u0000\u0000"+
-		"\u00bd\u00af\u0001\u0000\u0000\u0000\u00bd\u00b5\u0001\u0000\u0000\u0000"+
-		"\u00bd\u00b9\u0001\u0000\u0000\u0000\u00be\u001b\u0001\u0000\u0000\u0000"+
-		"\u001a $*-158;?CLQWY`ekw|\u0084\u0088\u008c\u008e\u009b\u00a2\u00bd";
+		"\r\u0001\r\u0001\r\u0001\r\u0001\r\u0001\r\u0001\r\u0001\r\u0001\r\u0001"+
+		"\r\u0001\r\u0001\r\u0001\r\u0003\r\u00cc\b\r\u0001\r\u0000\u0001\u0018"+
+		"\u000e\u0000\u0002\u0004\u0006\b\n\f\u000e\u0010\u0012\u0014\u0016\u0018"+
+		"\u001a\u0000\u0002\u0001\u0000\u0017\u0018\u0001\u0000\u0012\u0013\u00e3"+
+		"\u0000\u001c\u0001\u0000\u0000\u0000\u00029\u0001\u0000\u0000\u0000\u0004"+
+		";\u0001\u0000\u0000\u0000\u0006@\u0001\u0000\u0000\u0000\bE\u0001\u0000"+
+		"\u0000\u0000\nY\u0001\u0000\u0000\u0000\f[\u0001\u0000\u0000\u0000\u000e"+
+		"c\u0001\u0000\u0000\u0000\u0010\u0080\u0001\u0000\u0000\u0000\u0012\u0088"+
+		"\u0001\u0000\u0000\u0000\u0014\u0097\u0001\u0000\u0000\u0000\u0016\u0099"+
+		"\u0001\u0000\u0000\u0000\u0018\u00a3\u0001\u0000\u0000\u0000\u001a\u00cb"+
+		"\u0001\u0000\u0000\u0000\u001c\u001d\u0003\u0002\u0001\u0000\u001d\u0001"+
+		"\u0001\u0000\u0000\u0000\u001e \u0005\r\u0000\u0000\u001f!\u0005 \u0000"+
+		"\u0000 \u001f\u0001\u0000\u0000\u0000 !\u0001\u0000\u0000\u0000!$\u0001"+
+		"\u0000\u0000\u0000\"%\u0005\u0001\u0000\u0000#%\u0003\f\u0006\u0000$\""+
+		"\u0001\u0000\u0000\u0000$#\u0001\u0000\u0000\u0000%&\u0001\u0000\u0000"+
+		"\u0000&\'\u0005\u000e\u0000\u0000\'*\u0003\u0014\n\u0000()\u0005\u000f"+
+		"\u0000\u0000)+\u0003\u0018\f\u0000*(\u0001\u0000\u0000\u0000*+\u0001\u0000"+
+		"\u0000\u0000+-\u0001\u0000\u0000\u0000,.\u0003\b\u0004\u0000-,\u0001\u0000"+
+		"\u0000\u0000-.\u0001\u0000\u0000\u0000.3\u0001\u0000\u0000\u0000/1\u0003"+
+		"\u0004\u0002\u000002\u0003\u0006\u0003\u000010\u0001\u0000\u0000\u0000"+
+		"12\u0001\u0000\u0000\u000024\u0001\u0000\u0000\u00003/\u0001\u0000\u0000"+
+		"\u000034\u0001\u0000\u0000\u000046\u0001\u0000\u0000\u000057\u0005\u0002"+
+		"\u0000\u000065\u0001\u0000\u0000\u000067\u0001\u0000\u0000\u00007:\u0001"+
+		"\u0000\u0000\u00008:\u0001\u0000\u0000\u00009\u001e\u0001\u0000\u0000"+
+		"\u000098\u0001\u0000\u0000\u0000:\u0003\u0001\u0000\u0000\u0000;>\u0005"+
+		"\u0010\u0000\u0000<?\u0003\u0012\t\u0000=?\u0005!\u0000\u0000><\u0001"+
+		"\u0000\u0000\u0000>=\u0001\u0000\u0000\u0000?\u0005\u0001\u0000\u0000"+
+		"\u0000@C\u0005\u0011\u0000\u0000AD\u0003\u0012\t\u0000BD\u0005!\u0000"+
+		"\u0000CA\u0001\u0000\u0000\u0000CB\u0001\u0000\u0000\u0000D\u0007\u0001"+
+		"\u0000\u0000\u0000EF\u0005\u0015\u0000\u0000FG\u0005\u0016\u0000\u0000"+
+		"GL\u0003\n\u0005\u0000HI\u0005\u0003\u0000\u0000IK\u0003\n\u0005\u0000"+
+		"JH\u0001\u0000\u0000\u0000KN\u0001\u0000\u0000\u0000LJ\u0001\u0000\u0000"+
+		"\u0000LM\u0001\u0000\u0000\u0000M\t\u0001\u0000\u0000\u0000NL\u0001\u0000"+
+		"\u0000\u0000OQ\u0003\u0010\b\u0000PR\u0007\u0000\u0000\u0000QP\u0001\u0000"+
+		"\u0000\u0000QR\u0001\u0000\u0000\u0000RZ\u0001\u0000\u0000\u0000ST\u0005"+
+		"\u0004\u0000\u0000TU\u0003\u0012\t\u0000UW\u0005\u0005\u0000\u0000VX\u0007"+
+		"\u0000\u0000\u0000WV\u0001\u0000\u0000\u0000WX\u0001\u0000\u0000\u0000"+
+		"XZ\u0001\u0000\u0000\u0000YO\u0001\u0000\u0000\u0000YS\u0001\u0000\u0000"+
+		"\u0000Z\u000b\u0001\u0000\u0000\u0000[`\u0003\u000e\u0007\u0000\\]\u0005"+
+		"\u0003\u0000\u0000]_\u0003\u000e\u0007\u0000^\\\u0001\u0000\u0000\u0000"+
+		"_b\u0001\u0000\u0000\u0000`^\u0001\u0000\u0000\u0000`a\u0001\u0000\u0000"+
+		"\u0000a\r\u0001\u0000\u0000\u0000b`\u0001\u0000\u0000\u0000ce\u0003\u0010"+
+		"\b\u0000df\u0003\u0016\u000b\u0000ed\u0001\u0000\u0000\u0000ef\u0001\u0000"+
+		"\u0000\u0000f\u000f\u0001\u0000\u0000\u0000gl\u0005#\u0000\u0000hi\u0005"+
+		"#\u0000\u0000ij\u0005\u0006\u0000\u0000jl\u0005#\u0000\u0000kg\u0001\u0000"+
+		"\u0000\u0000kh\u0001\u0000\u0000\u0000l\u0081\u0001\u0000\u0000\u0000"+
+		"m\u0081\u0003\u0012\t\u0000n\u0081\u0005\"\u0000\u0000o\u0081\u0005!\u0000"+
+		"\u0000pq\u0005#\u0000\u0000qr\u0005\u0007\u0000\u0000rw\u0003\u0010\b"+
+		"\u0000st\u0005\u0003\u0000\u0000tv\u0003\u0010\b\u0000us\u0001\u0000\u0000"+
+		"\u0000vy\u0001\u0000\u0000\u0000wu\u0001\u0000\u0000\u0000wx\u0001\u0000"+
+		"\u0000\u0000xz\u0001\u0000\u0000\u0000yw\u0001\u0000\u0000\u0000z{\u0005"+
+		"\b\u0000\u0000{\u0081\u0001\u0000\u0000\u0000|}\u0005\u0007\u0000\u0000"+
+		"}~\u0003\u0002\u0001\u0000~\u007f\u0005\b\u0000\u0000\u007f\u0081\u0001"+
+		"\u0000\u0000\u0000\u0080k\u0001\u0000\u0000\u0000\u0080m\u0001\u0000\u0000"+
+		"\u0000\u0080n\u0001\u0000\u0000\u0000\u0080o\u0001\u0000\u0000\u0000\u0080"+
+		"p\u0001\u0000\u0000\u0000\u0080|\u0001\u0000\u0000\u0000\u0081\u0011\u0001"+
+		"\u0000\u0000\u0000\u0082\u0083\u0005\t\u0000\u0000\u0083\u0084\u0005#"+
+		"\u0000\u0000\u0084\u0089\u0005\n\u0000\u0000\u0085\u0086\u0005\u000b\u0000"+
+		"\u0000\u0086\u0087\u0005#\u0000\u0000\u0087\u0089\u0005\n\u0000\u0000"+
+		"\u0088\u0082\u0001\u0000\u0000\u0000\u0088\u0085\u0001\u0000\u0000\u0000"+
+		"\u0089\u0013\u0001\u0000\u0000\u0000\u008a\u008c\u0005#\u0000\u0000\u008b"+
+		"\u008d\u0003\u0016\u000b\u0000\u008c\u008b\u0001\u0000\u0000\u0000\u008c"+
+		"\u008d\u0001\u0000\u0000\u0000\u008d\u0098\u0001\u0000\u0000\u0000\u008e"+
+		"\u0090\u0003\u0012\t\u0000\u008f\u0091\u0003\u0016\u000b\u0000\u0090\u008f"+
+		"\u0001\u0000\u0000\u0000\u0090\u0091\u0001\u0000\u0000\u0000\u0091\u0098"+
+		"\u0001\u0000\u0000\u0000\u0092\u0093\u0005\u0007\u0000\u0000\u0093\u0094"+
+		"\u0003\u0002\u0001\u0000\u0094\u0095\u0005\b\u0000\u0000\u0095\u0096\u0003"+
+		"\u0016\u000b\u0000\u0096\u0098\u0001\u0000\u0000\u0000\u0097\u008a\u0001"+
+		"\u0000\u0000\u0000\u0097\u008e\u0001\u0000\u0000\u0000\u0097\u0092\u0001"+
+		"\u0000\u0000\u0000\u0098\u0015\u0001\u0000\u0000\u0000\u0099\u009a\u0005"+
+		"#\u0000\u0000\u009a\u0017\u0001\u0000\u0000\u0000\u009b\u009c\u0006\f"+
+		"\uffff\uffff\u0000\u009c\u00a4\u0003\u001a\r\u0000\u009d\u009e\u0005\u001c"+
+		"\u0000\u0000\u009e\u00a4\u0003\u0018\f\u0003\u009f\u00a0\u0005\u0007\u0000"+
+		"\u0000\u00a0\u00a1\u0003\u0018\f\u0000\u00a1\u00a2\u0005\b\u0000\u0000"+
+		"\u00a2\u00a4\u0001\u0000\u0000\u0000\u00a3\u009b\u0001\u0000\u0000\u0000"+
+		"\u00a3\u009d\u0001\u0000\u0000\u0000\u00a3\u009f\u0001\u0000\u0000\u0000"+
+		"\u00a4\u00aa\u0001\u0000\u0000\u0000\u00a5\u00a6\n\u0001\u0000\u0000\u00a6"+
+		"\u00a7\u0007\u0001\u0000\u0000\u00a7\u00a9\u0003\u0018\f\u0002\u00a8\u00a5"+
+		"\u0001\u0000\u0000\u0000\u00a9\u00ac\u0001\u0000\u0000\u0000\u00aa\u00a8"+
+		"\u0001\u0000\u0000\u0000\u00aa\u00ab\u0001\u0000\u0000\u0000\u00ab\u0019"+
+		"\u0001\u0000\u0000\u0000\u00ac\u00aa\u0001\u0000\u0000\u0000\u00ad\u00ae"+
+		"\u0003\u0010\b\u0000\u00ae\u00af\u0005\u001e\u0000\u0000\u00af\u00b0\u0003"+
+		"\u0010\b\u0000\u00b0\u00cc\u0001\u0000\u0000\u0000\u00b1\u00b2\u0003\u0010"+
+		"\b\u0000\u00b2\u00b3\u0005\u0014\u0000\u0000\u00b3\u00b4\u0005\u0004\u0000"+
+		"\u0000\u00b4\u00b5\u0003\u0012\t\u0000\u00b5\u00b6\u0005\u0005\u0000\u0000"+
+		"\u00b6\u00cc\u0001\u0000\u0000\u0000\u00b7\u00b8\u0003\u0010\b\u0000\u00b8"+
+		"\u00b9\u0005\u0019\u0000\u0000\u00b9\u00ba\u0003\u0010\b\u0000\u00ba\u00bb"+
+		"\u0005\u0012\u0000\u0000\u00bb\u00bc\u0003\u0010\b\u0000\u00bc\u00cc\u0001"+
+		"\u0000\u0000\u0000\u00bd\u00be\u0003\u0010\b\u0000\u00be\u00bf\u0005\u001a"+
+		"\u0000\u0000\u00bf\u00c0\u0005\u001b\u0000\u0000\u00c0\u00cc\u0001\u0000"+
+		"\u0000\u0000\u00c1\u00c2\u0003\u0010\b\u0000\u00c2\u00c3\u0005\u001d\u0000"+
+		"\u0000\u00c3\u00c4\u0005\f\u0000\u0000\u00c4\u00c5\u0003\u0010\b\u0000"+
+		"\u00c5\u00c6\u0005\f\u0000\u0000\u00c6\u00cc\u0001\u0000\u0000\u0000\u00c7"+
+		"\u00c8\u0003\u0010\b\u0000\u00c8\u00c9\u0005\u0014\u0000\u0000\u00c9\u00ca"+
+		"\u0005\u001f\u0000\u0000\u00ca\u00cc\u0001\u0000\u0000\u0000\u00cb\u00ad"+
+		"\u0001\u0000\u0000\u0000\u00cb\u00b1\u0001\u0000\u0000\u0000\u00cb\u00b7"+
+		"\u0001\u0000\u0000\u0000\u00cb\u00bd\u0001\u0000\u0000\u0000\u00cb\u00c1"+
+		"\u0001\u0000\u0000\u0000\u00cb\u00c7\u0001\u0000\u0000\u0000\u00cc\u001b"+
+		"\u0001\u0000\u0000\u0000\u001a $*-1369>CLQWY`ekw\u0080\u0088\u008c\u0090"+
+		"\u0097\u00a3\u00aa\u00cb";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

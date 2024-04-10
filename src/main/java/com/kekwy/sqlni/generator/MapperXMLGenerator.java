@@ -114,7 +114,7 @@ public class MapperXMLGenerator {
             this.resultMap = resultMap;
             this.resultType = resultType;
             this.comment = comment;
-            this.statement = new SQLNIXMLProcessor().process(new SQLNIDialectProcessor().process(statement, dialect));
+            this.statement = new SQLNIXMLProcessor().process(new SQLNIDialectProcessor(dialect).process(statement));
         }
 
         public String getAction() {

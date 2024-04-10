@@ -40,49 +40,25 @@ public class SQLNIBaseListener implements SQLNIListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterParamLimit(SQLNIParser.ParamLimitContext ctx) { }
+	@Override public void enterLimit(SQLNIParser.LimitContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitParamLimit(SQLNIParser.ParamLimitContext ctx) { }
+	@Override public void exitLimit(SQLNIParser.LimitContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterNumberLimit(SQLNIParser.NumberLimitContext ctx) { }
+	@Override public void enterOffset(SQLNIParser.OffsetContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitNumberLimit(SQLNIParser.NumberLimitContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterParamOffset(SQLNIParser.ParamOffsetContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitParamOffset(SQLNIParser.ParamOffsetContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterNumberOffset(SQLNIParser.NumberOffsetContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitNumberOffset(SQLNIParser.NumberOffsetContext ctx) { }
+	@Override public void exitOffset(SQLNIParser.OffsetContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -208,6 +184,18 @@ public class SQLNIBaseListener implements SQLNIListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterSubQuery(SQLNIParser.SubQueryContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSubQuery(SQLNIParser.SubQueryContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterParam(SQLNIParser.ParamContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -239,6 +227,18 @@ public class SQLNIBaseListener implements SQLNIListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitParamTable(SQLNIParser.ParamTableContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterSubQueryTable(SQLNIParser.SubQueryTableContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSubQueryTable(SQLNIParser.SubQueryTableContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -347,6 +347,18 @@ public class SQLNIBaseListener implements SQLNIListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitIsNullCondition(SQLNIParser.IsNullConditionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterLikeCondition(SQLNIParser.LikeConditionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitLikeCondition(SQLNIParser.LikeConditionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

@@ -341,31 +341,31 @@ public class MapperSerializer extends SQLNIBaseVisitor<Void> {
     }
 
 
-    @Override
-    public Void visitNumberLimit(SQLNIParser.NumberLimitContext ctx) {
-        append(ctx.getText());
-        return null;
-    }
-
-    @Override
-    public Void visitNumberOffset(SQLNIParser.NumberOffsetContext ctx) {
-        append(ctx.getText());
-        return null;
-    }
-
-    @Override
-    public Void visitParamLimit(SQLNIParser.ParamLimitContext ctx) {
-        visit(ctx.param());
-        append(ctx.getText());
-        return null;
-    }
-
-    @Override
-    public Void visitParamOffset(SQLNIParser.ParamOffsetContext ctx) {
-        visit(ctx.param());
-        append(ctx.getText());
-        return null;
-    }
+//    @Override
+//    public Void visitNumberLimit(SQLNIParser.NumberLimitContext ctx) {
+//        append(ctx.getText());
+//        return null;
+//    }
+//
+//    @Override
+//    public Void visitNumberOffset(SQLNIParser.NumberOffsetContext ctx) {
+//        append(ctx.getText());
+//        return null;
+//    }
+//
+//    @Override
+//    public Void visitParamLimit(SQLNIParser.ParamLimitContext ctx) {
+//        visit(ctx.param());
+//        append(ctx.getText());
+//        return null;
+//    }
+//
+//    @Override
+//    public Void visitParamOffset(SQLNIParser.ParamOffsetContext ctx) {
+//        visit(ctx.param());
+//        append(ctx.getText());
+//        return null;
+//    }
 
     /* visit order by
      * --------------------------------------------------------------------------------------------------------- */
