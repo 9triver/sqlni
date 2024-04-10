@@ -1,11 +1,12 @@
 package com.kekwy.sqlni;
 
+import com.github.drinkjava2.jdialects.Dialect;
 import com.kekwy.sqlni.generator.MapperGenerator;
 import com.kekwy.sqlni.generator.MapperXMLGenerator;
 import com.kekwy.sqlni.generator.ServiceGenerator;
 import com.kekwy.sqlni.generator.ServiceImplGenerator;
 import com.kekwy.sqlni.templates.SQLTemplates;
-import com.kekwy.sqlni.util.SQLTemplatesUtil;
+import com.kekwy.sqlni.util.SQLDialectUtil;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -38,7 +39,7 @@ import java.util.Set;
 @SupportedSourceVersion(SourceVersion.RELEASE_17)
 public class Processor extends AbstractProcessor {
 
-    private SQLTemplates sqlTemplates;
+    private Dialect dialect;
 
     private final Map<String, Template> freeMarkerTemplates = new HashMap<>();
 
@@ -57,7 +58,7 @@ public class Processor extends AbstractProcessor {
 
     private void initSQLDialect() {
         String sqlDialect = processingEnv.getOptions().get("SQLDialect");
-        sqlTemplates = SQLTemplatesUtil.getTemplates(sqlDialect);
+        dialect = SQLDialectUtil.getDialect(sqlDialect);
     }
 
     private void initFreeMarker() {
@@ -157,7 +158,7 @@ public class Processor extends AbstractProcessor {
 
     private void generateMapperXML(TypeElement mapper, String entityName) {
         Map<String, Object> mapperXMLModel =
-                new MapperXMLGenerator(processingEnv, mapper, entityName, sqlTemplates).generate();
+                new MapperXMLGenerator(processingEnv, mapper, entityName, dialect).generate();
         try {
             String packageName = (String) mapperXMLModel.get("package");
             String fileName = mapperXMLModel.get("mapperName") + ".xml";

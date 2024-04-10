@@ -1,10 +1,9 @@
 package com.kekwy.sqlni.generator;
 
-import com.kekwy.sqlni.templates.SQLTemplates;
-import com.kekwy.sqlni.util.DateTimeUtil;
-import com.kekwy.sqlni.util.DocCommentUtil;
-import com.kekwy.sqlni.util.ResultMirror;
-import com.kekwy.sqlni.util.ResultsMirror;
+import com.github.drinkjava2.jdialects.Dialect;
+import com.kekwy.sqlni.parser.SQLNIPostprocessVisitor;
+import com.kekwy.sqlni.parser.SQLNIPreprocessor;
+import com.kekwy.sqlni.util.*;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.mapping.FetchType;
 
@@ -17,15 +16,15 @@ import java.util.regex.Pattern;
 public class MapperXMLGenerator {
 
     private final ProcessingEnvironment processingEnv;
-
     private final TypeElement mapper;
-
     private final String entityName;
+    private final Dialect dialect;
 
-    public MapperXMLGenerator(ProcessingEnvironment processingEnv, TypeElement mapper, String entityName, SQLTemplates sqlTemplates) {
+    public MapperXMLGenerator(ProcessingEnvironment processingEnv, TypeElement mapper, String entityName, Dialect dialect) {
         this.processingEnv = processingEnv;
         this.mapper = mapper;
         this.entityName = entityName;
+        this.dialect = dialect;
     }
 
     public Map<String, Object> generate() {
@@ -95,14 +94,10 @@ public class MapperXMLGenerator {
                         .getDocComment(methodElement));
                 res.add(new MethodModel(action,
                         processType(methodElement.getReturnType().toString()),
-                        resultMapId, comment, statement));
+                        resultMapId, comment, statement, dialect));
             }
         }
         return res;
-    }
-
-    private List<MethodModel> generateInsert(TypeElement mapper) {
-        return new LinkedList<>();
     }
 
     @SuppressWarnings("unused")
@@ -114,12 +109,21 @@ public class MapperXMLGenerator {
         private final String resultMap;
         private final String statement;
 
-        public MethodModel(String action, String resultType, String resultMap, String[] comment, String statement) {
+        public MethodModel(String action, String resultType, String resultMap, String[] comment, String statement, Dialect dialect) {
             this.action = action;
             this.resultMap = resultMap;
             this.resultType = resultType;
             this.comment = comment;
-            this.statement = statement;
+            PreprocessResult preprocessResult = new SQLNIPreprocessor().process(statement, dialect);
+            String transResult;
+            if (preprocessResult.limit() != null) {
+                transResult =
+                        dialect.limitAndTrans(preprocessResult.offset(),
+                                preprocessResult.limit(), preprocessResult.statement());
+            } else {
+                transResult = dialect.trans(preprocessResult.statement());
+            }
+            this.statement = new SQLNIPostprocessVisitor().process(transResult);
         }
 
         public String getAction() {
