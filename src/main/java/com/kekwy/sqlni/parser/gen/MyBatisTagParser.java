@@ -127,51 +127,49 @@ public class MyBatisTagParser extends Parser {
 	public final RootContext root() throws RecognitionException {
 		RootContext _localctx = new RootContext(_ctx, getState());
 		enterRule(_localctx, 0, RULE_root);
+		int _la;
 		try {
-			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(8);
 			any();
 			setState(13);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,1,_ctx);
-			while ( _alt!=2 && _alt != ATN.INVALID_ALT_NUMBER ) {
-				if ( _alt==1 ) {
+			_la = _input.LA(1);
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 16126L) != 0)) {
+				{
+				setState(11);
+				_errHandler.sync(this);
+				switch (_input.LA(1)) {
+				case IF:
+				case FOREACH:
 					{
-					setState(11);
-					_errHandler.sync(this);
-					switch (_input.LA(1)) {
-					case IF:
-					case FOREACH:
-						{
-						setState(9);
-						func();
-						}
-						break;
-					case LEFT:
-					case RIGHT:
-					case PARAM_LEFT1:
-					case PARAM_LEFT2:
-					case PARAM_RIGHT:
-					case SEPARATOR:
-					case STRING:
-					case ID:
-					case SPACE:
-					case CH:
-						{
-						setState(10);
-						any();
-						}
-						break;
-					default:
-						throw new NoViableAltException(this);
+					setState(9);
+					func();
 					}
-					} 
+					break;
+				case LEFT:
+				case RIGHT:
+				case PARAM_LEFT1:
+				case PARAM_LEFT2:
+				case PARAM_RIGHT:
+				case SEPARATOR:
+				case STRING:
+				case ID:
+				case SPACE:
+				case CH:
+					{
+					setState(10);
+					any();
+					}
+					break;
+				default:
+					throw new NoViableAltException(this);
+				}
 				}
 				setState(15);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,1,_ctx);
+				_la = _input.LA(1);
 			}
 			}
 		}
@@ -229,20 +227,14 @@ public class MyBatisTagParser extends Parser {
 	public static class IfContext extends FuncContext {
 		public TerminalNode IF() { return getToken(MyBatisTagParser.IF, 0); }
 		public TerminalNode LEFT() { return getToken(MyBatisTagParser.LEFT, 0); }
+		public AnyContext any() {
+			return getRuleContext(AnyContext.class,0);
+		}
 		public TerminalNode RIGHT() { return getToken(MyBatisTagParser.RIGHT, 0); }
+		public RootContext root() {
+			return getRuleContext(RootContext.class,0);
+		}
 		public TerminalNode ENDIF() { return getToken(MyBatisTagParser.ENDIF, 0); }
-		public List<AnyContext> any() {
-			return getRuleContexts(AnyContext.class);
-		}
-		public AnyContext any(int i) {
-			return getRuleContext(AnyContext.class,i);
-		}
-		public List<RootContext> root() {
-			return getRuleContexts(RootContext.class);
-		}
-		public RootContext root(int i) {
-			return getRuleContext(RootContext.class,i);
-		}
 		public IfContext(FuncContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
@@ -264,8 +256,7 @@ public class MyBatisTagParser extends Parser {
 		enterRule(_localctx, 2, RULE_func);
 		int _la;
 		try {
-			int _alt;
-			setState(49);
+			setState(40);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case IF:
@@ -276,45 +267,13 @@ public class MyBatisTagParser extends Parser {
 				match(IF);
 				setState(17);
 				match(LEFT);
-				setState(19); 
-				_errHandler.sync(this);
-				_alt = 1+1;
-				do {
-					switch (_alt) {
-					case 1+1:
-						{
-						{
-						setState(18);
-						any();
-						}
-						}
-						break;
-					default:
-						throw new NoViableAltException(this);
-					}
-					setState(21); 
-					_errHandler.sync(this);
-					_alt = getInterpreter().adaptivePredict(_input,2,_ctx);
-				} while ( _alt!=1 && _alt != ATN.INVALID_ALT_NUMBER );
-				setState(23);
+				setState(18);
+				any();
+				setState(19);
 				match(RIGHT);
-				setState(27);
-				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,3,_ctx);
-				while ( _alt!=1 && _alt != ATN.INVALID_ALT_NUMBER ) {
-					if ( _alt==1+1 ) {
-						{
-						{
-						setState(24);
-						root();
-						}
-						} 
-					}
-					setState(29);
-					_errHandler.sync(this);
-					_alt = getInterpreter().adaptivePredict(_input,3,_ctx);
-				}
-				setState(30);
+				setState(20);
+				root();
+				setState(21);
 				match(ENDIF);
 				}
 				break;
@@ -322,41 +281,41 @@ public class MyBatisTagParser extends Parser {
 				_localctx = new ForeachContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(32);
+				setState(23);
 				match(FOREACH);
-				setState(33);
+				setState(24);
 				match(LEFT);
-				setState(37);
+				setState(28);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==SPACE) {
 					{
 					{
-					setState(34);
+					setState(25);
 					match(SPACE);
 					}
 					}
-					setState(39);
+					setState(30);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(40);
+				setState(31);
 				param();
-				setState(44);
+				setState(35);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==SPACE) {
 					{
 					{
-					setState(41);
+					setState(32);
 					match(SPACE);
 					}
 					}
-					setState(46);
+					setState(37);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(47);
+				setState(38);
 				match(RIGHT);
 				}
 				break;
@@ -377,53 +336,27 @@ public class MyBatisTagParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class ParamContext extends ParserRuleContext {
+		public Token left;
+		public Token right;
+		public TerminalNode ID() { return getToken(MyBatisTagParser.ID, 0); }
+		public TerminalNode PARAM_RIGHT() { return getToken(MyBatisTagParser.PARAM_RIGHT, 0); }
+		public TerminalNode PARAM_LEFT1() { return getToken(MyBatisTagParser.PARAM_LEFT1, 0); }
+		public TerminalNode PARAM_LEFT2() { return getToken(MyBatisTagParser.PARAM_LEFT2, 0); }
 		public ParamContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_param; }
-	 
-		public ParamContext() { }
-		public void copyFrom(ParamContext ctx) {
-			super.copyFrom(ctx);
-		}
-	}
-	@SuppressWarnings("CheckReturnValue")
-	public static class Param1Context extends ParamContext {
-		public TerminalNode PARAM_LEFT1() { return getToken(MyBatisTagParser.PARAM_LEFT1, 0); }
-		public TerminalNode ID() { return getToken(MyBatisTagParser.ID, 0); }
-		public TerminalNode PARAM_RIGHT() { return getToken(MyBatisTagParser.PARAM_RIGHT, 0); }
-		public Param1Context(ParamContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MyBatisTagListener ) ((MyBatisTagListener)listener).enterParam1(this);
+			if ( listener instanceof MyBatisTagListener ) ((MyBatisTagListener)listener).enterParam(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MyBatisTagListener ) ((MyBatisTagListener)listener).exitParam1(this);
+			if ( listener instanceof MyBatisTagListener ) ((MyBatisTagListener)listener).exitParam(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MyBatisTagVisitor) return ((MyBatisTagVisitor<? extends T>)visitor).visitParam1(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	@SuppressWarnings("CheckReturnValue")
-	public static class Param2Context extends ParamContext {
-		public TerminalNode PARAM_LEFT2() { return getToken(MyBatisTagParser.PARAM_LEFT2, 0); }
-		public TerminalNode ID() { return getToken(MyBatisTagParser.ID, 0); }
-		public TerminalNode PARAM_RIGHT() { return getToken(MyBatisTagParser.PARAM_RIGHT, 0); }
-		public Param2Context(ParamContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MyBatisTagListener ) ((MyBatisTagListener)listener).enterParam2(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MyBatisTagListener ) ((MyBatisTagListener)listener).exitParam2(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MyBatisTagVisitor) return ((MyBatisTagVisitor<? extends T>)visitor).visitParam2(this);
+			if ( visitor instanceof MyBatisTagVisitor) return ((MyBatisTagVisitor<? extends T>)visitor).visitParam(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -431,36 +364,25 @@ public class MyBatisTagParser extends Parser {
 	public final ParamContext param() throws RecognitionException {
 		ParamContext _localctx = new ParamContext(_ctx, getState());
 		enterRule(_localctx, 4, RULE_param);
+		int _la;
 		try {
-			setState(57);
-			_errHandler.sync(this);
-			switch (_input.LA(1)) {
-			case PARAM_LEFT1:
-				_localctx = new Param1Context(_localctx);
-				enterOuterAlt(_localctx, 1);
-				{
-				setState(51);
-				match(PARAM_LEFT1);
-				setState(52);
-				match(ID);
-				setState(53);
-				match(PARAM_RIGHT);
-				}
-				break;
-			case PARAM_LEFT2:
-				_localctx = new Param2Context(_localctx);
-				enterOuterAlt(_localctx, 2);
-				{
-				setState(54);
-				match(PARAM_LEFT2);
-				setState(55);
-				match(ID);
-				setState(56);
-				match(PARAM_RIGHT);
-				}
-				break;
-			default:
-				throw new NoViableAltException(this);
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(42);
+			((ParamContext)_localctx).left = _input.LT(1);
+			_la = _input.LA(1);
+			if ( !(_la==PARAM_LEFT1 || _la==PARAM_LEFT2) ) {
+				((ParamContext)_localctx).left = (Token)_errHandler.recoverInline(this);
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
+				consume();
+			}
+			setState(43);
+			match(ID);
+			setState(44);
+			((ParamContext)_localctx).right = match(PARAM_RIGHT);
 			}
 		}
 		catch (RecognitionException re) {
@@ -543,7 +465,7 @@ public class MyBatisTagParser extends Parser {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(60); 
+			setState(47); 
 			_errHandler.sync(this);
 			_alt = 1;
 			do {
@@ -551,7 +473,7 @@ public class MyBatisTagParser extends Parser {
 				case 1:
 					{
 					{
-					setState(59);
+					setState(46);
 					_la = _input.LA(1);
 					if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 15486L) != 0)) ) {
 					_errHandler.recoverInline(this);
@@ -567,9 +489,9 @@ public class MyBatisTagParser extends Parser {
 				default:
 					throw new NoViableAltException(this);
 				}
-				setState(62); 
+				setState(49); 
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,8,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,5,_ctx);
 			} while ( _alt!=2 && _alt != ATN.INVALID_ALT_NUMBER );
 			}
 		}
@@ -585,48 +507,40 @@ public class MyBatisTagParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\u0004\u0001\rA\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
+		"\u0004\u0001\r4\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
 		"\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0001\u0000\u0001\u0000\u0001"+
 		"\u0000\u0005\u0000\f\b\u0000\n\u0000\f\u0000\u000f\t\u0000\u0001\u0001"+
-		"\u0001\u0001\u0001\u0001\u0004\u0001\u0014\b\u0001\u000b\u0001\f\u0001"+
-		"\u0015\u0001\u0001\u0001\u0001\u0005\u0001\u001a\b\u0001\n\u0001\f\u0001"+
-		"\u001d\t\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001"+
-		"\u0005\u0001$\b\u0001\n\u0001\f\u0001\'\t\u0001\u0001\u0001\u0001\u0001"+
-		"\u0005\u0001+\b\u0001\n\u0001\f\u0001.\t\u0001\u0001\u0001\u0001\u0001"+
-		"\u0003\u00012\b\u0001\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0002"+
-		"\u0001\u0002\u0001\u0002\u0003\u0002:\b\u0002\u0001\u0003\u0004\u0003"+
-		"=\b\u0003\u000b\u0003\f\u0003>\u0001\u0003\u0002\u0015\u001b\u0000\u0004"+
-		"\u0000\u0002\u0004\u0006\u0000\u0001\u0002\u0000\u0001\u0006\n\rE\u0000"+
-		"\b\u0001\u0000\u0000\u0000\u00021\u0001\u0000\u0000\u0000\u00049\u0001"+
-		"\u0000\u0000\u0000\u0006<\u0001\u0000\u0000\u0000\b\r\u0003\u0006\u0003"+
-		"\u0000\t\f\u0003\u0002\u0001\u0000\n\f\u0003\u0006\u0003\u0000\u000b\t"+
-		"\u0001\u0000\u0000\u0000\u000b\n\u0001\u0000\u0000\u0000\f\u000f\u0001"+
+		"\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001"+
+		"\u0001\u0001\u0001\u0001\u0001\u0001\u0005\u0001\u001b\b\u0001\n\u0001"+
+		"\f\u0001\u001e\t\u0001\u0001\u0001\u0001\u0001\u0005\u0001\"\b\u0001\n"+
+		"\u0001\f\u0001%\t\u0001\u0001\u0001\u0001\u0001\u0003\u0001)\b\u0001\u0001"+
+		"\u0002\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0003\u0004\u00030\b"+
+		"\u0003\u000b\u0003\f\u00031\u0001\u0003\u0000\u0000\u0004\u0000\u0002"+
+		"\u0004\u0006\u0000\u0002\u0001\u0000\u0003\u0004\u0002\u0000\u0001\u0006"+
+		"\n\r5\u0000\b\u0001\u0000\u0000\u0000\u0002(\u0001\u0000\u0000\u0000\u0004"+
+		"*\u0001\u0000\u0000\u0000\u0006/\u0001\u0000\u0000\u0000\b\r\u0003\u0006"+
+		"\u0003\u0000\t\f\u0003\u0002\u0001\u0000\n\f\u0003\u0006\u0003\u0000\u000b"+
+		"\t\u0001\u0000\u0000\u0000\u000b\n\u0001\u0000\u0000\u0000\f\u000f\u0001"+
 		"\u0000\u0000\u0000\r\u000b\u0001\u0000\u0000\u0000\r\u000e\u0001\u0000"+
 		"\u0000\u0000\u000e\u0001\u0001\u0000\u0000\u0000\u000f\r\u0001\u0000\u0000"+
-		"\u0000\u0010\u0011\u0005\u0007\u0000\u0000\u0011\u0013\u0005\u0001\u0000"+
-		"\u0000\u0012\u0014\u0003\u0006\u0003\u0000\u0013\u0012\u0001\u0000\u0000"+
-		"\u0000\u0014\u0015\u0001\u0000\u0000\u0000\u0015\u0016\u0001\u0000\u0000"+
-		"\u0000\u0015\u0013\u0001\u0000\u0000\u0000\u0016\u0017\u0001\u0000\u0000"+
-		"\u0000\u0017\u001b\u0005\u0002\u0000\u0000\u0018\u001a\u0003\u0000\u0000"+
-		"\u0000\u0019\u0018\u0001\u0000\u0000\u0000\u001a\u001d\u0001\u0000\u0000"+
-		"\u0000\u001b\u001c\u0001\u0000\u0000\u0000\u001b\u0019\u0001\u0000\u0000"+
-		"\u0000\u001c\u001e\u0001\u0000\u0000\u0000\u001d\u001b\u0001\u0000\u0000"+
-		"\u0000\u001e\u001f\u0005\b\u0000\u0000\u001f2\u0001\u0000\u0000\u0000"+
-		" !\u0005\t\u0000\u0000!%\u0005\u0001\u0000\u0000\"$\u0005\f\u0000\u0000"+
-		"#\"\u0001\u0000\u0000\u0000$\'\u0001\u0000\u0000\u0000%#\u0001\u0000\u0000"+
-		"\u0000%&\u0001\u0000\u0000\u0000&(\u0001\u0000\u0000\u0000\'%\u0001\u0000"+
-		"\u0000\u0000(,\u0003\u0004\u0002\u0000)+\u0005\f\u0000\u0000*)\u0001\u0000"+
-		"\u0000\u0000+.\u0001\u0000\u0000\u0000,*\u0001\u0000\u0000\u0000,-\u0001"+
-		"\u0000\u0000\u0000-/\u0001\u0000\u0000\u0000.,\u0001\u0000\u0000\u0000"+
-		"/0\u0005\u0002\u0000\u000002\u0001\u0000\u0000\u00001\u0010\u0001\u0000"+
-		"\u0000\u00001 \u0001\u0000\u0000\u00002\u0003\u0001\u0000\u0000\u0000"+
-		"34\u0005\u0003\u0000\u000045\u0005\u000b\u0000\u00005:\u0005\u0005\u0000"+
-		"\u000067\u0005\u0004\u0000\u000078\u0005\u000b\u0000\u00008:\u0005\u0005"+
-		"\u0000\u000093\u0001\u0000\u0000\u000096\u0001\u0000\u0000\u0000:\u0005"+
-		"\u0001\u0000\u0000\u0000;=\u0007\u0000\u0000\u0000<;\u0001\u0000\u0000"+
-		"\u0000=>\u0001\u0000\u0000\u0000><\u0001\u0000\u0000\u0000>?\u0001\u0000"+
-		"\u0000\u0000?\u0007\u0001\u0000\u0000\u0000\t\u000b\r\u0015\u001b%,19"+
-		">";
+		"\u0000\u0010\u0011\u0005\u0007\u0000\u0000\u0011\u0012\u0005\u0001\u0000"+
+		"\u0000\u0012\u0013\u0003\u0006\u0003\u0000\u0013\u0014\u0005\u0002\u0000"+
+		"\u0000\u0014\u0015\u0003\u0000\u0000\u0000\u0015\u0016\u0005\b\u0000\u0000"+
+		"\u0016)\u0001\u0000\u0000\u0000\u0017\u0018\u0005\t\u0000\u0000\u0018"+
+		"\u001c\u0005\u0001\u0000\u0000\u0019\u001b\u0005\f\u0000\u0000\u001a\u0019"+
+		"\u0001\u0000\u0000\u0000\u001b\u001e\u0001\u0000\u0000\u0000\u001c\u001a"+
+		"\u0001\u0000\u0000\u0000\u001c\u001d\u0001\u0000\u0000\u0000\u001d\u001f"+
+		"\u0001\u0000\u0000\u0000\u001e\u001c\u0001\u0000\u0000\u0000\u001f#\u0003"+
+		"\u0004\u0002\u0000 \"\u0005\f\u0000\u0000! \u0001\u0000\u0000\u0000\""+
+		"%\u0001\u0000\u0000\u0000#!\u0001\u0000\u0000\u0000#$\u0001\u0000\u0000"+
+		"\u0000$&\u0001\u0000\u0000\u0000%#\u0001\u0000\u0000\u0000&\'\u0005\u0002"+
+		"\u0000\u0000\')\u0001\u0000\u0000\u0000(\u0010\u0001\u0000\u0000\u0000"+
+		"(\u0017\u0001\u0000\u0000\u0000)\u0003\u0001\u0000\u0000\u0000*+\u0007"+
+		"\u0000\u0000\u0000+,\u0005\u000b\u0000\u0000,-\u0005\u0005\u0000\u0000"+
+		"-\u0005\u0001\u0000\u0000\u0000.0\u0007\u0001\u0000\u0000/.\u0001\u0000"+
+		"\u0000\u000001\u0001\u0000\u0000\u00001/\u0001\u0000\u0000\u000012\u0001"+
+		"\u0000\u0000\u00002\u0007\u0001\u0000\u0000\u0000\u0006\u000b\r\u001c"+
+		"#(1";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

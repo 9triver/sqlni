@@ -30,19 +30,11 @@ public interface MyBatisTagVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitForeach(MyBatisTagParser.ForeachContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code param1}
-	 * labeled alternative in {@link MyBatisTagParser#param}.
+	 * Visit a parse tree produced by {@link MyBatisTagParser#param}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitParam1(MyBatisTagParser.Param1Context ctx);
-	/**
-	 * Visit a parse tree produced by the {@code param2}
-	 * labeled alternative in {@link MyBatisTagParser#param}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitParam2(MyBatisTagParser.Param2Context ctx);
+	T visitParam(MyBatisTagParser.ParamContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MyBatisTagParser#any}.
 	 * @param ctx the parse tree

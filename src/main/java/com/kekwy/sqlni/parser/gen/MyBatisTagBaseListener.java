@@ -52,25 +52,13 @@ public class MyBatisTagBaseListener implements MyBatisTagListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterParam1(MyBatisTagParser.Param1Context ctx) { }
+	@Override public void enterParam(MyBatisTagParser.ParamContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitParam1(MyBatisTagParser.Param1Context ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterParam2(MyBatisTagParser.Param2Context ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitParam2(MyBatisTagParser.Param2Context ctx) { }
+	@Override public void exitParam(MyBatisTagParser.ParamContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

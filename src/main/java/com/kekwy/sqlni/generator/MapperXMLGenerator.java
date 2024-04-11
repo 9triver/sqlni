@@ -107,14 +107,15 @@ public class MapperXMLGenerator {
         private final String[] comment;
         private final String resultType;
         private final String resultMap;
-        private final String statement;
+        private String statement;
 
         public MethodModel(String action, String resultType, String resultMap, String[] comment, String statement, Dialect dialect) {
             this.action = action;
             this.resultMap = resultMap;
             this.resultType = resultType;
             this.comment = comment;
-            this.statement = new SQLNIXMLProcessor().process(new SQLNIDialectProcessor(dialect).process(statement));
+            Node node = new SQLNIXMLProcessor().process(new SQLNIDialectProcessor(dialect).process(statement));
+
         }
 
         public String getAction() {

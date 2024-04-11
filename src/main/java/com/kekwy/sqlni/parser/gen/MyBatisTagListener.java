@@ -41,29 +41,15 @@ public interface MyBatisTagListener extends ParseTreeListener {
 	 */
 	void exitForeach(MyBatisTagParser.ForeachContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code param1}
-	 * labeled alternative in {@link MyBatisTagParser#param}.
+	 * Enter a parse tree produced by {@link MyBatisTagParser#param}.
 	 * @param ctx the parse tree
 	 */
-	void enterParam1(MyBatisTagParser.Param1Context ctx);
+	void enterParam(MyBatisTagParser.ParamContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code param1}
-	 * labeled alternative in {@link MyBatisTagParser#param}.
+	 * Exit a parse tree produced by {@link MyBatisTagParser#param}.
 	 * @param ctx the parse tree
 	 */
-	void exitParam1(MyBatisTagParser.Param1Context ctx);
-	/**
-	 * Enter a parse tree produced by the {@code param2}
-	 * labeled alternative in {@link MyBatisTagParser#param}.
-	 * @param ctx the parse tree
-	 */
-	void enterParam2(MyBatisTagParser.Param2Context ctx);
-	/**
-	 * Exit a parse tree produced by the {@code param2}
-	 * labeled alternative in {@link MyBatisTagParser#param}.
-	 * @param ctx the parse tree
-	 */
-	void exitParam2(MyBatisTagParser.Param2Context ctx);
+	void exitParam(MyBatisTagParser.ParamContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MyBatisTagParser#any}.
 	 * @param ctx the parse tree
