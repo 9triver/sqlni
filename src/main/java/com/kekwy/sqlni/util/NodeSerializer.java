@@ -4,10 +4,18 @@ import java.util.Map;
 
 public interface NodeSerializer {
 
-    NodeSerializer addElement(String name, Map<String, String> attributes);
+    default NodeSerializer addElement(String name, Map<String, String> attributes) {
+        return null;
+    }
 
-    void addText(String text);
+    default void finishElement(String name) {
+    }
 
-    void addComment(String comment);
+    default void addText(String text) {
+    }
+
+    @Deprecated
+    default void addComment(String comment) {
+    }
 
 }

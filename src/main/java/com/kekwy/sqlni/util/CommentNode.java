@@ -1,5 +1,6 @@
 package com.kekwy.sqlni.util;
 
+@Deprecated
 public class CommentNode implements Node {
 
     private final String comment;

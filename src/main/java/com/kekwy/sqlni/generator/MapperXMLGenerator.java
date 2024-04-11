@@ -92,7 +92,7 @@ public class MapperXMLGenerator {
                 }
                 String[] comment = DocCommentUtil.processDocComment(processingEnv.getElementUtils()
                         .getDocComment(methodElement));
-                res.add(new MethodModel(action,
+                res.add(new MethodModel(action, methodElement.getSimpleName().toString(),
                         processType(methodElement.getReturnType().toString()),
                         resultMapId, comment, statement, dialect));
             }
@@ -105,17 +105,22 @@ public class MapperXMLGenerator {
 
         private final String action;
         private final String[] comment;
+        private final String id;
         private final String resultType;
         private final String resultMap;
-        private String statement;
+        private final List<String> statement;
 
-        public MethodModel(String action, String resultType, String resultMap, String[] comment, String statement, Dialect dialect) {
+        public MethodModel(String action, String id, String resultType, String resultMap, String[] comment, String statement, Dialect dialect) {
             this.action = action;
+            this.id = id;
             this.resultMap = resultMap;
             this.resultType = resultType;
             this.comment = comment;
             Node node = new SQLNIXMLProcessor().process(new SQLNIDialectProcessor(dialect).process(statement));
-
+            List<String> buffer = new LinkedList<>();
+            NodeSerializerStringImp serializer = new NodeSerializerStringImp(0, buffer);
+            node.serialize(serializer);
+            this.statement = buffer.subList(1, buffer.size() - 1);
         }
 
         public String getAction() {
@@ -126,6 +131,10 @@ public class MapperXMLGenerator {
             return comment;
         }
 
+        public String getId() {
+            return this.id;
+        }
+
         public String getResultType() {
             return resultType;
         }
@@ -134,7 +143,7 @@ public class MapperXMLGenerator {
             return resultMap;
         }
 
-        public String getStatement() {
+        public List<String> getStatement() {
             return statement;
         }
     }

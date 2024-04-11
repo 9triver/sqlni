@@ -2,6 +2,7 @@ package com.kekwy.sqlni.util;
 
 import java.util.Map;
 
+@Deprecated
 public class NodeUtil {
 
     private static final String TAG_IF = "if";

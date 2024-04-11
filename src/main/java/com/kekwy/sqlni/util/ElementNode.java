@@ -81,5 +81,6 @@ public class ElementNode implements Node {
         for (Node node : nodes) {
             node.serialize(subSerializer);
         }
+        serializer.finishElement(name);
     }
 }
