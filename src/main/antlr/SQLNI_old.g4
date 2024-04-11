@@ -1,5 +1,5 @@
-/* file SQLNI.g4 */
-grammar SQLNI;            // grammer name
+/* file SQLNI_old.g4 */
+grammar SQLNI_old;            // grammer name
 //@header { package com.kekwy.mybatis.sqlni.parser; } // java package
 
 /* Parser */
@@ -31,7 +31,6 @@ orderBy
 
 orderColumn
     : column (DESC|ASC)?        # normalOrderColumn
-    | '[' param ']' (DESC|ASC)? # paramSetOrderColumn
     ;
 
 columns
@@ -49,6 +48,7 @@ column
     | NUMBER                            # numberConst
     | ID '(' column (',' column)* ')'   # funcColumn
     | '(' select ')'                    # subQuery
+    |  '#foreach(' param ')'                # setColumn
     ;
 
 param
@@ -67,19 +67,19 @@ as
     ;
 
 conditions
-    : condition                             # singleCondition
-    | NOT conditions                        # notConditions
-    | '(' conditions ')'                    # subConditions
-    | conditions opt=(AND|OR) conditions    # multiCondtions
+    : M_IF '(' ID OP ID ')' conditions M_ENFIF # optionalCondtion
+    | condition                                # singleCondition
+    | NOT conditions                           # notConditions
+    | '(' conditions ')'                       # subConditions
+    | conditions opt=(AND|OR) conditions       # multiCondtions
     ;
 
 condition
-    : column OP column      # cmpCondition
-    | column IN '[' param ']' # inParamSetCondition
-    | column BETWEEN column AND column # betweenAndCondition
-    | column IS NULL                # isNullCondition
-    | column LIKE '%' column '%'    # likeCondition
-    | column IN SET     # inSetCondition
+    : column OP column                            # cmpCondition
+    | column BETWEEN column AND column            # betweenAndCondition
+    | column IS NULL                              # isNullCondition
+    | column LIKE '%' column '%'                  # likeCondition // FIXME: 2024/4/11
+    | column IN '(' column (', ' column)* ')'     # inCondition
     ;
 
 
@@ -90,6 +90,9 @@ condition
 
 
 /* Lexer */
+M_IF: '#'[Ii][Ff];
+M_ENFIF: '#'[Ee][Nn][Dd][Ii][Ff];
+
 SELECT : [Ss][Ee][Ll][Ee][Cc][Tt];     // select
 FROM   : [Ff][Rr][Oo][Mm];             // from
 WHERE  : [Ww][Hh][Ee][Rr][Ee];         // where

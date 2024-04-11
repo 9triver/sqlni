@@ -1,4 +1,4 @@
-package com.kekwy.sqlni.parser;// Generated from E:/projects/sqlni/src/main/antlr/SQLNI.g4 by ANTLR 4.13.1
+package com.kekwy.sqlni.parser;// Generated from E:/projects/sqlni/src/main/antlr/SQLNI_old.g4 by ANTLR 4.13.1
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;
@@ -96,7 +96,7 @@ public class SQLNILexer extends Lexer {
 	}
 
 	@Override
-	public String getGrammarFileName() { return "SQLNI.g4"; }
+	public String getGrammarFileName() { return "SQLNI_old.g4"; }
 
 	@Override
 	public String[] getRuleNames() { return ruleNames; }

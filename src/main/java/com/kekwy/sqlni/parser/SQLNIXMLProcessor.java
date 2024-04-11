@@ -9,7 +9,7 @@ public class SQLNIXMLProcessor {
 
     public String process(String statement) {
         ParseTree tree = ASTParseUtil.parseSQLNIParam(statement);
-        statement = new SQLNIParamVisitorImpl().visit(tree); // 还原变量
+        statement = new ToParamVisitorImpl().visit(tree); // 还原变量
 
         return statement;
     }
