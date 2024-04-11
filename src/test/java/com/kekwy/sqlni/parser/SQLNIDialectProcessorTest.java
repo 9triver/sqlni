@@ -2,10 +2,7 @@ package com.kekwy.sqlni.parser;
 
 import com.github.drinkjava2.jdialects.Dialect;
 import com.github.drinkjava2.jdialects.SqlFormatter;
-import com.kekwy.sqlni.util.SQLNIParseUtil;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 public class SQLNIDialectProcessorTest {
 

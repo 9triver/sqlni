@@ -173,15 +173,29 @@ public interface SQLNIListener extends ParseTreeListener {
 	 */
 	void exitSubQuery(SQLNIParser.SubQueryContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link SQLNIParser#param}.
+	 * Enter a parse tree produced by the {@code param1}
+	 * labeled alternative in {@link SQLNIParser#param}.
 	 * @param ctx the parse tree
 	 */
-	void enterParam(SQLNIParser.ParamContext ctx);
+	void enterParam1(SQLNIParser.Param1Context ctx);
 	/**
-	 * Exit a parse tree produced by {@link SQLNIParser#param}.
+	 * Exit a parse tree produced by the {@code param1}
+	 * labeled alternative in {@link SQLNIParser#param}.
 	 * @param ctx the parse tree
 	 */
-	void exitParam(SQLNIParser.ParamContext ctx);
+	void exitParam1(SQLNIParser.Param1Context ctx);
+	/**
+	 * Enter a parse tree produced by the {@code param2}
+	 * labeled alternative in {@link SQLNIParser#param}.
+	 * @param ctx the parse tree
+	 */
+	void enterParam2(SQLNIParser.Param2Context ctx);
+	/**
+	 * Exit a parse tree produced by the {@code param2}
+	 * labeled alternative in {@link SQLNIParser#param}.
+	 * @param ctx the parse tree
+	 */
+	void exitParam2(SQLNIParser.Param2Context ctx);
 	/**
 	 * Enter a parse tree produced by the {@code normalTable}
 	 * labeled alternative in {@link SQLNIParser#table}.

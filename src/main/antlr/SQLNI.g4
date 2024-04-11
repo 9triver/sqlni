@@ -48,12 +48,12 @@ column
     | STRING                            # stringConst
     | NUMBER                            # numberConst
     | ID '(' column (',' column)* ')'   # funcColumn
-    | '(' select ')'                            # subQuery
+    | '(' select ')'                    # subQuery
     ;
 
 param
-    : left='#{' ID right='}'
-    | left='${' ID right='}'
+    : left='#{' ID right='}'    # param1
+    | left='${' ID right='}'    # param2
     ;
 
 table

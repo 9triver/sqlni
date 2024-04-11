@@ -108,11 +108,19 @@ public interface SQLNIVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitSubQuery(SQLNIParser.SubQueryContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link SQLNIParser#param}.
+	 * Visit a parse tree produced by the {@code param1}
+	 * labeled alternative in {@link SQLNIParser#param}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitParam(SQLNIParser.ParamContext ctx);
+	T visitParam1(SQLNIParser.Param1Context ctx);
+	/**
+	 * Visit a parse tree produced by the {@code param2}
+	 * labeled alternative in {@link SQLNIParser#param}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParam2(SQLNIParser.Param2Context ctx);
 	/**
 	 * Visit a parse tree produced by the {@code normalTable}
 	 * labeled alternative in {@link SQLNIParser#table}.

@@ -1,8 +1,7 @@
 package com.kekwy.sqlni.parser;
 
-import com.github.drinkjava2.jdialects.DebugUtils;
 import com.github.drinkjava2.jdialects.Dialect;
-import com.kekwy.sqlni.util.SQLNIParseUtil;
+import com.kekwy.sqlni.util.ASTParseUtil;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.RuleNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -18,7 +17,7 @@ public class SQLNIDialectProcessor extends SQLNIBaseVisitor<String> {
     }
 
     public String process(String statement) {
-        String sql = visit(SQLNIParseUtil.parse(statement)).trim();
+        String sql = visit(ASTParseUtil.parseSQLNI(statement)).trim();
         if (limit != null) {
             if (offset == null) offset = "0";
             return dialect.limitAndTrans(offset, limit, sql);
@@ -54,8 +53,13 @@ public class SQLNIDialectProcessor extends SQLNIBaseVisitor<String> {
     }
 
     @Override
-    public String visitParam(SQLNIParser.ParamContext ctx) {
-        return " SQLNI_PARAM_" + ctx.ID().getText();
+    public String visitParam1(SQLNIParser.Param1Context ctx) {
+        return " SQLNI_PARAM1_" + ctx.ID().getText();
+    }
+
+    @Override
+    public String visitParam2(SQLNIParser.Param2Context ctx) {
+        return " SQLNI_PARAM2_" + ctx.ID().getText();
     }
 
     @Override

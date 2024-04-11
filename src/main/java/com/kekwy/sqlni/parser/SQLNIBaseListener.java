@@ -196,13 +196,25 @@ public class SQLNIBaseListener implements SQLNIListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterParam(SQLNIParser.ParamContext ctx) { }
+	@Override public void enterParam1(SQLNIParser.Param1Context ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitParam(SQLNIParser.ParamContext ctx) { }
+	@Override public void exitParam1(SQLNIParser.Param1Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterParam2(SQLNIParser.Param2Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitParam2(SQLNIParser.Param2Context ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

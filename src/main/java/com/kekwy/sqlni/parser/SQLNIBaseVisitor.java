@@ -122,7 +122,14 @@ public class SQLNIBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements 
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitParam(SQLNIParser.ParamContext ctx) { return visitChildren(ctx); }
+	@Override public T visitParam1(SQLNIParser.Param1Context ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitParam2(SQLNIParser.Param2Context ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

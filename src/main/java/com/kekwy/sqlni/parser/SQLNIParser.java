@@ -1029,24 +1029,53 @@ public class SQLNIParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class ParamContext extends ParserRuleContext {
-		public Token left;
-		public Token right;
-		public TerminalNode ID() { return getToken(SQLNIParser.ID, 0); }
 		public ParamContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_param; }
+	 
+		public ParamContext() { }
+		public void copyFrom(ParamContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class Param1Context extends ParamContext {
+		public Token left;
+		public Token right;
+		public TerminalNode ID() { return getToken(SQLNIParser.ID, 0); }
+		public Param1Context(ParamContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof SQLNIListener ) ((SQLNIListener)listener).enterParam(this);
+			if ( listener instanceof SQLNIListener ) ((SQLNIListener)listener).enterParam1(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof SQLNIListener ) ((SQLNIListener)listener).exitParam(this);
+			if ( listener instanceof SQLNIListener ) ((SQLNIListener)listener).exitParam1(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof SQLNIVisitor) return ((SQLNIVisitor<? extends T>)visitor).visitParam(this);
+			if ( visitor instanceof SQLNIVisitor) return ((SQLNIVisitor<? extends T>)visitor).visitParam1(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class Param2Context extends ParamContext {
+		public Token left;
+		public Token right;
+		public TerminalNode ID() { return getToken(SQLNIParser.ID, 0); }
+		public Param2Context(ParamContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof SQLNIListener ) ((SQLNIListener)listener).enterParam2(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof SQLNIListener ) ((SQLNIListener)listener).exitParam2(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SQLNIVisitor) return ((SQLNIVisitor<? extends T>)visitor).visitParam2(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1059,25 +1088,27 @@ public class SQLNIParser extends Parser {
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case T__8:
+				_localctx = new Param1Context(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(130);
-				((ParamContext)_localctx).left = match(T__8);
+				((Param1Context)_localctx).left = match(T__8);
 				setState(131);
 				match(ID);
 				setState(132);
-				((ParamContext)_localctx).right = match(T__9);
+				((Param1Context)_localctx).right = match(T__9);
 				}
 				break;
 			case T__10:
+				_localctx = new Param2Context(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(133);
-				((ParamContext)_localctx).left = match(T__10);
+				((Param2Context)_localctx).left = match(T__10);
 				setState(134);
 				match(ID);
 				setState(135);
-				((ParamContext)_localctx).right = match(T__9);
+				((Param2Context)_localctx).right = match(T__9);
 				}
 				break;
 			default:
