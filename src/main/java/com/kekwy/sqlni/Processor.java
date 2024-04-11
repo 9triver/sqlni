@@ -5,7 +5,6 @@ import com.kekwy.sqlni.generator.MapperGenerator;
 import com.kekwy.sqlni.generator.MapperXMLGenerator;
 import com.kekwy.sqlni.generator.ServiceGenerator;
 import com.kekwy.sqlni.generator.ServiceImplGenerator;
-import com.kekwy.sqlni.templates.SQLTemplates;
 import com.kekwy.sqlni.util.SQLDialectUtil;
 import freemarker.template.Configuration;
 import freemarker.template.Template;

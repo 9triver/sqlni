@@ -1,9 +1,6 @@
 package com.kekwy.sqlni.util;
 
 import com.github.drinkjava2.jdialects.Dialect;
-import com.kekwy.sqlni.templates.MySQLTemplates;
-import com.kekwy.sqlni.templates.OracleTemplates;
-import com.kekwy.sqlni.templates.SQLTemplates;
 
 import java.util.Map;
 

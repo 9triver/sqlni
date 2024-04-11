@@ -1,15 +1,12 @@
 package com.kekwy.sqlni.parser;
 
-import com.kekwy.sqlni.util.ASTParseUtil;
-import org.antlr.v4.runtime.tree.ParseTree;
-
 public class SQLNIXMLProcessor {
 
 
 
     public String process(String statement) {
-        ParseTree tree = ASTParseUtil.parseSQLNIParam(statement);
-        statement = new ToParamVisitorImpl().visit(tree); // 还原变量
+        statement = new ToParamTranslator().trans(statement); // 还原变量
+        // 解析 MyBatis 的标签
 
         return statement;
     }

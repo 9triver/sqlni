@@ -10,16 +10,18 @@ func
     ;
 
 param
-    : left=PARAM_LEFT ID right=PARAM_RIGHT    # param1
-    | left=PARAM_LEFT ID right=PARAM_RIGHT    # param2
+    : left=PARAM_LEFT1 ID right=PARAM_RIGHT    # param1
+    | left=PARAM_LEFT2 ID right=PARAM_RIGHT    # param2
     ;
 
-any: (CH|LEFT|RIGHT|SEPARATOR|ID|PARAM_LEFT|PARAM_RIGHT|STRING|SPACE)+;
+any: (CH|LEFT|RIGHT|SEPARATOR|ID|PARAM_LEFT1|PARAM_LEFT2|PARAM_RIGHT|STRING|SPACE)+;
 
 LEFT: '(';
 RIGHT: ')';
 
-PARAM_LEFT: '#{'|'${';
+PARAM_LEFT1: '#{';
+PARAM_LEFT2: '${';
+
 PARAM_RIGHT: '}';
 
 
