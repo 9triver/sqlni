@@ -1,5 +1,6 @@
 package com.kekwy.sqlni.parser;
 
+import com.github.drinkjava2.jdialects.SqlFormatter;
 import com.kekwy.sqlni.parser.gen.MyBatisTagBaseVisitor;
 import com.kekwy.sqlni.parser.gen.MyBatisTagParser;
 import com.kekwy.sqlni.util.ASTParseUtil;
@@ -14,6 +15,7 @@ public class SQLNIXMLProcessor extends MyBatisTagBaseVisitor<Void> {
 
     public Node process(String statement) {
         statement = new ToParamTranslator().trans(statement);       // 还原变量
+        statement = SqlFormatter.format(statement);                 // 格式化 SQL 语句
         ParseTree tree = ASTParseUtil.parseMyBatisTag(statement + ";");   // 解析 MyBatis 的标签
         visit(tree);
         return root;

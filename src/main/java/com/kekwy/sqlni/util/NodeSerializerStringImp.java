@@ -1,5 +1,7 @@
 package com.kekwy.sqlni.util;
 
+import org.apache.commons.text.StringEscapeUtils;
+
 import java.util.List;
 import java.util.Map;
 
@@ -36,7 +38,8 @@ public class NodeSerializerStringImp implements NodeSerializer {
         for (String s : text.split("\n")) {
             String trim = s.trim();
             if (!trim.isEmpty()) {
-                buffer.add("  ".repeat(layer) + trim);
+                // 将 text 中出现的特殊字符根据 XML 语法规则进行转义
+                buffer.add("  ".repeat(layer) + StringEscapeUtils.escapeXml11(trim));
             }
         }
     }
