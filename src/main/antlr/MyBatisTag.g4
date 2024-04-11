@@ -5,13 +5,13 @@ root
     ;
 
 func
-    : IF LEFT any+? RIGHT root*? ENDIF                              # if
-    | FOREACH LEFT param SPACE* SEPARATOR SPACE* STRING SPACE* RIGHT    # foreach
+    : IF LEFT any+? RIGHT root*? ENDIF          # if
+    | FOREACH LEFT SPACE* param SPACE* RIGHT    # foreach
     ;
 
 param
-    : left=PARAM_LEFT1 ID right=PARAM_RIGHT    # param1
-    | left=PARAM_LEFT2 ID right=PARAM_RIGHT    # param2
+    : PARAM_LEFT1 ID PARAM_RIGHT    # param1
+    | PARAM_LEFT2 ID PARAM_RIGHT    # param2
     ;
 
 any: (CH|LEFT|RIGHT|SEPARATOR|ID|PARAM_LEFT1|PARAM_LEFT2|PARAM_RIGHT|STRING|SPACE)+;
@@ -28,9 +28,9 @@ PARAM_RIGHT: '}';
 SEPARATOR: ',';
 
 // func
-IF: '#'[Mm][Ii][Ff];
+IF: '#'[Ii][Ff];
 ENDIF: '#'[Ee][Nn][Dd][Ii][Ff];
-FOREACH: '#'[Mm][Ff][Oo][Rr];
+FOREACH: '#'[Ff][Oo][Rr][Ee][Aa][Cc][Hh];
 
 STRING : '\'' (ESC|.)*? '\'';
 

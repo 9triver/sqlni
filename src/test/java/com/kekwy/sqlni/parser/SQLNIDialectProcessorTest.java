@@ -26,7 +26,7 @@ public class SQLNIDialectProcessorTest {
     public void testConcat() {
 
         String sql = new SQLNIDialectProcessor(Dialect.Oracle12cDialect).process(
-                "select * from t_table where c1 = concat(${p1} , 'sadf' , 1231 , #{sdf}) ;"
+                "select * from t_table #if(test=1) where c1 = concat(${p1} , #endif 'sadf' , 1231 , #foreach(#{sdf})) ;"
         );
         sql = SqlFormatter.format(sql);
         System.out.println(new SQLNIXMLProcessor().process(sql));
