@@ -199,12 +199,12 @@ public class MapperSerializer extends SQLNIBaseVisitor<Void> {
     /* visit param
      * --------------------------------------------------------------------------------------------------------- */
 
-    @Override
-    public Void visitParam(SQLNIParser.ParamContext ctx) {
-        // oldTODO: 若为集合需要展开，若不在参数表里需要报错
-        symbolsSet.add(ctx.ID().getText());
-        return null;
-    }
+//    @Override
+//    public Void visitParam(SQLNIParser.ParamContext ctx) {
+//        // oldTODO: 若为集合需要展开，若不在参数表里需要报错
+//        symbolsSet.add(ctx.ID().getText());
+//        return null;
+//    }
 
 
     /* visit conditions
@@ -290,7 +290,7 @@ public class MapperSerializer extends SQLNIBaseVisitor<Void> {
         }
 
         visit(ctx.param());
-        String param = ctx.param().ID().getText();
+        String param = "";// ctx.param().ID().getText();
         push(NodeUtil.ifNotNull(param)); // 创建 IF 结点
         poll();
         append(STR_SPACE); // 添加空格
@@ -399,15 +399,15 @@ public class MapperSerializer extends SQLNIBaseVisitor<Void> {
     @Override
     public Void visitParamSetOrderColumn(SQLNIParser.ParamSetOrderColumnContext ctx) {
         visit(ctx.param());
-        String param = ctx.param().ID().getText();
+        String param = ctx.param().getText();//.ID().getText();
         push(NodeUtil.ifNotNull(param));
         if (!connectorQueue.isEmpty()) {
             poll();
         }
         String item = generateItem(param);
         push(NodeUtil.foreach(param, item));
-        String left = ctx.param().left.getText();
-        String right = ctx.param().right.getText();
+        String left = "";//ctx.param().left.getText();
+        String right = "";//ctx.param().right.getText();
         append(left + item + right);
         pop();
         pop();

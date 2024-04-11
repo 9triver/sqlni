@@ -8,7 +8,8 @@ public class SQLNIDialectProcessorTest {
 
     @Test
     public void process() {
-        String sql = new SQLNIDialectProcessor(Dialect.MySQLDialect).process("select * from (select c1, c2 from t_table where concat('asdf', #{str}, col)='123') tmp where c1=concat(#{param}, 'asdf')");
+        String sql = new SQLNIDialectProcessor(Dialect.Oracle12cDialect).process("select * from (select c1, c2 from t_table where concat('asdf', ${str}, col)='123') tmp where c1=concat(#{param}, 'asdf')");
+        sql = new SQLNIXMLProcessor().process(sql);
         System.out.println(SqlFormatter.format(sql));
     }
 }

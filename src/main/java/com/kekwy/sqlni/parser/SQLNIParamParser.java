@@ -186,23 +186,49 @@ public class SQLNIParamParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class ParamContext extends ParserRuleContext {
-		public TerminalNode PARAM1() { return getToken(SQLNIParamParser.PARAM1, 0); }
-		public TerminalNode PARAM2() { return getToken(SQLNIParamParser.PARAM2, 0); }
 		public ParamContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_param; }
+	 
+		public ParamContext() { }
+		public void copyFrom(ParamContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class Param1Context extends ParamContext {
+		public TerminalNode PARAM1() { return getToken(SQLNIParamParser.PARAM1, 0); }
+		public Param1Context(ParamContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof SQLNIParamListener ) ((SQLNIParamListener)listener).enterParam(this);
+			if ( listener instanceof SQLNIParamListener ) ((SQLNIParamListener)listener).enterParam1(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof SQLNIParamListener ) ((SQLNIParamListener)listener).exitParam(this);
+			if ( listener instanceof SQLNIParamListener ) ((SQLNIParamListener)listener).exitParam1(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof SQLNIParamVisitor) return ((SQLNIParamVisitor<? extends T>)visitor).visitParam(this);
+			if ( visitor instanceof SQLNIParamVisitor) return ((SQLNIParamVisitor<? extends T>)visitor).visitParam1(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class Param2Context extends ParamContext {
+		public TerminalNode PARAM2() { return getToken(SQLNIParamParser.PARAM2, 0); }
+		public Param2Context(ParamContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof SQLNIParamListener ) ((SQLNIParamListener)listener).enterParam2(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof SQLNIParamListener ) ((SQLNIParamListener)listener).exitParam2(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SQLNIParamVisitor) return ((SQLNIParamVisitor<? extends T>)visitor).visitParam2(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -210,20 +236,28 @@ public class SQLNIParamParser extends Parser {
 	public final ParamContext param() throws RecognitionException {
 		ParamContext _localctx = new ParamContext(_ctx, getState());
 		enterRule(_localctx, 2, RULE_param);
-		int _la;
 		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(17);
-			_la = _input.LA(1);
-			if ( !(_la==PARAM1 || _la==PARAM2) ) {
-			_errHandler.recoverInline(this);
-			}
-			else {
-				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
-				_errHandler.reportMatch(this);
-				consume();
-			}
+			setState(19);
+			_errHandler.sync(this);
+			switch (_input.LA(1)) {
+			case PARAM1:
+				_localctx = new Param1Context(_localctx);
+				enterOuterAlt(_localctx, 1);
+				{
+				setState(17);
+				match(PARAM1);
+				}
+				break;
+			case PARAM2:
+				_localctx = new Param2Context(_localctx);
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(18);
+				match(PARAM2);
+				}
+				break;
+			default:
+				throw new NoViableAltException(this);
 			}
 		}
 		catch (RecognitionException re) {
@@ -269,7 +303,7 @@ public class SQLNIParamParser extends Parser {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(20); 
+			setState(22); 
 			_errHandler.sync(this);
 			_alt = 1;
 			do {
@@ -277,7 +311,7 @@ public class SQLNIParamParser extends Parser {
 				case 1:
 					{
 					{
-					setState(19);
+					setState(21);
 					match(CH);
 					}
 					}
@@ -285,9 +319,9 @@ public class SQLNIParamParser extends Parser {
 				default:
 					throw new NoViableAltException(this);
 				}
-				setState(22); 
+				setState(24); 
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,3,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,4,_ctx);
 			} while ( _alt!=2 && _alt != ATN.INVALID_ALT_NUMBER );
 			}
 		}
@@ -303,24 +337,26 @@ public class SQLNIParamParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\u0004\u0001\u0003\u0019\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001"+
+		"\u0004\u0001\u0003\u001b\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001"+
 		"\u0002\u0002\u0007\u0002\u0001\u0000\u0001\u0000\u0001\u0000\u0001\u0000"+
 		"\u0005\u0000\u000b\b\u0000\n\u0000\f\u0000\u000e\t\u0000\u0003\u0000\u0010"+
-		"\b\u0000\u0001\u0001\u0001\u0001\u0001\u0002\u0004\u0002\u0015\b\u0002"+
-		"\u000b\u0002\f\u0002\u0016\u0001\u0002\u0000\u0000\u0003\u0000\u0002\u0004"+
-		"\u0000\u0001\u0001\u0000\u0001\u0002\u0019\u0000\u000f\u0001\u0000\u0000"+
-		"\u0000\u0002\u0011\u0001\u0000\u0000\u0000\u0004\u0014\u0001\u0000\u0000"+
-		"\u0000\u0006\u0010\u0001\u0000\u0000\u0000\u0007\f\u0003\u0004\u0002\u0000"+
-		"\b\u000b\u0003\u0002\u0001\u0000\t\u000b\u0003\u0004\u0002\u0000\n\b\u0001"+
-		"\u0000\u0000\u0000\n\t\u0001\u0000\u0000\u0000\u000b\u000e\u0001\u0000"+
-		"\u0000\u0000\f\n\u0001\u0000\u0000\u0000\f\r\u0001\u0000\u0000\u0000\r"+
-		"\u0010\u0001\u0000\u0000\u0000\u000e\f\u0001\u0000\u0000\u0000\u000f\u0006"+
-		"\u0001\u0000\u0000\u0000\u000f\u0007\u0001\u0000\u0000\u0000\u0010\u0001"+
-		"\u0001\u0000\u0000\u0000\u0011\u0012\u0007\u0000\u0000\u0000\u0012\u0003"+
-		"\u0001\u0000\u0000\u0000\u0013\u0015\u0005\u0003\u0000\u0000\u0014\u0013"+
-		"\u0001\u0000\u0000\u0000\u0015\u0016\u0001\u0000\u0000\u0000\u0016\u0014"+
-		"\u0001\u0000\u0000\u0000\u0016\u0017\u0001\u0000\u0000\u0000\u0017\u0005"+
-		"\u0001\u0000\u0000\u0000\u0004\n\f\u000f\u0016";
+		"\b\u0000\u0001\u0001\u0001\u0001\u0003\u0001\u0014\b\u0001\u0001\u0002"+
+		"\u0004\u0002\u0017\b\u0002\u000b\u0002\f\u0002\u0018\u0001\u0002\u0000"+
+		"\u0000\u0003\u0000\u0002\u0004\u0000\u0000\u001c\u0000\u000f\u0001\u0000"+
+		"\u0000\u0000\u0002\u0013\u0001\u0000\u0000\u0000\u0004\u0016\u0001\u0000"+
+		"\u0000\u0000\u0006\u0010\u0001\u0000\u0000\u0000\u0007\f\u0003\u0004\u0002"+
+		"\u0000\b\u000b\u0003\u0002\u0001\u0000\t\u000b\u0003\u0004\u0002\u0000"+
+		"\n\b\u0001\u0000\u0000\u0000\n\t\u0001\u0000\u0000\u0000\u000b\u000e\u0001"+
+		"\u0000\u0000\u0000\f\n\u0001\u0000\u0000\u0000\f\r\u0001\u0000\u0000\u0000"+
+		"\r\u0010\u0001\u0000\u0000\u0000\u000e\f\u0001\u0000\u0000\u0000\u000f"+
+		"\u0006\u0001\u0000\u0000\u0000\u000f\u0007\u0001\u0000\u0000\u0000\u0010"+
+		"\u0001\u0001\u0000\u0000\u0000\u0011\u0014\u0005\u0001\u0000\u0000\u0012"+
+		"\u0014\u0005\u0002\u0000\u0000\u0013\u0011\u0001\u0000\u0000\u0000\u0013"+
+		"\u0012\u0001\u0000\u0000\u0000\u0014\u0003\u0001\u0000\u0000\u0000\u0015"+
+		"\u0017\u0005\u0003\u0000\u0000\u0016\u0015\u0001\u0000\u0000\u0000\u0017"+
+		"\u0018\u0001\u0000\u0000\u0000\u0018\u0016\u0001\u0000\u0000\u0000\u0018"+
+		"\u0019\u0001\u0000\u0000\u0000\u0019\u0005\u0001\u0000\u0000\u0000\u0005"+
+		"\n\f\u000f\u0013\u0018";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

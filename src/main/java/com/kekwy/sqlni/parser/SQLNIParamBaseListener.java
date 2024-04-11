@@ -28,13 +28,25 @@ public class SQLNIParamBaseListener implements SQLNIParamListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterParam(SQLNIParamParser.ParamContext ctx) { }
+	@Override public void enterParam1(SQLNIParamParser.Param1Context ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitParam(SQLNIParamParser.ParamContext ctx) { }
+	@Override public void exitParam1(SQLNIParamParser.Param1Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterParam2(SQLNIParamParser.Param2Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitParam2(SQLNIParamParser.Param2Context ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

@@ -1,11 +1,10 @@
 grammar SQLNIParam;
 
-root:
-    | any (param|any)*
+root: any (param|any)*
     ;
 
-param: PARAM1
-     | PARAM2
+param: PARAM1 # param1
+     | PARAM2 # param2
      ;
 
 any: CH+;

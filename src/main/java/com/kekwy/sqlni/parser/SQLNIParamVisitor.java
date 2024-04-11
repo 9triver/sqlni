@@ -16,11 +16,19 @@ public interface SQLNIParamVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitRoot(SQLNIParamParser.RootContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link SQLNIParamParser#param}.
+	 * Visit a parse tree produced by the {@code param1}
+	 * labeled alternative in {@link SQLNIParamParser#param}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitParam(SQLNIParamParser.ParamContext ctx);
+	T visitParam1(SQLNIParamParser.Param1Context ctx);
+	/**
+	 * Visit a parse tree produced by the {@code param2}
+	 * labeled alternative in {@link SQLNIParamParser#param}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParam2(SQLNIParamParser.Param2Context ctx);
 	/**
 	 * Visit a parse tree produced by {@link SQLNIParamParser#any}.
 	 * @param ctx the parse tree
