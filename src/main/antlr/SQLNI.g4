@@ -12,9 +12,11 @@ content
     | nestedExpr
     ;
 
-any: CH+;
+any: (CH|enter)+;
 
 nestedExpr: '(' root ')';
+
+enter: '\n';
 
 limit
   : LIMIT any
@@ -27,9 +29,10 @@ offset
 LIMIT: [Ll][Ii][Mm][Ii][Tt];
 OFFSET: [Oo][Ff][Ff][Ss][Ee][Tt];
 
+ENTER: [\n];
 
 CH: ~[()];
 
-WS : [\t\r\n]+ -> skip ;   // skip spaces, tabs, newlines
+WS : [\t\r]+ -> skip ;   // skip spaces, tabs, newlines
 //COMMENT : '#' .*? -> skip;
 

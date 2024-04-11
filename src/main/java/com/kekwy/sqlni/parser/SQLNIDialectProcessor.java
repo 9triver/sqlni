@@ -63,6 +63,11 @@ public class SQLNIDialectProcessor extends SQLNIBaseVisitor<String> {
     }
 
     @Override
+    public String visitEnter(SQLNIParser.EnterContext ctx) {
+        return " ";
+    }
+
+    @Override
     public String visitTerminal(TerminalNode node) {
         return node.getText();
     }

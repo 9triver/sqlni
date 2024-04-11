@@ -1,10 +1,13 @@
 T__0=1
 T__1=2
 T__2=3
-LIMIT=4
-OFFSET=5
-CH=6
-WS=7
+T__3=4
+LIMIT=5
+OFFSET=6
+ENTER=7
+CH=8
+WS=9
 ';'=1
 '('=2
 ')'=3
+'\n'=4

@@ -14,7 +14,7 @@ public class SQLNIXMLProcessor extends MyBatisTagBaseVisitor<Void> {
 
     public Node process(String statement) {
         statement = new ToParamTranslator().trans(statement);       // 还原变量
-        ParseTree tree = ASTParseUtil.parseMyBatisTag(statement);   // 解析 MyBatis 的标签
+        ParseTree tree = ASTParseUtil.parseMyBatisTag(statement + ";");   // 解析 MyBatis 的标签
         visit(tree);
         return root;
     }

@@ -57,6 +57,16 @@ public interface SQLNIListener extends ParseTreeListener {
 	 */
 	void exitNestedExpr(SQLNIParser.NestedExprContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link SQLNIParser#enter}.
+	 * @param ctx the parse tree
+	 */
+	void enterEnter(SQLNIParser.EnterContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SQLNIParser#enter}.
+	 * @param ctx the parse tree
+	 */
+	void exitEnter(SQLNIParser.EnterContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link SQLNIParser#limit}.
 	 * @param ctx the parse tree
 	 */

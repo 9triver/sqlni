@@ -40,6 +40,12 @@ public interface SQLNIVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitNestedExpr(SQLNIParser.NestedExprContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link SQLNIParser#enter}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEnter(SQLNIParser.EnterContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link SQLNIParser#limit}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

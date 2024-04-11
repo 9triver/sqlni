@@ -34,7 +34,10 @@ public class NodeSerializerStringImp implements NodeSerializer {
     @Override
     public void addText(String text) {
         for (String s : text.split("\n")) {
-            buffer.add("  ".repeat(layer) + s.trim());
+            String trim = s.trim();
+            if (!trim.isEmpty()) {
+                buffer.add("  ".repeat(layer) + trim);
+            }
         }
     }
 
