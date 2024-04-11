@@ -29,9 +29,31 @@
 </#list>
   -->
 </#if>
+<#if method.action="select">
   <select id="${method.id}"<#if method.resultMap?has_content> resultMap="${method.resultMap}"<#else> resultType="${method.resultType}" </#if>>
-    select * from ( select row_.*, rownum rownum_ from ( select * from t_table as t where MIF('sadfa'|| 'PARAM_[param]'|| '1312'='sdfsdfdsfds', c1 = [#{param1}], 1=1) and c2 <> 'sadfa'|| 'asdf'|| '1312' ) row_ where rownum <= 9) where rownum_ > 6
+<#list method.statement as line>
+  ${line}
+</#list>
   </select>
+<#elseif method.action="update">
+  <update id="${method.id}">
+<#list method.statement as line>
+  ${line}
+</#list>
+  </update>
+<#elseif method.action="delete">
+  <delete id="${method.id}">
+<#list method.statement as line>
+  ${line}
+</#list>
+  </delete>
+<#elseif method.action="insert">
+  <insert id="${method.id}">
+<#list method.statement as line>
+  ${line}
+</#list>
+  </insert>
+</#if>
 
 </#list>
 
