@@ -1,4 +1,4 @@
-package com.kekwy.sqlni.parser.gen;// Generated from E:/projects/sqlni/src/main/antlr/ParamTrans.g4 by ANTLR 4.13.1
+package com.kekwy.sqlni.parser.gen;// Generated from E:/projects/sqlni/core/src/main/antlr/ParamTrans.g4 by ANTLR 4.13.1
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;
@@ -116,8 +116,8 @@ public class ParamTransLexer extends Lexer {
 		"\u0001\u0004\u0001\u0004\u0001\u0004\u0001\u0004\u0001\u0004\u0001\u0005"+
 		"\u0001\u0005\u0005\u00056\b\u0005\n\u0005\f\u00059\t\u0005\u0001\u0006"+
 		"\u0001\u0006\u0000\u0000\u0007\u0001\u0001\u0003\u0002\u0005\u0003\u0007"+
-		"\u0004\t\u0005\u000b\u0006\r\u0007\u0001\u0000\u0002\u0002\u0000AZaz\u0004"+
-		"\u000009AZ__az<\u0000\u0001\u0001\u0000\u0000\u0000\u0000\u0003\u0001"+
+		"\u0004\t\u0005\u000b\u0006\r\u0007\u0001\u0000\u0002\u0002\u0000AZaz\u0005"+
+		"\u0000..09AZ__az<\u0000\u0001\u0001\u0000\u0000\u0000\u0000\u0003\u0001"+
 		"\u0000\u0000\u0000\u0000\u0005\u0001\u0000\u0000\u0000\u0000\u0007\u0001"+
 		"\u0000\u0000\u0000\u0000\t\u0001\u0000\u0000\u0000\u0000\u000b\u0001\u0000"+
 		"\u0000\u0000\u0000\r\u0001\u0000\u0000\u0000\u0001\u000f\u0001\u0000\u0000"+

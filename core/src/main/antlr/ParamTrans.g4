@@ -21,7 +21,7 @@ PARAM_RIGHT: '}';
 PARAM1:   'SQLNI_PARAM1#';
 PARAM2:   'SQLNI_PARAM2#';
 
-ID     :   [a-zA-Z][a-zA-Z_0-9]*;
+ID     :   [a-zA-Z][.a-zA-Z_0-9]*;
 
 CH    :   .;
 
