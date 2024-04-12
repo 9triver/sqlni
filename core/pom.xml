@@ -21,21 +21,6 @@
   </properties>
 
   <dependencies>
-    <!--    <dependency>-->
-    <!--      <groupId>org.projectlombok</groupId>-->
-    <!--      <artifactId>lombok</artifactId>-->
-    <!--      <version>1.18.26</version>-->
-    <!--    </dependency>-->
-    <dependency>
-      <groupId>com.querydsl</groupId>
-      <artifactId>querydsl-sql</artifactId>
-      <version>5.0.0</version>
-    </dependency>
-    <!--    <dependency>-->
-    <!--      <groupId>org.freemarker</groupId>-->
-    <!--      <artifactId>freemarker</artifactId>-->
-    <!--      <version>2.3.32</version>-->
-    <!--    </dependency>-->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -48,40 +33,18 @@
       <artifactId>dom4j</artifactId>
       <version>2.1.4</version>
     </dependency>
-    <!--    &lt;!&ndash; https://mvnrepository.com/artifact/org.mybatis.spring.boot/mybatis-spring-boot-starter &ndash;&gt;-->
-    <!--    <dependency>-->
-    <!--      <groupId>org.mybatis.spring.boot</groupId>-->
-    <!--      <artifactId>mybatis-spring-boot-starter</artifactId>-->
-    <!--      <version>3.0.3</version>-->
-    <!--    </dependency>-->
-    <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter -->
-    <!--    <dependency>-->
-    <!--      <groupId>org.springframework.boot</groupId>-->
-    <!--      <artifactId>spring-boot-starter</artifactId>-->
-    <!--      <version>3.2.0</version>-->
-    <!--    </dependency>-->
-
     <!-- https://mvnrepository.com/artifact/org.mybatis.dynamic-sql/mybatis-dynamic-sql -->
     <dependency>
       <groupId>org.mybatis.dynamic-sql</groupId>
       <artifactId>mybatis-dynamic-sql</artifactId>
       <version>1.5.0</version>
     </dependency>
-
     <!-- https://mvnrepository.com/artifact/org.antlr/antlr4 -->
     <dependency>
       <groupId>org.antlr</groupId>
       <artifactId>antlr4</artifactId>
       <version>4.13.1</version>
     </dependency>
-
-    <!--    &lt;!&ndash;  用于自动注册注解处理器  &ndash;&gt;-->
-    <!--    <dependency>-->
-    <!--      <groupId>com.google.auto.service</groupId>-->
-    <!--      <artifactId>auto-service</artifactId>-->
-    <!--      <version>1.0.1</version>-->
-    <!--      <scope>provided</scope>-->
-    <!--    </dependency>-->
     <dependency>
       <groupId>com.baomidou</groupId>
       <artifactId>mybatis-plus-boot-starter</artifactId>
@@ -99,23 +62,12 @@
       <artifactId>freemarker</artifactId>
       <version>2.3.32</version>
     </dependency>
-<!--    &lt;!&ndash; https://mvnrepository.com/artifact/com.github.drinkjava2/jdialects &ndash;&gt;-->
-<!--    <dependency>-->
-<!--    <groupId>com.github.drinkjava2</groupId>-->
-<!--    <artifactId>jdialects</artifactId>-->
-<!--    <version>5.0.13.jre8</version>-->
-<!--    </dependency>-->
     <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-text -->
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-text</artifactId>
       <version>1.11.0</version>
     </dependency>
-
-
-
-
-
   </dependencies>
 
   <build>
