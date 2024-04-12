@@ -61,57 +61,13 @@
     <!--      <version>3.2.0</version>-->
     <!--    </dependency>-->
 
-    <!-- https://mvnrepository.com/artifact/org.mybatis.dynamic-sql/mybatis-dynamic-sql -->
-    <dependency>
-      <groupId>org.mybatis.dynamic-sql</groupId>
-      <artifactId>mybatis-dynamic-sql</artifactId>
-      <version>1.5.0</version>
-    </dependency>
 
-    <!-- https://mvnrepository.com/artifact/org.antlr/antlr4 -->
-    <dependency>
-      <groupId>org.antlr</groupId>
-      <artifactId>antlr4</artifactId>
-      <version>4.13.1</version>
-    </dependency>
 
-    <!--    &lt;!&ndash;  用于自动注册注解处理器  &ndash;&gt;-->
-    <!--    <dependency>-->
-    <!--      <groupId>com.google.auto.service</groupId>-->
-    <!--      <artifactId>auto-service</artifactId>-->
-    <!--      <version>1.0.1</version>-->
-    <!--      <scope>provided</scope>-->
-    <!--    </dependency>-->
     <dependency>
       <groupId>com.baomidou</groupId>
       <artifactId>mybatis-plus-boot-starter</artifactId>
       <version>3.3.1</version>
     </dependency>
-    <!-- https://mvnrepository.com/artifact/org.jetbrains/annotations -->
-    <dependency>
-      <groupId>org.jetbrains</groupId>
-      <artifactId>annotations</artifactId>
-      <version>24.1.0</version>
-    </dependency>
-    <!-- https://mvnrepository.com/artifact/org.freemarker/freemarker -->
-    <dependency>
-      <groupId>org.freemarker</groupId>
-      <artifactId>freemarker</artifactId>
-      <version>2.3.32</version>
-    </dependency>
-<!--    &lt;!&ndash; https://mvnrepository.com/artifact/com.github.drinkjava2/jdialects &ndash;&gt;-->
-<!--    <dependency>-->
-<!--    <groupId>com.github.drinkjava2</groupId>-->
-<!--    <artifactId>jdialects</artifactId>-->
-<!--    <version>5.0.13.jre8</version>-->
-<!--    </dependency>-->
-    <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-text -->
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-text</artifactId>
-      <version>1.11.0</version>
-    </dependency>
-
 
 
 
