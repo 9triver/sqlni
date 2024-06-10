@@ -31,6 +31,8 @@ public interface EmployeeGroupMapper {
             """)
     List<EmployeeGroup> getEmployeeGroupsByGid(List<Integer> gidList);
 
+    String limitAndTrans(String offset , String limit, String... sql);
+
 }
 
 

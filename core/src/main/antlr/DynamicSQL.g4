@@ -1,4 +1,4 @@
-grammar MyBatisTag;
+grammar DynamicSQL;
 
 root
     : any (func|any)*
@@ -33,8 +33,7 @@ FOREACH: '#'[Ff][Oo][Rr][Ee][Aa][Cc][Hh];
 
 STRING : '\'' (ESC|.)*? '\'';
 
-fragment
-ESC : '\\"' | '\\\\';       // 双字符序列 \" 和 \\
+fragment ESC : '\\"' | '\\\\';       // 双字符序列 \" 和 \\
 
 ID     :   [a-zA-Z][a-zA-Z_0-9]*;
 
