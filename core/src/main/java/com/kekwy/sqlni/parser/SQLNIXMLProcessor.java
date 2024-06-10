@@ -1,8 +1,8 @@
 package com.kekwy.sqlni.parser;
 
 import com.github.drinkjava2.jdialects.SqlFormatter;
-import com.kekwy.sqlni.parser.gen.MyBatisTagBaseVisitor;
-import com.kekwy.sqlni.parser.gen.MyBatisTagParser;
+import com.kekwy.sqlni.parser.gen.DynamicSQLBaseVisitor;
+import com.kekwy.sqlni.parser.gen.DynamicSQLParser;
 import com.kekwy.sqlni.util.ASTParseUtil;
 import com.kekwy.sqlni.util.ElementNode;
 import com.kekwy.sqlni.util.Node;
@@ -11,7 +11,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.util.Map;
 
-public class SQLNIXMLProcessor extends MyBatisTagBaseVisitor<Void> {
+public class SQLNIXMLProcessor extends DynamicSQLBaseVisitor<Void> {
 
     public Node process(String statement) {
         statement = new ToParamTranslator().trans(statement);       // 还原变量
@@ -24,7 +24,7 @@ public class SQLNIXMLProcessor extends MyBatisTagBaseVisitor<Void> {
     private ElementNode root = new ElementNode("root");
 
     @Override
-    public Void visitIf(MyBatisTagParser.IfContext ctx) {
+    public Void visitIf(DynamicSQLParser.IfContext ctx) {
         String test = collectAny(ctx.any());
         ElementNode old_root = root;    // 保存旧根节点
         root = new ElementNode("if", Map.of("test", test));
@@ -35,7 +35,7 @@ public class SQLNIXMLProcessor extends MyBatisTagBaseVisitor<Void> {
     }
 
     @Override
-    public Void visitForeach(MyBatisTagParser.ForeachContext ctx) {
+    public Void visitForeach(DynamicSQLParser.ForeachContext ctx) {
         String itemName = ctx.param().ID().getText() + "_item";
         ElementNode node = new ElementNode("foreach", Map.of(
                 "collection", ctx.param().ID().getText(),
@@ -51,12 +51,12 @@ public class SQLNIXMLProcessor extends MyBatisTagBaseVisitor<Void> {
     }
 
     @Override
-    public Void visitAny(MyBatisTagParser.AnyContext ctx) {
+    public Void visitAny(DynamicSQLParser.AnyContext ctx) {
         root.addNode(new TextNode(collectAny(ctx)));
         return null;
     }
 
-    private String collectAny(MyBatisTagParser.AnyContext ctx) {
+    private String collectAny(DynamicSQLParser.AnyContext ctx) {
         StringBuilder builder = new StringBuilder();
         int n = ctx.getChildCount();
         for (int i = 0; i < n; i++) {

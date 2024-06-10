@@ -1,4 +1,4 @@
-package com.kekwy.sqlni.parser.gen;// Generated from E:/projects/sqlni/src/main/antlr/ParamTrans.g4 by ANTLR 4.13.1
+package com.kekwy.sqlni.parser.gen;// Generated from E:/projects/sqlni/core/src/main/antlr/ParamTrans.g4 by ANTLR 4.13.1
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;

@@ -23,6 +23,7 @@ public class ResultMirror {
             AnnotationValue value = entry.getValue();
             String fieldName = key.getSimpleName().toString();
             Object fieldValue = value.getValue();
+            String className = fieldValue.getClass().getName();
             switch (fieldName) {
                 case "id" -> this.id = (boolean) fieldValue;
                 case "column" -> this.column = (String) fieldValue;

@@ -1,4 +1,4 @@
-package com.kekwy.sqlni.parser.gen;// Generated from E:/projects/sqlni/src/main/antlr/MyBatisTag.g4 by ANTLR 4.13.1
+package com.kekwy.sqlni.parser.gen;// Generated from E:/projects/sqlni/core/src/main/antlr/DynamicSQL.g4 by ANTLR 4.13.1
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -9,7 +9,7 @@ import java.util.Iterator;
 import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast", "CheckReturnValue"})
-public class MyBatisTagParser extends Parser {
+public class DynamicSQLParser extends Parser {
 	static { RuntimeMetaData.checkVersion("4.13.1", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
@@ -75,7 +75,7 @@ public class MyBatisTagParser extends Parser {
 	}
 
 	@Override
-	public String getGrammarFileName() { return "MyBatisTag.g4"; }
+	public String getGrammarFileName() { return "DynamicSQL.g4"; }
 
 	@Override
 	public String[] getRuleNames() { return ruleNames; }
@@ -86,7 +86,7 @@ public class MyBatisTagParser extends Parser {
 	@Override
 	public ATN getATN() { return _ATN; }
 
-	public MyBatisTagParser(TokenStream input) {
+	public DynamicSQLParser(TokenStream input) {
 		super(input);
 		_interp = new ParserATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
@@ -111,15 +111,15 @@ public class MyBatisTagParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_root; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MyBatisTagListener ) ((MyBatisTagListener)listener).enterRoot(this);
+			if ( listener instanceof DynamicSQLListener ) ((DynamicSQLListener)listener).enterRoot(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MyBatisTagListener ) ((MyBatisTagListener)listener).exitRoot(this);
+			if ( listener instanceof DynamicSQLListener ) ((DynamicSQLListener)listener).exitRoot(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MyBatisTagVisitor) return ((MyBatisTagVisitor<? extends T>)visitor).visitRoot(this);
+			if ( visitor instanceof DynamicSQLVisitor) return ((DynamicSQLVisitor<? extends T>)visitor).visitRoot(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -198,55 +198,55 @@ public class MyBatisTagParser extends Parser {
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class ForeachContext extends FuncContext {
-		public TerminalNode FOREACH() { return getToken(MyBatisTagParser.FOREACH, 0); }
-		public TerminalNode LEFT() { return getToken(MyBatisTagParser.LEFT, 0); }
+		public TerminalNode FOREACH() { return getToken(DynamicSQLParser.FOREACH, 0); }
+		public TerminalNode LEFT() { return getToken(DynamicSQLParser.LEFT, 0); }
 		public ParamContext param() {
 			return getRuleContext(ParamContext.class,0);
 		}
-		public TerminalNode RIGHT() { return getToken(MyBatisTagParser.RIGHT, 0); }
-		public List<TerminalNode> SPACE() { return getTokens(MyBatisTagParser.SPACE); }
+		public TerminalNode RIGHT() { return getToken(DynamicSQLParser.RIGHT, 0); }
+		public List<TerminalNode> SPACE() { return getTokens(DynamicSQLParser.SPACE); }
 		public TerminalNode SPACE(int i) {
-			return getToken(MyBatisTagParser.SPACE, i);
+			return getToken(DynamicSQLParser.SPACE, i);
 		}
 		public ForeachContext(FuncContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MyBatisTagListener ) ((MyBatisTagListener)listener).enterForeach(this);
+			if ( listener instanceof DynamicSQLListener ) ((DynamicSQLListener)listener).enterForeach(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MyBatisTagListener ) ((MyBatisTagListener)listener).exitForeach(this);
+			if ( listener instanceof DynamicSQLListener ) ((DynamicSQLListener)listener).exitForeach(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MyBatisTagVisitor) return ((MyBatisTagVisitor<? extends T>)visitor).visitForeach(this);
+			if ( visitor instanceof DynamicSQLVisitor) return ((DynamicSQLVisitor<? extends T>)visitor).visitForeach(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class IfContext extends FuncContext {
-		public TerminalNode IF() { return getToken(MyBatisTagParser.IF, 0); }
-		public TerminalNode LEFT() { return getToken(MyBatisTagParser.LEFT, 0); }
+		public TerminalNode IF() { return getToken(DynamicSQLParser.IF, 0); }
+		public TerminalNode LEFT() { return getToken(DynamicSQLParser.LEFT, 0); }
 		public AnyContext any() {
 			return getRuleContext(AnyContext.class,0);
 		}
-		public TerminalNode RIGHT() { return getToken(MyBatisTagParser.RIGHT, 0); }
+		public TerminalNode RIGHT() { return getToken(DynamicSQLParser.RIGHT, 0); }
 		public RootContext root() {
 			return getRuleContext(RootContext.class,0);
 		}
-		public TerminalNode ENDIF() { return getToken(MyBatisTagParser.ENDIF, 0); }
+		public TerminalNode ENDIF() { return getToken(DynamicSQLParser.ENDIF, 0); }
 		public IfContext(FuncContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MyBatisTagListener ) ((MyBatisTagListener)listener).enterIf(this);
+			if ( listener instanceof DynamicSQLListener ) ((DynamicSQLListener)listener).enterIf(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MyBatisTagListener ) ((MyBatisTagListener)listener).exitIf(this);
+			if ( listener instanceof DynamicSQLListener ) ((DynamicSQLListener)listener).exitIf(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MyBatisTagVisitor) return ((MyBatisTagVisitor<? extends T>)visitor).visitIf(this);
+			if ( visitor instanceof DynamicSQLVisitor) return ((DynamicSQLVisitor<? extends T>)visitor).visitIf(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -338,25 +338,25 @@ public class MyBatisTagParser extends Parser {
 	public static class ParamContext extends ParserRuleContext {
 		public Token left;
 		public Token right;
-		public TerminalNode ID() { return getToken(MyBatisTagParser.ID, 0); }
-		public TerminalNode PARAM_RIGHT() { return getToken(MyBatisTagParser.PARAM_RIGHT, 0); }
-		public TerminalNode PARAM_LEFT1() { return getToken(MyBatisTagParser.PARAM_LEFT1, 0); }
-		public TerminalNode PARAM_LEFT2() { return getToken(MyBatisTagParser.PARAM_LEFT2, 0); }
+		public TerminalNode ID() { return getToken(DynamicSQLParser.ID, 0); }
+		public TerminalNode PARAM_RIGHT() { return getToken(DynamicSQLParser.PARAM_RIGHT, 0); }
+		public TerminalNode PARAM_LEFT1() { return getToken(DynamicSQLParser.PARAM_LEFT1, 0); }
+		public TerminalNode PARAM_LEFT2() { return getToken(DynamicSQLParser.PARAM_LEFT2, 0); }
 		public ParamContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_param; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MyBatisTagListener ) ((MyBatisTagListener)listener).enterParam(this);
+			if ( listener instanceof DynamicSQLListener ) ((DynamicSQLListener)listener).enterParam(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MyBatisTagListener ) ((MyBatisTagListener)listener).exitParam(this);
+			if ( listener instanceof DynamicSQLListener ) ((DynamicSQLListener)listener).exitParam(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MyBatisTagVisitor) return ((MyBatisTagVisitor<? extends T>)visitor).visitParam(this);
+			if ( visitor instanceof DynamicSQLVisitor) return ((DynamicSQLVisitor<? extends T>)visitor).visitParam(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -398,45 +398,45 @@ public class MyBatisTagParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class AnyContext extends ParserRuleContext {
-		public List<TerminalNode> CH() { return getTokens(MyBatisTagParser.CH); }
+		public List<TerminalNode> CH() { return getTokens(DynamicSQLParser.CH); }
 		public TerminalNode CH(int i) {
-			return getToken(MyBatisTagParser.CH, i);
+			return getToken(DynamicSQLParser.CH, i);
 		}
-		public List<TerminalNode> LEFT() { return getTokens(MyBatisTagParser.LEFT); }
+		public List<TerminalNode> LEFT() { return getTokens(DynamicSQLParser.LEFT); }
 		public TerminalNode LEFT(int i) {
-			return getToken(MyBatisTagParser.LEFT, i);
+			return getToken(DynamicSQLParser.LEFT, i);
 		}
-		public List<TerminalNode> RIGHT() { return getTokens(MyBatisTagParser.RIGHT); }
+		public List<TerminalNode> RIGHT() { return getTokens(DynamicSQLParser.RIGHT); }
 		public TerminalNode RIGHT(int i) {
-			return getToken(MyBatisTagParser.RIGHT, i);
+			return getToken(DynamicSQLParser.RIGHT, i);
 		}
-		public List<TerminalNode> SEPARATOR() { return getTokens(MyBatisTagParser.SEPARATOR); }
+		public List<TerminalNode> SEPARATOR() { return getTokens(DynamicSQLParser.SEPARATOR); }
 		public TerminalNode SEPARATOR(int i) {
-			return getToken(MyBatisTagParser.SEPARATOR, i);
+			return getToken(DynamicSQLParser.SEPARATOR, i);
 		}
-		public List<TerminalNode> ID() { return getTokens(MyBatisTagParser.ID); }
+		public List<TerminalNode> ID() { return getTokens(DynamicSQLParser.ID); }
 		public TerminalNode ID(int i) {
-			return getToken(MyBatisTagParser.ID, i);
+			return getToken(DynamicSQLParser.ID, i);
 		}
-		public List<TerminalNode> PARAM_LEFT1() { return getTokens(MyBatisTagParser.PARAM_LEFT1); }
+		public List<TerminalNode> PARAM_LEFT1() { return getTokens(DynamicSQLParser.PARAM_LEFT1); }
 		public TerminalNode PARAM_LEFT1(int i) {
-			return getToken(MyBatisTagParser.PARAM_LEFT1, i);
+			return getToken(DynamicSQLParser.PARAM_LEFT1, i);
 		}
-		public List<TerminalNode> PARAM_LEFT2() { return getTokens(MyBatisTagParser.PARAM_LEFT2); }
+		public List<TerminalNode> PARAM_LEFT2() { return getTokens(DynamicSQLParser.PARAM_LEFT2); }
 		public TerminalNode PARAM_LEFT2(int i) {
-			return getToken(MyBatisTagParser.PARAM_LEFT2, i);
+			return getToken(DynamicSQLParser.PARAM_LEFT2, i);
 		}
-		public List<TerminalNode> PARAM_RIGHT() { return getTokens(MyBatisTagParser.PARAM_RIGHT); }
+		public List<TerminalNode> PARAM_RIGHT() { return getTokens(DynamicSQLParser.PARAM_RIGHT); }
 		public TerminalNode PARAM_RIGHT(int i) {
-			return getToken(MyBatisTagParser.PARAM_RIGHT, i);
+			return getToken(DynamicSQLParser.PARAM_RIGHT, i);
 		}
-		public List<TerminalNode> STRING() { return getTokens(MyBatisTagParser.STRING); }
+		public List<TerminalNode> STRING() { return getTokens(DynamicSQLParser.STRING); }
 		public TerminalNode STRING(int i) {
-			return getToken(MyBatisTagParser.STRING, i);
+			return getToken(DynamicSQLParser.STRING, i);
 		}
-		public List<TerminalNode> SPACE() { return getTokens(MyBatisTagParser.SPACE); }
+		public List<TerminalNode> SPACE() { return getTokens(DynamicSQLParser.SPACE); }
 		public TerminalNode SPACE(int i) {
-			return getToken(MyBatisTagParser.SPACE, i);
+			return getToken(DynamicSQLParser.SPACE, i);
 		}
 		public AnyContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -444,15 +444,15 @@ public class MyBatisTagParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_any; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MyBatisTagListener ) ((MyBatisTagListener)listener).enterAny(this);
+			if ( listener instanceof DynamicSQLListener ) ((DynamicSQLListener)listener).enterAny(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MyBatisTagListener ) ((MyBatisTagListener)listener).exitAny(this);
+			if ( listener instanceof DynamicSQLListener ) ((DynamicSQLListener)listener).exitAny(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MyBatisTagVisitor) return ((MyBatisTagVisitor<? extends T>)visitor).visitAny(this);
+			if ( visitor instanceof DynamicSQLVisitor) return ((DynamicSQLVisitor<? extends T>)visitor).visitAny(this);
 			else return visitor.visitChildren(this);
 		}
 	}
