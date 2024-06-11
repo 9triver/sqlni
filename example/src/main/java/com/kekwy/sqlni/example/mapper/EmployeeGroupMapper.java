@@ -1,6 +1,7 @@
 package com.kekwy.sqlni.example.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.kekwy.sqlni.example.entity.Employee;
 import com.kekwy.sqlni.example.entity.EmployeeGroup;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.JdbcType;
@@ -8,7 +9,7 @@ import org.apache.ibatis.type.JdbcType;
 import java.util.List;
 
 @Mapper
-public interface EmployeeGroupMapper {
+public interface EmployeeGroupMapper extends BaseMapper<EmployeeGroup> {
 
     @Results(
             id = "res1",

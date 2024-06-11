@@ -22,10 +22,10 @@ public class ASTParseUtil {
         return parser.root();
     }
 
-    public static ParseTree parseMyBatisTag(String statement) {
-        MyBatisTagLexer lexer = new MyBatisTagLexer(CharStreams.fromString(statement));
+    public static ParseTree parseDynamicSQL(String statement) {
+        DynamicSQLLexer lexer = new DynamicSQLLexer(CharStreams.fromString(statement));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        MyBatisTagParser parser = new MyBatisTagParser(tokens);
+        DynamicSQLParser parser = new DynamicSQLParser(tokens);
         return parser.root();
     }
 

@@ -16,7 +16,7 @@ public class SQLNIXMLProcessor extends DynamicSQLBaseVisitor<Void> {
     public Node process(String statement) {
         statement = new ToParamTranslator().trans(statement);       // 还原变量
         statement = SqlFormatter.format(statement);                 // 格式化 SQL 语句
-        ParseTree tree = ASTParseUtil.parseMyBatisTag(statement + ";");   // 解析 MyBatis 的标签
+        ParseTree tree = ASTParseUtil.parseDynamicSQL(statement + ";");   // 解析 MyBatis 的标签
         visit(tree);
         return root;
     }
