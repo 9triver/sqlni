@@ -1,6 +1,7 @@
 package com.kekwy.sqlni;
 
 import com.github.drinkjava2.jdialects.Dialect;
+import com.kekwy.sqlni.dialect.DialectFactory;
 import com.kekwy.sqlni.generator.MapperGenerator;
 import com.kekwy.sqlni.generator.MapperXMLGenerator;
 import com.kekwy.sqlni.generator.ServiceGenerator;
@@ -22,6 +23,7 @@ import javax.tools.FileObject;
 import javax.tools.StandardLocation;
 import java.io.IOException;
 import java.io.Writer;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -57,7 +59,16 @@ public class Processor extends AbstractProcessor {
 
     private void initSQLDialect() {
         String sqlDialect = processingEnv.getOptions().get("SQLDialect");
-        dialect = SQLDialectUtil.getDialect(sqlDialect);
+        try {
+            DialectFactory factory =
+                    (DialectFactory) Class.forName(
+                            "com.kekwy.sqlni.dialect." + sqlDialect + "DialectFactory"
+                    ).getConstructor().newInstance();
+            dialect = factory.createDialect();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+//        dialect = SQLDialectUtil.getDialect(sqlDialect);
     }
 
     private void initFreeMarker() {
